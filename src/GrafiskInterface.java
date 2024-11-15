@@ -5,15 +5,61 @@ import java.awt.event.ActionListener;
 
 public class GrafiskInterface extends JFrame {
 
+    private JPanel startPanel;
+    private JPanel quizPanel;
+    private JPanel scorePanel;
+    private JPanel finalScorePanel;
+
     public GrafiskInterface() {
         setTitle("Quiz Kampen");
         setSize(400, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
+
+        startPanel = createStartPanel();
+        quizPanel = createQuizPanel();
+
+        setContentPane(startPanel);
+        setVisible(true);
+    }
+
+    private JPanel createStartPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel titleLabel = new JLabel("QuizKampen");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(titleLabel,BorderLayout.NORTH);
+
+        JButton startButton = new JButton("Starta nytt spel");
+        startButton.setPreferredSize(new Dimension(200, 50));
+        startButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setContentPane(quizPanel);
+                revalidate();
+                repaint();
+            }
+        });
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.add(startButton);
+
+        panel.add(buttonPanel,BorderLayout.CENTER);
+
+        return panel;
+    }
+
+    private JPanel createQuizPanel() {
+
+        //setLayout(new BorderLayout());
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS)); //meaning components added to this panel will be arranged vertically (from top to bottom).
-        add(mainPanel, BorderLayout.CENTER);
+        //add(mainPanel, BorderLayout.CENTER);
 
         // Title Panel
         JPanel titlePanel = new JPanel();
@@ -57,21 +103,21 @@ public class GrafiskInterface extends JFrame {
 
         answerButton1.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
-               if (answerButton1.getText().equals(correctAnswer)){
-                   answerButton1.setBackground(Color.GREEN);
-               } else{
-                   answerButton1.setBackground(Color.RED);
-               }
+            public void actionPerformed(ActionEvent e) {
+                if (answerButton1.getText().equals(correctAnswer)) {
+                    answerButton1.setBackground(Color.GREEN);
+                } else {
+                    answerButton1.setBackground(Color.RED);
+                }
             }
         });
 
         answerButton2.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
-                if (answerButton2.getText().equals(correctAnswer)){
+            public void actionPerformed(ActionEvent e) {
+                if (answerButton2.getText().equals(correctAnswer)) {
                     answerButton2.setBackground(Color.GREEN);
-                } else{
+                } else {
                     answerButton2.setBackground(Color.RED);
                 }
             }
@@ -79,10 +125,10 @@ public class GrafiskInterface extends JFrame {
 
         answerButton3.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
-                if (answerButton3.getText().equals(correctAnswer)){
+            public void actionPerformed(ActionEvent e) {
+                if (answerButton3.getText().equals(correctAnswer)) {
                     answerButton3.setBackground(Color.GREEN);
-                } else{
+                } else {
                     answerButton3.setBackground(Color.RED);
                 }
             }
@@ -90,15 +136,14 @@ public class GrafiskInterface extends JFrame {
 
         answerButton4.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
-                if (answerButton4.getText().equals(correctAnswer)){
+            public void actionPerformed(ActionEvent e) {
+                if (answerButton4.getText().equals(correctAnswer)) {
                     answerButton4.setBackground(Color.GREEN);
-                } else{
+                } else {
                     answerButton4.setBackground(Color.RED);
                 }
             }
         });
-
 
         // Add buttons to the answer panel
         answerPanel.add(answerButton1);
@@ -118,10 +163,15 @@ public class GrafiskInterface extends JFrame {
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         mainPanel.add(progressPanel);
 
-        setVisible(true);
+        //setVisible(true);
+
+        return mainPanel;
     }
 
     public static void main(String[] args) {
         new GrafiskInterface();
     }
 }
+
+
+

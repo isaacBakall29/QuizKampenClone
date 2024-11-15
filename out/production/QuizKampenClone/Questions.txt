@@ -1,0 +1,166 @@
+1. Sverige
+
+Hur många landskap finns det i Sverige?
+21
+25
+15
+30
+
+#25
+
+Vad heter Sveriges största sjö?
+Mälaren
+Vättern
+Vänern
+Siljan
+
+#Vänern
+
+Vilken är Sveriges nationalblomma?
+Blåklint
+Liten blåklocka
+Skogsstjärna
+Prästkrage
+
+#Liten blåklocka
+
+------------------------------------------------------------
+
+2. Stockholm
+
+Vad heter Stockholms smalaste gata?
+Mårten Trotzigs gränd
+Sveavägen
+Birger Jarlsgatan
+Surbrunnsgatan
+
+#Mårten Trotzigs gränd
+
+Vem var det som grundade Stockholm stad?
+Birger Jarl
+Gustav Vasa
+Valdemar Birgersson
+Magnus Ladulås
+
+#Birger Jarl
+
+I vilken stadsdel ligger Globen? (officiellt Avicii Arena)
+Johanneshov
+Bagarmossen
+Liljeholmen
+Midsommarkransen
+
+#Johanneshov
+
+------------------------------------------------------------
+
+3. EU
+Vilket av de här programmen/initiativen finansieras inte av EU?
+Galileo
+Erasmus+
+Eurovision
+Frontex
+
+#Eurovision
+
+Hur många stjärnor finns det i EU-flaggan?
+6
+12
+28
+50
+
+#12
+
+Vilket EU-land har flest landgränser med grannländer?
+Slovenien
+Tyskland
+Frankrike
+Grekland
+
+#Tyskland
+
+
+------------------------------------------------------------
+
+4. Musik
+
+Vilken svensk artist sjunger "Dancing Queen"?
+Zara Larsson
+ABBA
+Avicii
+Carola
+
+#ABBA
+
+Vilken låt gjorde Avicii världsberömd?
+"Wake Me Up"
+"Hej Monika"
+"Euphoria"
+"Waterloo"
+
+#"Wake Me Up"
+
+Vilken svensk artist vann Eurovision Song Contest 2012?
+Måns Zelmerlöw
+ABBA
+Loreen
+Robyn
+
+#Loreen
+
+------------------------------------------------------------
+
+5. Fun facts about Sweden
+
+Vad är en "fika"?
+En snabb kopp kaffe i farten
+Ett viktigt möte på jobbet
+En paus för kaffe, bulle och livets djupa samtal
+Ett kodord för att städa köket
+
+# En paus för kaffe, bulle och livets djupa samtal
+
+Vad är "lagom"?
+En typ av maträtt
+En svensk superkraft att alltid välja mittemellan
+En stad i Sverige
+Ett uttryck för något väldigt stort
+
+# En svensk superkraft att alltid välja mittemellan
+
+Vad är en vanlig svensk reaktion när någon ringer på dörren oväntat?
+Öppnar direkt och bjuder in gästen
+Låtsas att de inte är hemma
+Börjar städa huset
+Springer och kollar i kylskåpet
+
+# Låtsas att de inte är hemma
+
+
+------------------------------------------------------------
+
+6. Java
+
+Vilken metod används för att skriva ut text till konsolen i Java?
+print()
+println()
+printf()
+show()
+
+#println()
+
+Vilket nyckelord används för att skapa ett objekt i Java?
+new
+create
+object
+instance
+
+#new
+
+Vilken av följande är en korrekt definition av en array i Java?
+int[] arr = {1, 2, 3};
+array int arr = {1, 2, 3};
+int arr = [1, 2, 3];
+int arr = {1, 2, 3};
+
+#int[] arr = {1, 2, 3};
