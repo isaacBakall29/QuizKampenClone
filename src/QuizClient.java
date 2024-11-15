@@ -11,7 +11,7 @@ public class QuizClient {
              PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
              BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in))
         ) {
-            
+
             String initialMessage = in.readLine();
             if (initialMessage != null) {
                 System.out.println("Server: " + initialMessage);
