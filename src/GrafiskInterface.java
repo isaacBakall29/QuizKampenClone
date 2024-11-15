@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GrafiskInterface extends JFrame {
 
@@ -50,6 +52,53 @@ public class GrafiskInterface extends JFrame {
         JButton answerButton2 = new JButton("Karl XI");
         JButton answerButton3 = new JButton("Karl X Gustav");
         JButton answerButton4 = new JButton("Karl XII");
+
+        String correctAnswer = "Karl XI";
+
+        answerButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+               if (answerButton1.getText().equals(correctAnswer)){
+                   answerButton1.setBackground(Color.GREEN);
+               } else{
+                   answerButton1.setBackground(Color.RED);
+               }
+            }
+        });
+
+        answerButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (answerButton2.getText().equals(correctAnswer)){
+                    answerButton2.setBackground(Color.GREEN);
+                } else{
+                    answerButton2.setBackground(Color.RED);
+                }
+            }
+        });
+
+        answerButton3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (answerButton3.getText().equals(correctAnswer)){
+                    answerButton3.setBackground(Color.GREEN);
+                } else{
+                    answerButton3.setBackground(Color.RED);
+                }
+            }
+        });
+
+        answerButton4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (answerButton4.getText().equals(correctAnswer)){
+                    answerButton4.setBackground(Color.GREEN);
+                } else{
+                    answerButton4.setBackground(Color.RED);
+                }
+            }
+        });
+
 
         // Add buttons to the answer panel
         answerPanel.add(answerButton1);
