@@ -2,9 +2,11 @@ import java.io.*;
 import java.net.*;
 
 public class QuizClient {
-    public static void main(String[] args) {
-        String serverAddress = "localhost";
-        int port = 1333;
+
+    String serverAddress = "localhost";
+    int port = 1333;
+
+    public QuizClient() {
 
         try (Socket socket = new Socket(serverAddress, port);
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -27,5 +29,12 @@ public class QuizClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public static void main(String[] args) {
+
+        QuizClient client = new QuizClient();
+
     }
 }
