@@ -8,6 +8,8 @@ public class GrafiskInterface extends JFrame {
     private JPanel startPanel;
     private JPanel quizPanel;
     private JPanel scorePanel;
+    private JLabel scoreLabel;
+    private int score = 0; //Start score from 0
     private JPanel finalScorePanel;
 
     public GrafiskInterface() {
@@ -52,10 +54,7 @@ public class GrafiskInterface extends JFrame {
 
         return panel;
     }
-
     private JPanel createQuizPanel() {
-
-        //setLayout(new BorderLayout());
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS)); //meaning components added to this panel will be arranged vertically (from top to bottom).
@@ -101,77 +100,46 @@ public class GrafiskInterface extends JFrame {
 
         String correctAnswer = "Karl XI";
 
-        answerButton1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (answerButton1.getText().equals(correctAnswer)) {
-                    answerButton1.setBackground(Color.GREEN);
-                } else {
-                    answerButton1.setBackground(Color.RED);
-                }
-            }
-        });
+        //Each button is linked to an ActionListener that checks if the clicked answer is correct.
+        addAnswerButtonListener(answerButton1, correctAnswer);
+        addAnswerButtonListener(answerButton2, correctAnswer);
+        addAnswerButtonListener(answerButton3, correctAnswer);
+        addAnswerButtonListener(answerButton4, correctAnswer);
 
-        answerButton2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (answerButton2.getText().equals(correctAnswer)) {
-                    answerButton2.setBackground(Color.GREEN);
-                } else {
-                    answerButton2.setBackground(Color.RED);
-                }
-            }
-        });
-
-        answerButton3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (answerButton3.getText().equals(correctAnswer)) {
-                    answerButton3.setBackground(Color.GREEN);
-                } else {
-                    answerButton3.setBackground(Color.RED);
-                }
-            }
-        });
-
-        answerButton4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (answerButton4.getText().equals(correctAnswer)) {
-                    answerButton4.setBackground(Color.GREEN);
-                } else {
-                    answerButton4.setBackground(Color.RED);
-                }
-            }
-        });
-
-        // Add buttons to the answer panel
         answerPanel.add(answerButton1);
         answerPanel.add(answerButton2);
         answerPanel.add(answerButton3);
         answerPanel.add(answerButton4);
 
-        // Add answerPanel to the main panel
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacing
         mainPanel.add(answerPanel);
 
-        // Progress Bar Panel
-        JPanel progressPanel = new JPanel();
-        JProgressBar progressBar = new JProgressBar(0, 100);
-        progressBar.setValue(20);  // Example progress value
-        progressPanel.add(progressBar);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        mainPanel.add(progressPanel);
-
-        //setVisible(true);
+        // Score Panel
+        scorePanel = new JPanel();
+        scoreLabel = new JLabel("Poäng: 0");
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        scorePanel.add(scoreLabel);
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacing
+        mainPanel.add(scorePanel);
 
         return mainPanel;
+    }
+
+    private void addAnswerButtonListener(JButton button, String correctAnswer) {
+        button.addActionListener(e -> handleAnswerSelection(button, correctAnswer));
+    }
+
+    private void handleAnswerSelection(JButton selectedButton, String correctAnswer) {
+        if (selectedButton.getText().equals(correctAnswer)) {
+            selectedButton.setBackground(Color.GREEN); // Highlight correct answer
+            score++; // Increment score
+        } else {
+            selectedButton.setBackground(Color.RED); // Highlight incorrect answer
+        }
+        scoreLabel.setText("Poäng: " + score); // Update score label
     }
 
     public static void main(String[] args) {
         new GrafiskInterface();
     }
 }
-
-
-
