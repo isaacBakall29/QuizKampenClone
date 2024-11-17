@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 public class GrafiskInterface extends JFrame {
 
@@ -12,7 +15,13 @@ public class GrafiskInterface extends JFrame {
     private int score = 0; //Start score from 0
     private JPanel finalScorePanel;
 
-    public GrafiskInterface() {
+    BufferedReader bf = null;
+    PrintWriter pw = null;
+
+    public GrafiskInterface(Socket s, BufferedReader bf, PrintWriter pw) {
+        this.bf = bf;
+        this.pw = pw;
+
         setTitle("Quiz Kampen");
         setSize(400, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,7 +40,7 @@ public class GrafiskInterface extends JFrame {
         JLabel titleLabel = new JLabel("QuizKampen");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        panel.add(titleLabel,BorderLayout.NORTH);
+        panel.add(titleLabel, BorderLayout.NORTH);
 
         JButton startButton = new JButton("Starta nytt spel");
         startButton.setPreferredSize(new Dimension(200, 50));
@@ -41,6 +50,9 @@ public class GrafiskInterface extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                pw.println("startButton clicked");
+
                 setContentPane(quizPanel);
                 revalidate();
                 repaint();
@@ -50,10 +62,11 @@ public class GrafiskInterface extends JFrame {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(startButton);
 
-        panel.add(buttonPanel,BorderLayout.CENTER);
+        panel.add(buttonPanel, BorderLayout.CENTER);
 
         return panel;
     }
+
     private JPanel createQuizPanel() {
 
         JPanel mainPanel = new JPanel();
@@ -137,9 +150,5 @@ public class GrafiskInterface extends JFrame {
             selectedButton.setBackground(Color.RED); // Highlight incorrect answer
         }
         scoreLabel.setText("Poäng: " + score); // Update score label
-    }
-
-    public static void main(String[] args) {
-        new GrafiskInterface();
     }
 }
