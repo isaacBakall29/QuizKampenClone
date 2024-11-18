@@ -1,9 +1,10 @@
+package Client;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class GrafiskInterface extends JFrame {
@@ -15,12 +16,12 @@ public class GrafiskInterface extends JFrame {
     private int score = 0; //Start score from 0
     private JPanel finalScorePanel;
 
-    BufferedReader bf = null;
-    PrintWriter pw = null;
+    BufferedReader bufferedReader = null;
+    ObjectOutputStream objectOutputStream = null;
 
-    public GrafiskInterface(Socket s, BufferedReader bf, PrintWriter pw) {
-        this.bf = bf;
-        this.pw = pw;
+    public GrafiskInterface(Socket socket, BufferedReader bufferedReader, ObjectOutputStream objectOutputStream) {
+        this.bufferedReader = bufferedReader;
+        this.objectOutputStream = objectOutputStream;
 
         setTitle("Quiz Kampen");
         setSize(400, 500);
@@ -51,7 +52,14 @@ public class GrafiskInterface extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                pw.println("startButton clicked");
+                /*
+                try {
+                    objectOutputStream.writeObject("startButton clicked");
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                 */
 
                 setContentPane(quizPanel);
                 revalidate();
@@ -81,7 +89,7 @@ public class GrafiskInterface extends JFrame {
         titlePanel.add(titleLabel);
         mainPanel.add(titlePanel);
 
-        // Question Panel with light blue background and border
+        // Server.Question Panel with light blue background and border
         JPanel questionPanel = new JPanel();
         questionPanel.setLayout(new BorderLayout());
         questionPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));

@@ -1,15 +1,17 @@
+package Server;
+
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuizServer {
-    private static int port = 11180;
+    private static int port = 1113;
     private static int connectedPlayers = 0;
     private static int MAX_PLAYERS = 2;
     private static boolean isFirstPlayer = true;
     private static GameEngine gameEngine = new GameEngine();
-    private static List<Socket> playerSockets = new ArrayList<>();
+    private static List<PlayerInfo> playerSockets = new ArrayList<>();
 
     public QuizServer() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
@@ -17,11 +19,18 @@ public class QuizServer {
 
             while (connectedPlayers < MAX_PLAYERS) {
                 Socket clientSocket = serverSocket.accept();
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                PlayerInfo playerInfo = new PlayerInfo(clientSocket, in, out);
+
                 connectedPlayers++;
-                playerSockets.add(clientSocket);
-                new Thread(new PlayerHandler(clientSocket, connectedPlayers)).start(); // skapar en ny trådförvarje ansluten spelare
+                playerSockets.add(playerInfo);
+                new Thread(new PlayerHandler(playerInfo, connectedPlayers)).start(); // skapar en ny trådförvarje ansluten spelare
             }
+
             startGame();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,18 +38,16 @@ public class QuizServer {
 
     private static void startGame() {
         for (Question question : gameEngine.getQuestions()) {
-            for (Socket playersocket : playerSockets) {
+            for (PlayerInfo playersocket : playerSockets) {
                 try {
-                    PrintWriter out = new PrintWriter(playersocket.getOutputStream(), true);
+                    PrintWriter out = playersocket.getOut();
                     out.println(question.getQuestionText());
                     String[] options = question.getOptions();
-//                    for (int i = 0; i < options.length; i++) {
-//                        out.println(i + 1 + ". " + options[i]);
-//                    }
+
                     for (String option : options) {
                         out.println(option);
                     }
-                    BufferedReader in = new BufferedReader(new InputStreamReader(playersocket.getInputStream()));
+                    BufferedReader in = playersocket.getIn();
                     int answer = Integer.parseInt(in.readLine());
 
                     String playerName = playersocket.toString(); //removed getRemoteAddress to use same value
@@ -57,30 +64,26 @@ public class QuizServer {
     }
 
     private static class PlayerHandler implements Runnable {
-        private Socket socket;
+        private PlayerInfo socket;
         private int playerNumber;
 
-        public PlayerHandler(Socket socket, int playerNumber) {
+        public PlayerHandler(PlayerInfo socket, int playerNumber) {
             this.socket = socket;
             this.playerNumber = playerNumber;
         }
 
         @Override
         public void run() {
-            try {
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                if (playerNumber == 1) {
-                    out.println("Du är Player One!");
-                } else if (playerNumber == 2) {
-                    out.println("Du är Player Two!");
-                } else {
-                    out.println("Max antal spelare är uppnått!");
-                    // close socket
-                }
-                gameEngine.addPlayer(socket.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
+            PrintWriter out = socket.getOut();
+            if (playerNumber == 1) {
+                out.println("Du är Player One!");
+            } else if (playerNumber == 2) {
+                out.println("Du är Player Two!");
+            } else {
+                out.println("Max antal spelare är uppnått!");
+                // close socket
             }
+            gameEngine.addPlayer(socket.toString());
         }
     }
 

@@ -1,10 +1,12 @@
+package Client;
+
 import java.io.*;
 import java.net.*;
 
 public class QuizClient {
 
     String serverAddress = "localhost";
-    int port = 11180;
+    int port = 1113;
 
     GrafiskInterface gui;
 
@@ -12,14 +14,11 @@ public class QuizClient {
 
         try (Socket socket = new Socket(serverAddress, port);
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
              BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
         ) {
 
             gui = new GrafiskInterface(socket, in, out);
-
-
-
 
             String initialMessage = in.readLine();
             if (initialMessage != null) {
@@ -34,18 +33,17 @@ public class QuizClient {
                 }
                 System.out.println("Ditt svar:");
                 String answer = userInput.readLine();
-                out.println(answer);//skickar tillbaks svaret till servern
+                out.writeObject(answer);//skickar tillbaks svaret till servern
                 String resultMessage = in.readLine();
-                out.println();
+
             }
 
             String userInputLine;
             while ((userInputLine = userInput.readLine()) != null) {
-                out.println(userInputLine);
+                out.writeObject(userInputLine);
                 String response = in.readLine();
                 System.out.println("Server: " + response);
             }
-
 
 
         } catch (IOException e) {
