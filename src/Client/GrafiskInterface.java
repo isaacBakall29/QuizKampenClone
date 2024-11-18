@@ -1,5 +1,8 @@
 package Client;
 
+import Messages.QuizAnswer;
+import Server.Question;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,11 +19,11 @@ public class GrafiskInterface extends JFrame {
     private int score = 0; //Start score from 0
     private JPanel finalScorePanel;
 
-    BufferedReader bufferedReader = null;
+    ObjectInputStream objectInputStream = null;
     ObjectOutputStream objectOutputStream = null;
 
-    public GrafiskInterface(Socket socket, BufferedReader bufferedReader, ObjectOutputStream objectOutputStream) {
-        this.bufferedReader = bufferedReader;
+    public GrafiskInterface(Socket socket, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
+        this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
 
         setTitle("Quiz Kampen");
@@ -28,7 +31,7 @@ public class GrafiskInterface extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         startPanel = createStartPanel();
-        quizPanel = createQuizPanel();
+        //quizPanel = createQuizPanel();
 
         setContentPane(startPanel);
         setVisible(true);
@@ -60,7 +63,6 @@ public class GrafiskInterface extends JFrame {
                 }
 
                  */
-
                 setContentPane(quizPanel);
                 revalidate();
                 repaint();
@@ -75,15 +77,16 @@ public class GrafiskInterface extends JFrame {
         return panel;
     }
 
-    private JPanel createQuizPanel() {
+    public void createQuizPanel(Question question) {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS)); //meaning components added to this panel will be arranged vertically (from top to bottom).
         //add(mainPanel, BorderLayout.CENTER);
 
         // Title Panel
+        ////Category
         JPanel titlePanel = new JPanel();
-        JLabel titleLabel = new JLabel("Historiens vingslag");
+        JLabel titleLabel = new JLabel("CATEGORY");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titlePanel.add(titleLabel);
@@ -95,7 +98,8 @@ public class GrafiskInterface extends JFrame {
         questionPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
         questionPanel.setBackground(new Color(255, 255, 224)); // Light yellow background
 
-        JLabel questionLabel = new JLabel("Vem var kung i Sverige 1656?");
+        ////Question
+        JLabel questionLabel = new JLabel(question.getQuestionText());
         questionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         questionLabel.setHorizontalAlignment(SwingConstants.CENTER);
         questionPanel.add(questionLabel, BorderLayout.CENTER);
@@ -114,12 +118,14 @@ public class GrafiskInterface extends JFrame {
         answerPanel.setLayout(new GridLayout(2, 2, 10, 10)); // 2x2 grid with spacing
         answerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JButton answerButton1 = new JButton("Gustav II Adolf");
-        JButton answerButton2 = new JButton("Karl XI");
-        JButton answerButton3 = new JButton("Karl X Gustav");
-        JButton answerButton4 = new JButton("Karl XII");
+        ////answers
+        String [] options = question.getOptions();
+        JButton answerButton1 = new JButton(options[0]);
+        JButton answerButton2 = new JButton(options[1]);
+        JButton answerButton3 = new JButton(options[2]);
+        JButton answerButton4 = new JButton(options[3]);
 
-        String correctAnswer = "Karl XI";
+        String correctAnswer = options[question.getCorrectOption()];
 
         //Each button is linked to an ActionListener that checks if the clicked answer is correct.
         addAnswerButtonListener(answerButton1, correctAnswer);
@@ -143,7 +149,9 @@ public class GrafiskInterface extends JFrame {
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacing
         mainPanel.add(scorePanel);
 
-        return mainPanel;
+        quizPanel = mainPanel;
+        setContentPane(quizPanel);
+        revalidate();
     }
 
     private void addAnswerButtonListener(JButton button, String correctAnswer) {
@@ -157,6 +165,16 @@ public class GrafiskInterface extends JFrame {
         } else {
             selectedButton.setBackground(Color.RED); // Highlight incorrect answer
         }
+
+        QuizAnswer quizAnswer = new QuizAnswer();
+        quizAnswer.setAnswer(selectedButton.getText());
+
+        try {
+            objectOutputStream.writeObject(quizAnswer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         scoreLabel.setText("Poäng: " + score); // Update score label
     }
 }

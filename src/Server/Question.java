@@ -1,6 +1,8 @@
 package Server;
 
-public class Question {
+import java.io.Serializable;
+
+public class Question implements Serializable {
 
     String question;
     String[] options;
@@ -18,6 +20,14 @@ public class Question {
 
     public String[] getOptions() {
         return options;
+    }
+
+    public int getCorrectOption() {
+        return correctOption;
+    }
+
+    public void setCorrectOption(int correctOption) {
+        this.correctOption = correctOption;
     }
 
     public boolean isCorrect(String chosenOption) {

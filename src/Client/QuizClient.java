@@ -1,6 +1,7 @@
 package Client;
 
 import Messages.QuizAnswer;
+import Server.Question;
 
 import java.io.*;
 import java.net.*;
@@ -15,50 +16,30 @@ public class QuizClient {
     public QuizClient() {
 
         try (Socket socket = new Socket(serverAddress, port);
-             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-             BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
+             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
         ) {
 
             gui = new GrafiskInterface(socket, in, out);
 
-            String initialMessage = in.readLine();
+            Object initialMessage = in.readObject();
+
             if (initialMessage != null) {
                 System.out.println("Server: " + initialMessage);
             }
 
-            String question;
+            Object question;
 
-            while ((question = in.readLine()) != null) {
-                System.out.println("Server: " + question + "\n"); // skriver ut frågan
-                for (int i = 0; i < 4; i++) {  // läser ut alternativen
-                    System.out.println(in.readLine());
+            while ((question = in.readObject()) != null) {
+                if (question instanceof Question) {
+                    gui.createQuizPanel((Question) question);
                 }
-                System.out.println("Ditt svar:");
-                String answer = userInput.readLine();
-
-                QuizAnswer quizAnswer = new QuizAnswer();
-                quizAnswer.setAnswer(answer);
-
-                out.writeObject(quizAnswer);//skickar tillbaks svaret till servern
-                String resultMessage = in.readLine();
-
             }
-
-            String userInputLine;
-            while ((userInputLine = userInput.readLine()) != null) {
-
-                QuizAnswer quizAnswer = new QuizAnswer();
-                quizAnswer.setAnswer(userInputLine);
-                out.writeObject(quizAnswer);
-
-                String response = in.readLine();
-                System.out.println("Server: " + response);
-            }
-
 
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

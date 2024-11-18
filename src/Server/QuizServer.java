@@ -23,7 +23,7 @@ public class QuizServer {
                 Socket clientSocket = serverSocket.accept();
 
                 ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
-                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
                 PlayerInfo playerInfo = new PlayerInfo(clientSocket, in, out);
 
                 connectedPlayers++;
@@ -39,24 +39,21 @@ public class QuizServer {
     }
 
     private static void startGame() {
+
         for (Question question : gameEngine.getQuestions()) {
             for (PlayerInfo playerSocket : playerSockets) {
                 try {
-                    PrintWriter out = playerSocket.getOut();
-                    out.println(question.getQuestionText());
-                    String[] options = question.getOptions();
+                    ObjectOutputStream out = playerSocket.getOut();
+                    out.writeObject(question);
 
-                    for (String option : options) {
-                        out.println(option);
-                    }
                     ObjectInputStream in = playerSocket.getIn();
                     Object answer = in.readObject();
 
                     String playerName = playerSocket.toString(); //removed getRemoteAddress to use same value
 
                     if (answer instanceof QuizAnswer quizAnswer) {
-                        gameEngine.checkAnswer(playerName, quizAnswer.getAnswer());
-                        out.println((gameEngine.isAnswerCorrect(playerName, quizAnswer.getAnswer())) ? "Rätt svar!" : "Fell svar!");
+                        //gameEngine.checkAnswer(playerName, quizAnswer.getAnswer());
+                        out.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fell svar!");
                     }
 
                 } catch (IOException e) {
@@ -81,15 +78,23 @@ public class QuizServer {
 
         @Override
         public void run() {
-            PrintWriter out = socket.getOut();
-            if (playerNumber == 1) {
-                out.println("Du är Player One!");
-            } else if (playerNumber == 2) {
-                out.println("Du är Player Two!");
-            } else {
-                out.println("Max antal spelare är uppnått!");
-                // close socket
+            ObjectOutputStream out = socket.getOut();
+
+            try {
+
+                if (playerNumber == 1) {
+                    out.writeObject("Du är Player One!");
+                } else if (playerNumber == 2) {
+                    out.writeObject("Du är Player Two!");
+                } else {
+                    out.writeObject("Max antal spelare är uppnått!");
+                    // close socket
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
             gameEngine.addPlayer(socket.toString());
         }
     }
