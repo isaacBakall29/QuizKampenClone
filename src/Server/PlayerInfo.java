@@ -1,16 +1,17 @@
 package Server;
 
 import java.io.BufferedReader;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
 public class PlayerInfo {
 
     private Socket socket;
-    private BufferedReader in;
+    private ObjectInputStream in;
     private PrintWriter out;
 
-    public PlayerInfo(Socket socket, BufferedReader in, PrintWriter out) {
+    public PlayerInfo(Socket socket, ObjectInputStream in, PrintWriter out) {
         this.socket = socket;
         this.in = in;
         this.out = out;
@@ -24,11 +25,11 @@ public class PlayerInfo {
         this.socket = socket;
     }
 
-    public BufferedReader getIn() {
+    public ObjectInputStream getIn() {
         return in;
     }
 
-    public void setIn(BufferedReader in) {
+    public void setIn(ObjectInputStream in) {
         this.in = in;
     }
 

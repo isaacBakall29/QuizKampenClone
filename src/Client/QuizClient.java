@@ -1,5 +1,7 @@
 package Client;
 
+import Messages.QuizAnswer;
+
 import java.io.*;
 import java.net.*;
 
@@ -26,6 +28,7 @@ public class QuizClient {
             }
 
             String question;
+
             while ((question = in.readLine()) != null) {
                 System.out.println("Server: " + question + "\n"); // skriver ut frågan
                 for (int i = 0; i < 4; i++) {  // läser ut alternativen
@@ -33,14 +36,22 @@ public class QuizClient {
                 }
                 System.out.println("Ditt svar:");
                 String answer = userInput.readLine();
-                out.writeObject(answer);//skickar tillbaks svaret till servern
+
+                QuizAnswer quizAnswer = new QuizAnswer();
+                quizAnswer.setAnswer(answer);
+
+                out.writeObject(quizAnswer);//skickar tillbaks svaret till servern
                 String resultMessage = in.readLine();
 
             }
 
             String userInputLine;
             while ((userInputLine = userInput.readLine()) != null) {
-                out.writeObject(userInputLine);
+
+                QuizAnswer quizAnswer = new QuizAnswer();
+                quizAnswer.setAnswer(userInputLine);
+                out.writeObject(quizAnswer);
+
                 String response = in.readLine();
                 System.out.println("Server: " + response);
             }

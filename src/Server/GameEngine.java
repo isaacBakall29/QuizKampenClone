@@ -10,13 +10,13 @@ public class GameEngine {
 
     public GameEngine() {
         questions.add(new Question("Vad är huvudstaden i Sverige?",
-                new String [] {"Stockholm", "Göteborg", "Malmö", "Uppsala"}, 1));
+                new String [] {"Stockholm", "Göteborg", "Malmö", "Uppsala"}, 0));
         questions.add(new Question("Vilken färg har en banan?",
-                new String [] {"Blå", "Grön" , "Gul", "Röd"}, 3));
+                new String [] {"Blå", "Grön" , "Gul", "Röd"}, 2));
         questions.add(new Question("Vad är huvudstaden i USA?",
-                new String [] {"New York", "Los Angeles" , "Washington DC" , "Chicago"}, 3));
+                new String [] {"New York", "Los Angeles" , "Washington DC" , "Chicago"}, 2));
         questions.add(new Question("Vilken världsdel tillhör Egypten",
-                new String [] {"Afrika", "Asien" , "Europa" , "Sydamerika"}, 3));
+                new String [] {"Afrika", "Asien" , "Europa" , "Sydamerika"}, 0));
 
         Collections.shuffle(questions);
     }
@@ -25,7 +25,7 @@ public class GameEngine {
         return questions;
     }
 
-    public void checkAnswer(String playerName, int chosenOption) {
+    public void checkAnswer(String playerName, String chosenOption) {
         Question currentQuestion =  questions.get(0);
         if (currentQuestion.isCorrect(chosenOption)) {
             scores.put(playerName, scores.get(playerName) + 1);
@@ -47,7 +47,7 @@ public class GameEngine {
         scores.put(playerName, 0);
     }
 
-    public boolean isAnswerCorrect(String playerName, int chosenOption) {
+    public boolean isAnswerCorrect(String playerName, String chosenOption) {
         Question currentQuestion = questions.get(0);
         return currentQuestion.isCorrect(chosenOption);
     }

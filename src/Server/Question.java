@@ -20,8 +20,10 @@ public class Question {
         return options;
     }
 
-    public boolean isCorrect(int chosenOption) {
-        return chosenOption == correctOption;
+    public boolean isCorrect(String chosenOption) {
+        System.out.println("Player answered : " + chosenOption);
+        System.out.println("Correct answer should be : " + options[correctOption]);
+        return options[correctOption].equals(chosenOption);
     }
 
 }

@@ -1,5 +1,7 @@
 package Server;
 
+import Messages.QuizAnswer;
+
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ public class QuizServer {
             while (connectedPlayers < MAX_PLAYERS) {
                 Socket clientSocket = serverSocket.accept();
 
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                 PlayerInfo playerInfo = new PlayerInfo(clientSocket, in, out);
 
@@ -38,25 +40,30 @@ public class QuizServer {
 
     private static void startGame() {
         for (Question question : gameEngine.getQuestions()) {
-            for (PlayerInfo playersocket : playerSockets) {
+            for (PlayerInfo playerSocket : playerSockets) {
                 try {
-                    PrintWriter out = playersocket.getOut();
+                    PrintWriter out = playerSocket.getOut();
                     out.println(question.getQuestionText());
                     String[] options = question.getOptions();
 
                     for (String option : options) {
                         out.println(option);
                     }
-                    BufferedReader in = playersocket.getIn();
-                    int answer = Integer.parseInt(in.readLine());
+                    ObjectInputStream in = playerSocket.getIn();
+                    Object answer = in.readObject();
 
-                    String playerName = playersocket.toString(); //removed getRemoteAddress to use same value
+                    String playerName = playerSocket.toString(); //removed getRemoteAddress to use same value
 
-                    gameEngine.checkAnswer(playerName, answer);
-                    out.println((gameEngine.isAnswerCorrect(playerName, answer)) ? "Rätt svar!" : "Fell svar!");
+                    if (answer instanceof QuizAnswer quizAnswer) {
+                        gameEngine.checkAnswer(playerName, quizAnswer.getAnswer());
+                        out.println((gameEngine.isAnswerCorrect(playerName, quizAnswer.getAnswer())) ? "Rätt svar!" : "Fell svar!");
+                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();
+
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
