@@ -10,7 +10,6 @@ public class GameEngine {
         questions.add(new Question("Vad är huvudstaden i Sverige?",
                 new String [] {"Stockholm", "Göteborg", "Malmö", "Uppsala"}, 1));
         questions.add(new Question("Vilken färg har en banan?",
-
                 new String [] {"Blå", "Grön" , "Gul", "Röd"}, 3));
         questions.add(new Question("Vad är huvudstaden i USA?",
                 new String [] {"New York", "Los Angeles" , "Washington DC" , "Chicago"}, 3));
@@ -31,7 +30,7 @@ public class GameEngine {
             System.out.println("Rätt svar!");
         } else {
             System.out.println("Fel svar!");
-            scores.put(playerName, scores.get(playerName) - 1);  // Ska vi ge minuspoäng om en svarar fel?
+            scores.put(playerName, scores.get(playerName));  // Ska vi ge minuspoäng om en svarar fel?
         }
     }
 
@@ -47,29 +46,3 @@ public class GameEngine {
     }
 }
 
-class Question {
-
-    String question;
-    String[] options;
-    int correctOption;
-
-    public Question(String question, String[] options, int correctOption) {
-        this.question = question;
-        this.options = options;
-        this.correctOption = correctOption;
-    }
-
-    public String getQuestionText() {
-        return this.question;
-    }
-
-    public String[] getOptions() {
-        return options;
-    }
-
-    public boolean isCorrect(int chosenOption) {
-        return chosenOption == correctOption;
-    }
-
-
-}
