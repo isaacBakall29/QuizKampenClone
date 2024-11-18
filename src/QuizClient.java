@@ -19,6 +19,19 @@ public class QuizClient {
                 System.out.println("Server: " + initialMessage);
             }
 
+            String question;
+            while ((question = in.readLine()) != null) {
+                System.out.println("Server: " + question + "\n"); // skriver ut frågan
+                for (int i = 0; i < 4; i++) {  // läser ut alternativen
+                    System.out.println(in.readLine());
+                }
+                System.out.println("Ditt svar:");
+                String answer = userInput.readLine();
+                out.println(answer);//skickar tillbaks svaret till servern
+                String resultMessage = in.readLine();
+                out.println();
+            }
+
             String userInputLine;
             while ((userInputLine = userInput.readLine()) != null) {
                 out.println(userInputLine);
