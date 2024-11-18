@@ -1,3 +1,4 @@
+import java.net.SocketException;
 import java.util.*;
 
 
@@ -44,5 +45,11 @@ public class GameEngine {
     public void addPlayer(String playerName) { //Adda spelare
         scores.put(playerName, 0);
     }
+
+    public boolean isAnswerCorrect(String playerName, int chosenOption) {
+        Question currentQuestion = questions.get(0);
+        return currentQuestion.isCorrect(chosenOption);
+    }
 }
+
 

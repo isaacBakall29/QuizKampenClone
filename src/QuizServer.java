@@ -42,7 +42,11 @@ public class QuizServer {
                     }
                     BufferedReader in = new BufferedReader(new InputStreamReader(playersocket.getInputStream()));
                     int answer = Integer.parseInt(in.readLine());
-                    gameEngine.checkAnswer(playersocket.toString(), answer);
+
+                    String playerName = playersocket.getRemoteSocketAddress().toString();
+
+                    gameEngine.checkAnswer(playerName, answer);
+                    out.println((gameEngine.isAnswerCorrect(playerName, answer)) ? "Rätt svar!" : "Fell svar!");
 
                 } catch (IOException e) {
                    e.printStackTrace();
