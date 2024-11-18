@@ -1,21 +1,19 @@
 package Server;
 
-import java.io.BufferedReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 public class PlayerInfo {
 
     private Socket socket;
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
+    private ObjectInputStream clientObjectInputStream; //to read object coming from client
+    private ObjectOutputStream clientObjectOutputStream; // to write object to the client from server
 
     public PlayerInfo(Socket socket, ObjectInputStream in, ObjectOutputStream out) {
         this.socket = socket;
-        this.in = in;
-        this.out = out;
+        this.clientObjectInputStream = in;
+        this.clientObjectOutputStream = out;
     }
 
     public Socket getSocket() {
@@ -26,19 +24,19 @@ public class PlayerInfo {
         this.socket = socket;
     }
 
-    public ObjectInputStream getIn() {
-        return in;
+    public ObjectInputStream getClientObjectInputStream() {
+        return clientObjectInputStream;
     }
 
-    public void setIn(ObjectInputStream in) {
-        this.in = in;
+    public void setClientObjectInputStream(ObjectInputStream clientObjectInputStream) {
+        this.clientObjectInputStream = clientObjectInputStream;
     }
 
-    public ObjectOutputStream getOut() {
-        return out;
+    public ObjectOutputStream getClientObjectOutputStream() {
+        return clientObjectOutputStream;
     }
 
-    public void setOut(ObjectOutputStream out) {
-        this.out = out;
+    public void setClientObjectOutputStream(ObjectOutputStream clientObjectOutputStream) {
+        this.clientObjectOutputStream = clientObjectOutputStream;
     }
 }

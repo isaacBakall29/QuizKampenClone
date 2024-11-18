@@ -1,6 +1,5 @@
 package Client;
 
-import Messages.QuizAnswer;
 import Server.Question;
 
 import java.io.*;
@@ -32,7 +31,7 @@ public class QuizClient {
 
             while ((question = in.readObject()) != null) {
                 if (question instanceof Question) {
-                    gui.createQuizPanel((Question) question);
+                    gui.updateQuizPanel((Question) question);
                 }
             }
 

@@ -42,11 +42,12 @@ public class QuizServer {
 
         for (Question question : gameEngine.getQuestions()) {
             for (PlayerInfo playerSocket : playerSockets) {
+
                 try {
-                    ObjectOutputStream out = playerSocket.getOut();
+                    ObjectOutputStream out = playerSocket.getClientObjectOutputStream();
                     out.writeObject(question);
 
-                    ObjectInputStream in = playerSocket.getIn();
+                    ObjectInputStream in = playerSocket.getClientObjectInputStream();
                     Object answer = in.readObject();
 
                     String playerName = playerSocket.toString(); //removed getRemoteAddress to use same value
@@ -78,7 +79,7 @@ public class QuizServer {
 
         @Override
         public void run() {
-            ObjectOutputStream out = socket.getOut();
+            ObjectOutputStream out = socket.getClientObjectOutputStream();
 
             try {
 

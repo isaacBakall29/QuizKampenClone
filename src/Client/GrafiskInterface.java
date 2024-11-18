@@ -77,7 +77,7 @@ public class GrafiskInterface extends JFrame {
         return panel;
     }
 
-    public void createQuizPanel(Question question) {
+    public void updateQuizPanel(Question question) {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS)); //meaning components added to this panel will be arranged vertically (from top to bottom).
