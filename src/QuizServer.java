@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuizServer {
-    private static int port = 1333;
+    private static int port = 11180;
     private static int connectedPlayers = 0;
     private static int MAX_PLAYERS = 2;
     private static boolean isFirstPlayer = true;
     private static GameEngine gameEngine = new GameEngine();
     private static List<Socket> playerSockets = new ArrayList<>();
 
-    public static void main(String[] args) {
+    public QuizServer() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Servern är igång och väntar på anslutningar...");
 
@@ -27,7 +27,7 @@ public class QuizServer {
         }
     }
 
-    private static void startGame(){
+    private static void startGame() {
         for (Question question : gameEngine.getQuestions()) {
             for (Socket playersocket : playerSockets) {
                 try {
@@ -37,25 +37,25 @@ public class QuizServer {
 //                    for (int i = 0; i < options.length; i++) {
 //                        out.println(i + 1 + ". " + options[i]);
 //                    }
-                    for (String option :options) {
+                    for (String option : options) {
                         out.println(option);
                     }
                     BufferedReader in = new BufferedReader(new InputStreamReader(playersocket.getInputStream()));
                     int answer = Integer.parseInt(in.readLine());
 
-                    String playerName = playersocket.getRemoteSocketAddress().toString();
+                    String playerName = playersocket.toString(); //removed getRemoteAddress to use same value
 
                     gameEngine.checkAnswer(playerName, answer);
                     out.println((gameEngine.isAnswerCorrect(playerName, answer)) ? "Rätt svar!" : "Fell svar!");
 
                 } catch (IOException e) {
-                   e.printStackTrace();
+                    e.printStackTrace();
                 }
-
             }
         }
         gameEngine.displayScore();
     }
+
     private static class PlayerHandler implements Runnable {
         private Socket socket;
         private int playerNumber;
@@ -73,8 +73,7 @@ public class QuizServer {
                     out.println("Du är Player One!");
                 } else if (playerNumber == 2) {
                     out.println("Du är Player Two!");
-                }
-                else {
+                } else {
                     out.println("Max antal spelare är uppnått!");
                     // close socket
                 }
@@ -83,5 +82,9 @@ public class QuizServer {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void main(String[] args) {
+        QuizServer server = new QuizServer();
     }
 }

@@ -4,7 +4,7 @@ import java.net.*;
 public class QuizClient {
 
     String serverAddress = "localhost";
-    int port = 1333;
+    int port = 11180;
 
     public QuizClient() {
 
@@ -42,7 +42,6 @@ public class QuizClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public static void main(String[] args) {
