@@ -1,5 +1,7 @@
 package Server;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -7,6 +9,9 @@ public class GameEngine {
 
     private final List<Question> questions = new ArrayList<>();
     private final Map<String, Integer> scores = new HashMap<>();
+
+    Integer nrOfRounds;
+    Integer nrOfQuestions;
 
     public GameEngine() {
         questions.add(new Question("Vad är huvudstaden i Sverige?",
@@ -19,6 +24,8 @@ public class GameEngine {
                 new String [] {"Afrika", "Asien" , "Europa" , "Sydamerika"}, 0));
 
         Collections.shuffle(questions);
+
+        readPropertiesFile();
     }
 
     public List<Question> getQuestions() {
@@ -50,6 +57,21 @@ public class GameEngine {
     public boolean isAnswerCorrect(String playerName, String chosenOption) {
         Question currentQuestion = questions.get(0);
         return currentQuestion.isCorrect(chosenOption);
+    }
+
+    private void readPropertiesFile() {
+
+        Properties properties = new Properties();
+
+        try (FileInputStream fileInputStream = new FileInputStream("src/Server/setting.properties")) {
+            properties.load(fileInputStream);
+
+            nrOfRounds = Integer.parseInt(properties.getProperty("quizkampen.nrOfRounds"));
+            nrOfQuestions = Integer.parseInt(properties.getProperty("quizkampen.nrOfQuestions"));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 
