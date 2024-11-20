@@ -14,15 +14,14 @@ public class GameEngine {
     Integer nrOfQuestions;
 
     public GameEngine() {
-        questions.add(new Question("Vad är huvudstaden i Sverige?",
-                new String [] {"Stockholm", "Göteborg", "Malmö", "Uppsala"}, 0));
-        questions.add(new Question("Vilken färg har en banan?",
-                new String [] {"Blå", "Grön" , "Gul", "Röd"}, 2));
-        questions.add(new Question("Vad är huvudstaden i USA?",
-                new String [] {"New York", "Los Angeles" , "Washington DC" , "Chicago"}, 2));
-        questions.add(new Question("Vilken världsdel tillhör Egypten",
-                new String [] {"Afrika", "Asien" , "Europa" , "Sydamerika"}, 0));
+        myJDBC db = new myJDBC();
+        List<Question> dbQuestions = db.getQuestionsFromDB();
 
+        if (!dbQuestions.isEmpty()) {
+            questions.addAll(dbQuestions);
+        } else {
+            System.out.println("No questions found in the database.");
+        }
         Collections.shuffle(questions);
 
         readPropertiesFile();
