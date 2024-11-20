@@ -12,6 +12,7 @@ public class myJDBC {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM QuizDB");
 
             while(resultSet.next()){
+                System.out.println(resultSet.getString("ID"));
                 System.out.println(resultSet.getString("CATEGORY"));
                 System.out.println(resultSet.getString("QUESTION"));
                 System.out.println(resultSet.getString("ALT_1"));
