@@ -4,11 +4,15 @@ import Messages.QuizAnswer;
 import Server.Question;
 
 import javax.swing.*;
+import javax.swing.plaf.LabelUI;
+import javax.swing.plaf.multi.MultiLabelUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
+
+import static Client.ColorGUI.*;
 
 public class GrafiskInterface extends JFrame {
 
@@ -63,6 +67,7 @@ public class GrafiskInterface extends JFrame {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(startButton);
+        buttonPanel.setBackground(BACKGROUND);
 
         panel.add(buttonPanel, BorderLayout.CENTER);
 
@@ -82,19 +87,24 @@ public class GrafiskInterface extends JFrame {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titlePanel.add(titleLabel);
+        titlePanel.setBackground(HEADER);
+        titlePanel.setMaximumSize(new Dimension(350,30));
         mainPanel.add(titlePanel);
 
         // Server.Question Panel with light blue background and border
         JPanel questionPanel = new JPanel();
         questionPanel.setLayout(new BorderLayout());
         questionPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
-        questionPanel.setBackground(new Color(255, 255, 224)); // Light yellow background
+        questionPanel.setBackground(CARD_BACKGROUND);
 
         ////Question
-        JLabel questionLabel = new JLabel(question.getQuestionText());
-        questionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        questionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        questionPanel.add(questionLabel, BorderLayout.CENTER);
+        JTextArea questionTextArea = new JTextArea(question.getQuestionText());
+        questionTextArea.setEditable(false);
+        questionTextArea.setLineWrap(true);
+        questionTextArea.setWrapStyleWord(true);
+        questionTextArea.setBackground(BUTTON_DEFAULT);
+        questionPanel.add(questionTextArea, BorderLayout.CENTER);
+        questionPanel.setMaximumSize(new Dimension(350,120));
 
         //// Set max size for consistent look
         questionPanel.setMaximumSize(new Dimension(350, 60));
@@ -109,6 +119,7 @@ public class GrafiskInterface extends JFrame {
         JPanel answerPanel = new JPanel();
         answerPanel.setLayout(new GridLayout(2, 2, 10, 10)); // 2x2 grid with spacing
         answerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        answerPanel.setMaximumSize(new Dimension(350, 200));
 
         ////answers
         String[] options = question.getOptions();
@@ -137,6 +148,7 @@ public class GrafiskInterface extends JFrame {
         scorePanel = new JPanel();
         scoreLabel = new JLabel("Poäng: 0");
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        scorePanel.setMaximumSize(new Dimension(350,25));
         scorePanel.add(scoreLabel);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacing
         mainPanel.add(scorePanel);
@@ -152,10 +164,10 @@ public class GrafiskInterface extends JFrame {
 
     private void handleAnswerSelection(JButton selectedButton, String correctAnswer) {
         if (selectedButton.getText().equals(correctAnswer)) {
-            selectedButton.setBackground(Color.GREEN); // Highlight correct answer
+            selectedButton.setBackground(BUTTON_CORRECT); // Highlight correct answer
             score++; // Increment score
         } else {
-            selectedButton.setBackground(Color.RED); // Highlight incorrect answer
+            selectedButton.setBackground(BUTTON_WRONG); // Highlight incorrect answer
         }
 
         QuizAnswer quizAnswer = new QuizAnswer();
