@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuizServer {
-    private static int port = 1113;
-    private static int connectedPlayers = 0;
-    private static int MAX_PLAYERS = 2;
-    private static boolean isFirstPlayer = true;
-    private static GameEngine gameEngine = new GameEngine();
-    private static List<PlayerInfo> playerSockets = new ArrayList<>();
+    private static final int PORT = 1113;
+    private static final int MAX_PLAYERS = 2;
+    private static final GameEngine gameEngine = new GameEngine();
+    private static final List<PlayerInfo> playerSockets = new ArrayList<>();
 
     public QuizServer() {
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Servern är igång och väntar på anslutningar...");
+
+            int connectedPlayers = 0;
 
             while (connectedPlayers < MAX_PLAYERS) {
                 Socket clientSocket = serverSocket.accept();
@@ -26,8 +26,9 @@ public class QuizServer {
                 ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
                 PlayerInfo playerInfo = new PlayerInfo(clientSocket, in, out);
 
-                connectedPlayers++;
+
                 playerSockets.add(playerInfo);
+                connectedPlayers++;
                 new Thread(new PlayerHandler(playerInfo, connectedPlayers)).start(); // skapar en ny trådförvarje ansluten spelare
             }
 
