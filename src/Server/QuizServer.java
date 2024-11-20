@@ -9,9 +9,7 @@ import java.util.List;
 
 public class QuizServer {
     private static int port = 1113;
-    private static int connectedPlayers = 0;
-    private static int MAX_PLAYERS = 2;
-    private static boolean isFirstPlayer = true;
+
     private static GameEngine gameEngine = new GameEngine();
     private static List<PlayerInfo> playerSockets = new ArrayList<>();
 
@@ -19,54 +17,29 @@ public class QuizServer {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Servern är igång och väntar på anslutningar...");
 
-            while (connectedPlayers < MAX_PLAYERS) {
+            while (true) {
                 Socket clientSocket = serverSocket.accept();
 
                 ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
                 ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
                 PlayerInfo playerInfo = new PlayerInfo(clientSocket, in, out);
 
-                connectedPlayers++;
-                playerSockets.add(playerInfo);
-                new Thread(new PlayerHandler(playerInfo, connectedPlayers)).start(); // skapar en ny trådförvarje ansluten spelare
-            }
 
-            startGame();
+                playerSockets.add(playerInfo);
+                new Thread(new PlayerHandler(playerInfo, playerSockets.size())).start();
+
+                if (playerSockets.size() % 2 == 0) {
+                    PlayerInfo player1 = playerSockets.get(playerSockets.size() - 2);
+                    PlayerInfo player2 = playerSockets.get(playerSockets.size() - 1);
+                    new Thread(new GameThread(player1, player2)).start();
+                }
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static void startGame() {
-
-        for (Question question : gameEngine.getQuestions()) {
-            for (PlayerInfo playerSocket : playerSockets) {
-
-                try {
-                    ObjectOutputStream out = playerSocket.getClientObjectOutputStream();
-                    out.writeObject(question);
-
-                    ObjectInputStream in = playerSocket.getClientObjectInputStream();
-                    Object answer = in.readObject();
-
-                    String playerName = playerSocket.toString(); //removed getRemoteAddress to use same value
-
-                    if (answer instanceof QuizAnswer quizAnswer) {
-                        //gameEngine.checkAnswer(playerName, quizAnswer.getAnswer());
-                        out.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fell svar!");
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        gameEngine.displayScore();
-    }
 
     private static class PlayerHandler implements Runnable {
         private PlayerInfo socket;
@@ -83,13 +56,10 @@ public class QuizServer {
 
             try {
 
-                if (playerNumber == 1) {
+                if (playerNumber % 2 == 1) {
                     out.writeObject("Du är Player One!");
-                } else if (playerNumber == 2) {
-                    out.writeObject("Du är Player Two!");
                 } else {
-                    out.writeObject("Max antal spelare är uppnått!");
-                    // close socket
+                    out.writeObject("Du är Player Two!");
                 }
 
             } catch (IOException e) {
