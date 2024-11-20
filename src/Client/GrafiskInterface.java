@@ -78,7 +78,7 @@ public class GrafiskInterface extends JFrame {
         // Title Panel
         ////Category
         JPanel titlePanel = new JPanel();
-        JLabel titleLabel = new JLabel("CATEGORY");
+        JLabel titleLabel = new JLabel(question.getCategory());
         titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titlePanel.add(titleLabel);

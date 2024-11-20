@@ -7,11 +7,13 @@ public class Question implements Serializable {
     String question;
     String[] options;
     int correctOption;
+    String category;
 
-    public Question(String question, String[] options, int correctOption) {
+    public Question(String question, String[] options, int correctOption, String category) {
         this.question = question;
         this.options = options;
         this.correctOption = correctOption;
+        this.category = category;
     }
 
     public String getQuestionText() {
@@ -26,8 +28,8 @@ public class Question implements Serializable {
         return correctOption;
     }
 
-    public void setCorrectOption(int correctOption) {
-        this.correctOption = correctOption;
+    public String getCategory() {
+        return category;
     }
 
     public boolean isCorrect(String chosenOption) {

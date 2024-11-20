@@ -59,6 +59,7 @@ public class myJDBC {
                         resultSet.getString("ALT_4")
                 };
                 String correctAnswerText = resultSet.getString("ANSWER");
+                String category = resultSet.getString("CATEGORY");
 
                 // Find the index of the correct answer
                 int correctAnswerIndex = -1;
@@ -72,7 +73,7 @@ public class myJDBC {
                 if (correctAnswerIndex == -1) {
                     System.err.println("Correct answer text not found in options for question: " + questionText);
                 } else {
-                    questions.add(new Question(questionText, options, correctAnswerIndex));
+                    questions.add(new Question(questionText, options, correctAnswerIndex, category));
                 }
             }
         } catch (SQLException e) {
