@@ -1,23 +1,48 @@
 package Server;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class myJDBC {
     private Connection connection;
     private Statement statement;
+    private String host;
+    private String userName;
+    private String password;
 
     public myJDBC() {
+
+        readPropertiesFile();
+
         try {
             connection = DriverManager.getConnection(
-                    "jdbc:mysql://sql8.freesqldatabase.com:3306/sql8745937",
-                    "sql8745937",
-                    "ubuMkvFhGq"
+                    host,
+                    userName,
+                    password
             );
             statement = connection.createStatement();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void readPropertiesFile() {
+
+        Properties properties = new Properties();
+
+        try (FileInputStream fileInputStream = new FileInputStream("src/Server/setting.properties")) {
+            properties.load(fileInputStream);
+
+            host = properties.getProperty("database.host");
+            userName = properties.getProperty("database.user");
+            password = properties.getProperty("database.password");
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

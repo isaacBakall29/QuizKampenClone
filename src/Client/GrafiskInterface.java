@@ -55,14 +55,6 @@ public class GrafiskInterface extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                /*
-                try {
-                    objectOutputStream.writeObject("startButton clicked");
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-
-                 */
                 setContentPane(quizPanel);
                 revalidate();
                 repaint();
@@ -119,7 +111,7 @@ public class GrafiskInterface extends JFrame {
         answerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         ////answers
-        String [] options = question.getOptions();
+        String[] options = question.getOptions();
         JButton answerButton1 = new JButton(options[0]);
         JButton answerButton2 = new JButton(options[1]);
         JButton answerButton3 = new JButton(options[2]);
