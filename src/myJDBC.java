@@ -4,12 +4,12 @@ public class myJDBC {
     public static void main(String[] args) {
         try {
             Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://127.0.0.1:3306/quiz",
-                    "root",
-                    "greensnow24!"
+                    "jdbc:mysql://sql8.freesqldatabase.com:3306/sql8745937",
+                    "sql8745937",
+                    "ubuMkvFhGq"
             );
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM questions");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM QuizDB");
 
             while(resultSet.next()){
                 System.out.println(resultSet.getString("CATEGORY"));
