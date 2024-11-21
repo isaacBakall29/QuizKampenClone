@@ -29,7 +29,13 @@ public class GameThread implements Runnable{
         gameEngine.displayCategories();
 
         for (int round = 0; round < nrOfRounds; round++) {
+
+            //TODO ask player for category
+
             String category = categories.get(round % categories.size());
+
+            //TODO receive answer from player which category
+
             List<Question> questions = gameEngine.getQuestionsForCategory(category);
 
             for (int i = 0; i < nrOfQuestions; i++) {
@@ -51,14 +57,12 @@ public class GameThread implements Runnable{
 
                     if (answer1 instanceof QuizAnswer quizAnswer) {
                         out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
-
                     } else {
                         out1.writeObject("Spelare 1 svarade inte");
                     }
 
                     if (answer2 instanceof QuizAnswer quizAnswer) {
                         out2.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
-
                     } else {
                         out2.writeObject("Spelare 2 svarade inte");
                     }

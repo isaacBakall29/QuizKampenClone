@@ -39,17 +39,7 @@ public class GrafiskInterface extends JFrame {
         setVisible(true);
     }
 
-    public GrafiskInterface() {
-        setTitle("Quiz Kampen");
-        setSize(400, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        startPanel = createStartPanel();
-        // quizPanel = createQuizPanel();
-
-        setContentPane(startPanel);
-        setVisible(true);
-    }
-
+    //// start panel
     private JPanel createStartPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -81,7 +71,7 @@ public class GrafiskInterface extends JFrame {
         return panel;
     }
 
-    /// /Category Panel
+    ////Category Panel
     public JPanel createCategory() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -112,7 +102,7 @@ public class GrafiskInterface extends JFrame {
         return panel;
     }
 
-    // Handle Category Selection in the future
+    //// Handle Category Selection in the future
     private void handleCategorySelection(String categorySelection) {
         System.out.println("Button clicked: " + categorySelection);
 
@@ -127,6 +117,7 @@ public class GrafiskInterface extends JFrame {
 
     }
 
+    //// quiz panel
     public void updateQuizPanel(Question question) {
 
         JPanel mainPanel = new JPanel();
@@ -210,7 +201,7 @@ public class GrafiskInterface extends JFrame {
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacing
         mainPanel.add(answerPanel);
 
-        // Score Panel
+        //// Score Panel within quiz panel
         scorePanel = new JPanel();
         scoreLabel = new JLabel("Poäng: 0");
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
@@ -224,6 +215,9 @@ public class GrafiskInterface extends JFrame {
         revalidate();
 
     }
+
+    // TODO score panel
+
 
     private void addAnswerButtonListener(JButton button, String correctAnswer) {
         button.addActionListener(e -> handleAnswerSelection(button, correctAnswer));

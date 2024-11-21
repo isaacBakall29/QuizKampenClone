@@ -15,9 +15,9 @@ public class TimerQuestionPanel {
     TimerQuestionPanel(JPanel mainPanel, ObjectOutputStream objectOutputStream, JPanel quizPanel) {
         ////Timer
         JPanel timerPanel = new JPanel(new BorderLayout());
-        JProgressBar timerBar = new JProgressBar(0, 15); // Range from 0 to 15 seconds
+        JProgressBar timerBar = new JProgressBar(0, 15); // 0-15 sek
         timerBar.setValue(15);
-        timerBar.setStringPainted(true);
+        timerBar.setStringPainted(false); //to now to show percentage in timebar
         timerBar.setForeground(Color.GREEN);
         timerBar.setBackground(Color.RED);
         timerPanel.add(timerBar, BorderLayout.CENTER);
@@ -32,7 +32,6 @@ public class TimerQuestionPanel {
             public void actionPerformed(ActionEvent e) {
                 timeLeft--;
                 timerBar.setValue(timeLeft);
-                timerBar.setString(timeLeft + " sekunder");
 
                 if (timeLeft <= 0) {
                     isTimerActive = false;
