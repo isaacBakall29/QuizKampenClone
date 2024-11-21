@@ -39,6 +39,16 @@ public class GrafiskInterface extends JFrame {
         setContentPane(startPanel);
         setVisible(true);
     }
+   public GrafiskInterface() {
+        setTitle("Quiz Kampen");
+        setSize(400, 500);
+     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        startPanel = createStartPanel();
+       // quizPanel = createQuizPanel();
+
+        setContentPane(startPanel);
+        setVisible(true);
+   }
 
     private JPanel createStartPanel() {
         JPanel panel = new JPanel();
@@ -54,14 +64,12 @@ public class GrafiskInterface extends JFrame {
         startButton.setFont(new Font("Arial", Font.PLAIN, 18));
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                setContentPane(quizPanel);
-                revalidate();
-                repaint();
-            }
+        startButton.addActionListener(e -> {
+            // Transition to Category Panel
+            JPanel categoryPanel = createCategory();
+            setContentPane(categoryPanel);
+            revalidate();
+            repaint();
         });
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -71,6 +79,50 @@ public class GrafiskInterface extends JFrame {
         panel.add(buttonPanel, BorderLayout.CENTER);
 
         return panel;
+    }
+    //Category Panel
+        public  JPanel createCategory(){
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.setBorder(BorderFactory.createTitledBorder("Category"));
+
+        JLabel label = new JLabel("Please choose a category");
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font("Arial", Font.BOLD, 18));
+        panel.add(label, BorderLayout.NORTH);
+
+        JButton button1 = new JButton("Sverige");
+        JButton button2 = new JButton("Musik");
+        JButton button3 = new JButton("Java");
+
+        button1.addActionListener(e -> handleCategorySelection("Category 1"));
+        button2.addActionListener(e -> handleCategorySelection("Category 2"));
+        button3.addActionListener(e -> handleCategorySelection("Category 3"));
+
+            // Add buttons to a sub-panel
+            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            buttonPanel.add(button1);
+            buttonPanel.add(button2);
+            buttonPanel.add(button3);
+
+            // Add the button panel to the main panel
+            panel.add(buttonPanel, BorderLayout.CENTER);
+
+            return panel;
+    }
+    // Handle Category Selection in the future
+    private void handleCategorySelection(String categorySelection) {
+        System.out.println("Button clicked: " + categorySelection);
+
+        // Transition to Quiz Panel (or any other action)
+        JPanel quizPanel = new JPanel();
+        JLabel label = new JLabel("Selected: " + categorySelection);
+        quizPanel.add(label);
+
+        setContentPane(quizPanel);
+        revalidate();
+        repaint();
+
     }
 
     public void updateQuizPanel(Question question) {
