@@ -1,5 +1,6 @@
 package Client;
 
+import Messages.ServerMessage;
 import Server.Question;
 
 import java.io.*;
@@ -21,17 +22,20 @@ public class QuizClient {
 
             gui = new GrafiskInterface(socket, in, out);
 
-            Object initialMessage = in.readObject();
-
-            if (initialMessage != null) {
-                System.out.println("Server: " + initialMessage);
-            }
-
             Object question;
 
             while ((question = in.readObject()) != null) {
                 if (question instanceof Question) {
                     gui.updateQuizPanel((Question) question);
+
+                } else if (question instanceof ServerMessage message) {
+
+                    if (message.equals(ServerMessage.WAITINGFORPLAYERS)){
+                        gui.displayWaitingForPlayers();
+
+                    }  else if (message.equals(ServerMessage.CHOOSECATEGORY)){
+                        gui.createCategory();
+                    }
                 }
             }
 

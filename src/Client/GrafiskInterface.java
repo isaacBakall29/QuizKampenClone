@@ -55,11 +55,14 @@ public class GrafiskInterface extends JFrame {
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         startButton.addActionListener(e -> {
-            // Transition to Category Panel
-            JPanel categoryPanel = createCategory();
-            setContentPane(categoryPanel);
-            revalidate();
-            repaint();
+            try {
+                objectOutputStream.writeObject("player ready");
+
+                startButton.setEnabled(false); //disable button after click it once
+
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         });
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -72,7 +75,7 @@ public class GrafiskInterface extends JFrame {
     }
 
     ////Category Panel
-    public JPanel createCategory() {
+    public void createCategory() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Category"));
@@ -86,9 +89,9 @@ public class GrafiskInterface extends JFrame {
         JButton button2 = new JButton("Musik");
         JButton button3 = new JButton("Java");
 
-        button1.addActionListener(e -> handleCategorySelection("Category 1"));
-        button2.addActionListener(e -> handleCategorySelection("Category 2"));
-        button3.addActionListener(e -> handleCategorySelection("Category 3"));
+        button1.addActionListener(e -> handleCategorySelection((JButton)e.getSource()));
+        button2.addActionListener(e -> handleCategorySelection((JButton)e.getSource()));
+        button3.addActionListener(e -> handleCategorySelection((JButton)e.getSource()));
 
         // Add buttons to a sub-panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -98,13 +101,19 @@ public class GrafiskInterface extends JFrame {
 
         // Add the button panel to the main panel
         panel.add(buttonPanel, BorderLayout.CENTER);
-
-        return panel;
+        setContentPane(panel);
+        revalidate();
+        repaint();
     }
 
     //// Handle Category Selection in the future
-    private void handleCategorySelection(String categorySelection) {
-        System.out.println("Button clicked: " + categorySelection);
+    private void handleCategorySelection(JButton categorySelection) {
+        System.out.println("Button clicked: " + categorySelection.getText());
+        try {
+            objectOutputStream.writeObject(categorySelection.getText());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         // Transition to Quiz Panel (or any other action)
         JPanel quizPanel = new JPanel();
@@ -182,6 +191,10 @@ public class GrafiskInterface extends JFrame {
                 timerQuestionPanel.stopTimer();
                 JButton clickedButton = (JButton) e.getSource();
                 handleAnswerSelection(clickedButton, correctAnswer);
+                answerButton1.setEnabled(false);
+                answerButton2.setEnabled(false);
+                answerButton3.setEnabled(false);
+                answerButton4.setEnabled(false);
             } else {
                 JOptionPane.showMessageDialog(quizPanel, "Tiden är ute, gå vidare till nästa fråga.");
             }
@@ -244,4 +257,17 @@ public class GrafiskInterface extends JFrame {
         scoreLabel.setText("Poäng: " + score); // Update score label
 
     }
+
+    public void displayWaitingForPlayers (){
+        JLabel waitingForPlayersLabel = new JLabel("vänta på motståndare");
+        waitingForPlayersLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        waitingForPlayersLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        waitingForPlayersLabel.setMaximumSize(new Dimension(350, 25));
+        waitingForPlayersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        waitingForPlayersLabel.setBackground(BUTTON_DEFAULT);
+
+        startPanel.add(waitingForPlayersLabel, BorderLayout.SOUTH);
+        revalidate();
+    }
+
 }

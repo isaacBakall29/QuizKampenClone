@@ -1,6 +1,7 @@
 package Server;
 
 import Messages.QuizAnswer;
+import Messages.ServerMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -30,13 +31,32 @@ public class GameThread implements Runnable{
 
         for (int round = 0; round < nrOfRounds; round++) {
 
-            //TODO ask player for category
+            //TODO ask player for category, LATER it needs to changed which player get to choose category
 
-            String category = categories.get(round % categories.size());
+            try {
+                player1.writeObject(ServerMessage.CHOOSECATEGORY);
+                player2.writeObject(ServerMessage.WAITINGFOROTHERTOCHOOSECATEGORY);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            //String category = categories.get(round % categories.size());
 
             //TODO receive answer from player which category
 
-            List<Question> questions = gameEngine.getQuestionsForCategory(category);
+            Object category;
+
+            try {
+                category = player1.readObject();
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println(category);
+            List<Question> questions = gameEngine.getQuestionsForCategory((String) category);
 
             for (int i = 0; i < nrOfQuestions; i++) {
                 Question question = questions.get(i);

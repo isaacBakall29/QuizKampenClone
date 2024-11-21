@@ -1,5 +1,6 @@
 package Server;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -38,5 +39,13 @@ public class PlayerInfo {
 
     public void setClientObjectOutputStream(ObjectOutputStream clientObjectOutputStream) {
         this.clientObjectOutputStream = clientObjectOutputStream;
+    }
+
+    public void writeObject(Object obj) throws IOException {
+        clientObjectOutputStream.writeObject(obj);
+    }
+
+    public Object readObject() throws IOException, ClassNotFoundException {
+        return clientObjectInputStream.readObject();
     }
 }
