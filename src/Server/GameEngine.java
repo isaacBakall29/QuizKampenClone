@@ -3,12 +3,14 @@ package Server;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class GameEngine {
 
     private final List<Question> questions = new ArrayList<>();
     private final Map<String, Integer> scores = new HashMap<>();
+    public final Map<String, List<Question>> questionsByCategory = new HashMap<>();
 
     Integer nrOfRounds = 3;
     Integer nrOfQuestions = 2;
@@ -22,9 +24,26 @@ public class GameEngine {
         } else {
             System.out.println("No questions found in the database.");
         }
-        Collections.shuffle(questions);
 
+        Collections.shuffle(questions);
+        groupQuestionsByCategory();
         readPropertiesFile();
+    }
+
+    private void groupQuestionsByCategory() {
+        questionsByCategory.putAll(questions.stream().collect(Collectors.groupingBy(Question::getCategory)));
+    }
+
+
+    public List<Question> getQuestionsForCategory(String category){
+        return questionsByCategory.getOrDefault(category, new ArrayList<>());
+    }
+
+    public void displayCategories() {
+        System.out.println("Kategorier: \n");
+        for (String category : questionsByCategory.keySet()) {
+            System.out.println(category);
+        }
     }
 
     public List<Question> getQuestions() {

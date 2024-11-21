@@ -5,7 +5,9 @@ import Messages.QuizAnswer;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameThread implements Runnable{
     private PlayerInfo player1;
@@ -22,12 +24,16 @@ public class GameThread implements Runnable{
     public void run() {
         int nrOfRounds = gameEngine.nrOfRounds;
         int nrOfQuestions = gameEngine.nrOfQuestions;
-        List<Question> questions = gameEngine.getQuestions();
+        List<String> categories = new ArrayList<>(gameEngine.getQuestions().stream().map(Question::getCategory).distinct().collect(Collectors.toList()));
 
+        gameEngine.displayCategories();
 
         for (int round = 0; round < nrOfRounds; round++) {
+            String category = categories.get(round % categories.size());
+            List<Question> questions = gameEngine.getQuestionsForCategory(category);
+
             for (int i = 0; i < nrOfQuestions; i++) {
-                Question question = questions.get((round * nrOfQuestions) + i);
+                Question question = questions.get(i);
                 try {
                     ObjectOutputStream out1 = player1.getClientObjectOutputStream();
                     ObjectOutputStream out2 = player2.getClientObjectOutputStream();
@@ -60,7 +66,6 @@ public class GameThread implements Runnable{
             try{
                 System.out.println("Runda " + (round + 1) + " avklarad!");
                 Thread.sleep(5000);
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -68,7 +73,6 @@ public class GameThread implements Runnable{
 
             gameEngine.displayScore();
         }
-
-    }
+}
 
 
