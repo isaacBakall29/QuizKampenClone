@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 public class TimerQuestionPanel {
 
     private boolean isTimerActive = true;
+    private Timer timer;
 
     TimerQuestionPanel (JPanel mainPanel, ObjectOutputStream objectOutputStream, JPanel quizPanel) {
         ////Timer
@@ -26,7 +27,7 @@ public class TimerQuestionPanel {
         mainPanel.add(timerPanel);
 
         //// Timer logic
-        Timer timer = new Timer(1000, new ActionListener() {
+        timer = new Timer(1000, new ActionListener() {
             int timeLeft = 15;
 
             @Override
@@ -56,7 +57,12 @@ public class TimerQuestionPanel {
 
     }
 
+    public void stopTimer(){
+        timer.stop();
+    }
+
     public boolean isTimerActive() {
+
         return isTimerActive;
     }
 }

@@ -21,6 +21,7 @@ public class GrafiskInterface extends JFrame {
     private JLabel scoreLabel;
     private int score = 0;
     private JPanel finalScorePanel;
+    TimerQuestionPanel timerQuestionPanel;
 
     ObjectInputStream objectInputStream = null;
     ObjectOutputStream objectOutputStream = null;
@@ -184,12 +185,12 @@ public class GrafiskInterface extends JFrame {
 
         String correctAnswer = options[question.getCorrectOption()];
 
-        TimerQuestionPanel timerQuestionPanel = new TimerQuestionPanel(mainPanel, objectOutputStream, quizPanel);
-
+        ////Timer and action listener
+        timerQuestionPanel = new TimerQuestionPanel(mainPanel, objectOutputStream, quizPanel);
 
         ActionListener answerListener = e -> {
-            if (isTimerActive) {
-                //timerBar.
+            if (timerQuestionPanel.isTimerActive()) {
+                timerQuestionPanel.stopTimer();
                 JButton clickedButton = (JButton) e.getSource();
                 handleAnswerSelection(clickedButton, correctAnswer);
             } else {
