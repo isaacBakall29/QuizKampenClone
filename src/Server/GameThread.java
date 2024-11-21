@@ -20,39 +20,52 @@ public class GameThread implements Runnable{
 
     @Override
     public void run() {
+        int nrOfRounds = gameEngine.nrOfRounds;
+        int nrOfQuestions = gameEngine.nrOfQuestions;
         List<Question> questions = gameEngine.getQuestions();
 
-        for (Question question : questions) {
-            try {
-                ObjectOutputStream out1 = player1.getClientObjectOutputStream();
-                ObjectOutputStream out2 = player2.getClientObjectOutputStream();
 
-                out1.writeObject(question);
-                out2.writeObject(question);
+        for (int round = 0; round < nrOfRounds; round++) {
+            for (int i = 0; i < nrOfQuestions; i++) {
+                Question question = questions.get((round * nrOfQuestions) + i);
+                try {
+                    ObjectOutputStream out1 = player1.getClientObjectOutputStream();
+                    ObjectOutputStream out2 = player2.getClientObjectOutputStream();
 
-                ObjectInputStream in1 = player1.getClientObjectInputStream();
-                ObjectInputStream in2 = player2.getClientObjectInputStream();
 
-                Object answer1 = in1.readObject();
-                Object answer2 = in2.readObject();
+                    out1.writeObject(question);
+                    out2.writeObject(question);
 
-//                    String playerName1 = player1.toString();
-//                    String playerName2 = player2.toString();
+                    ObjectInputStream in1 = player1.getClientObjectInputStream();
+                    ObjectInputStream in2 = player2.getClientObjectInputStream();
 
-                if (answer1 instanceof QuizAnswer quizAnswer) {
-                    out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fell svar!");
+                    Object answer1 = in1.readObject();
+                    Object answer2 = in2.readObject();
+
+
+                    if (answer1 instanceof QuizAnswer quizAnswer) {
+                        out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fell svar!");
+                    }
+
+                    if (answer2 instanceof QuizAnswer quizAnswer) {
+                        out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fell svar!");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
+            }
+            try{
+                System.out.println("Runda " + (round + 1) + " avklarad!");
+                Thread.sleep(5000);
 
-                if (answer2 instanceof QuizAnswer quizAnswer) {
-                    out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fell svar!");
-                }
-            } catch (IOException e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+        }
 
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            }
             gameEngine.displayScore();
         }
 

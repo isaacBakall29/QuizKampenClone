@@ -61,7 +61,7 @@ public class myJDBC {
                 String correctAnswerText = resultSet.getString("ANSWER");
                 String category = resultSet.getString("CATEGORY");
 
-                // Find the index of the correct answer
+
                 int correctAnswerIndex = -1;
                 for (int i = 0; i < options.length; i++) {
                     if (options[i].equalsIgnoreCase(correctAnswerText)) {
