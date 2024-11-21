@@ -1,6 +1,7 @@
 package Client;
 
 import Messages.QuizAnswer;
+import Messages.TimeExpired;
 import Server.Question;
 
 import javax.swing.*;
@@ -20,7 +21,6 @@ public class GrafiskInterface extends JFrame {
     private JLabel scoreLabel;
     private int score = 0;
     private JPanel finalScorePanel;
-    private boolean isTimerActive;
 
     ObjectInputStream objectInputStream = null;
     ObjectOutputStream objectOutputStream = null;
@@ -39,16 +39,17 @@ public class GrafiskInterface extends JFrame {
         setContentPane(startPanel);
         setVisible(true);
     }
-   public GrafiskInterface() {
+
+    public GrafiskInterface() {
         setTitle("Quiz Kampen");
         setSize(400, 500);
-     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         startPanel = createStartPanel();
-       // quizPanel = createQuizPanel();
+        // quizPanel = createQuizPanel();
 
         setContentPane(startPanel);
         setVisible(true);
-   }
+    }
 
     private JPanel createStartPanel() {
         JPanel panel = new JPanel();
@@ -80,8 +81,9 @@ public class GrafiskInterface extends JFrame {
 
         return panel;
     }
-    //Category Panel
-        public  JPanel createCategory(){
+
+    /// /Category Panel
+    public JPanel createCategory() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Category"));
@@ -99,17 +101,18 @@ public class GrafiskInterface extends JFrame {
         button2.addActionListener(e -> handleCategorySelection("Category 2"));
         button3.addActionListener(e -> handleCategorySelection("Category 3"));
 
-            // Add buttons to a sub-panel
-            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            buttonPanel.add(button1);
-            buttonPanel.add(button2);
-            buttonPanel.add(button3);
+        // Add buttons to a sub-panel
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.add(button1);
+        buttonPanel.add(button2);
+        buttonPanel.add(button3);
 
-            // Add the button panel to the main panel
-            panel.add(buttonPanel, BorderLayout.CENTER);
+        // Add the button panel to the main panel
+        panel.add(buttonPanel, BorderLayout.CENTER);
 
-            return panel;
+        return panel;
     }
+
     // Handle Category Selection in the future
     private void handleCategorySelection(String categorySelection) {
         System.out.println("Button clicked: " + categorySelection);
@@ -126,7 +129,6 @@ public class GrafiskInterface extends JFrame {
     }
 
     public void updateQuizPanel(Question question) {
-        isTimerActive = true;
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS)); //meaning components added to this panel will be arranged vertically (from top to bottom).
@@ -142,17 +144,6 @@ public class GrafiskInterface extends JFrame {
         titlePanel.setBackground(HEADER);
         titlePanel.setMaximumSize(new Dimension(350, 30));
         mainPanel.add(titlePanel);
-
-        ////
-        JPanel timerPanel = new JPanel(new BorderLayout());
-        JProgressBar timerBar = new JProgressBar(0, 15); // Range from 0 to 15 seconds
-        timerBar.setValue(15);
-        timerBar.setStringPainted(true);
-        timerBar.setForeground(Color.GREEN);
-        timerBar.setBackground(Color.RED);
-        timerPanel.add(timerBar, BorderLayout.CENTER);
-        timerPanel.setMaximumSize(new Dimension(350, 20));
-        mainPanel.add(timerPanel);
 
         // Server.Question Panel with light blue background and border
         JPanel questionPanel = new JPanel();
@@ -193,12 +184,16 @@ public class GrafiskInterface extends JFrame {
 
         String correctAnswer = options[question.getCorrectOption()];
 
+        TimerQuestionPanel timerQuestionPanel = new TimerQuestionPanel(mainPanel, objectOutputStream, quizPanel);
+
+
         ActionListener answerListener = e -> {
-            if (isTimerActive) { // Check if the timer is still active
+            if (isTimerActive) {
+                //timerBar.
                 JButton clickedButton = (JButton) e.getSource();
                 handleAnswerSelection(clickedButton, correctAnswer);
             } else {
-                JOptionPane.showMessageDialog(quizPanel, "Tiden är ute, inga poäng för detta svar.");
+                JOptionPane.showMessageDialog(quizPanel, "Tiden är ute, gå vidare till nästa fråga.");
             }
         };
 
@@ -229,28 +224,6 @@ public class GrafiskInterface extends JFrame {
         setContentPane(quizPanel);
         revalidate();
 
-        //// Timer logic
-        Timer timer = new Timer(1000, new ActionListener() {
-            int timeLeft = 15;
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                timeLeft--;
-                timerBar.setValue(timeLeft);
-                timerBar.setString(timeLeft + " sekunder");
-
-                if (timeLeft <= 0) {
-                    isTimerActive = false; // Mark timer as inactive
-                    ((Timer) e.getSource()).stop();
-
-                    JOptionPane.showMessageDialog(quizPanel, "Tiden är ute, gå vidare till nästa fråga.");
-                    fetchNextQuestion();
-
-                }
-            }
-        });
-        timer.start();
-
     }
 
     private void addAnswerButtonListener(JButton button, String correctAnswer) {
@@ -258,11 +231,15 @@ public class GrafiskInterface extends JFrame {
     }
 
     private void handleAnswerSelection(JButton selectedButton, String correctAnswer) {
-        if (!isTimerActive){
+
+/*
+        if (!isTimerActive) {
             return;
         }
 
         isTimerActive = false;
+
+ */
 
         if (selectedButton.getText().equals(correctAnswer)) {
             selectedButton.setBackground(BUTTON_CORRECT); // Highlight correct answer
@@ -282,17 +259,25 @@ public class GrafiskInterface extends JFrame {
 
         scoreLabel.setText("Poäng: " + score); // Update score label
 
+        /*
         Timer delayTimer = new Timer(1000, e -> fetchNextQuestion());
         delayTimer.setRepeats(false); // Execute only once
         delayTimer.start();
+
+         */
     }
+
+    /*
     private void fetchNextQuestion() {
         try {
-            Question nextQuestion = (Question) objectInputStream.readObject(); // Receive next question from server
-            updateQuizPanel(nextQuestion); // Update the panel with the new question
+            Question nextQuestion = (Question) objectInputStream.readObject();
+            updateQuizPanel(nextQuestion);
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "error occurred when fetching question");
         }
     }
+
+     */
 }

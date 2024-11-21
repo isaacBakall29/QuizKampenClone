@@ -38,7 +38,6 @@ public class GameThread implements Runnable{
                     ObjectOutputStream out1 = player1.getClientObjectOutputStream();
                     ObjectOutputStream out2 = player2.getClientObjectOutputStream();
 
-
                     out1.writeObject(question);
                     out2.writeObject(question);
 
@@ -48,14 +47,22 @@ public class GameThread implements Runnable{
                     Object answer1 = in1.readObject();
                     Object answer2 = in2.readObject();
 
+                    System.out.println("Have received answer from both players");
 
                     if (answer1 instanceof QuizAnswer quizAnswer) {
-                        out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fell svar!");
+                        out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
+
+                    } else {
+                        out1.writeObject("Spelare 1 svarade inte");
                     }
 
                     if (answer2 instanceof QuizAnswer quizAnswer) {
-                        out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fell svar!");
+                        out2.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
+
+                    } else {
+                        out2.writeObject("Spelare 2 svarade inte");
                     }
+
                 } catch (IOException e) {
                     e.printStackTrace();
 
