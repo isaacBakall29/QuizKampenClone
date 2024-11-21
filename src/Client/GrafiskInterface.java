@@ -4,8 +4,6 @@ import Messages.QuizAnswer;
 import Server.Question;
 
 import javax.swing.*;
-import javax.swing.plaf.LabelUI;
-import javax.swing.plaf.multi.MultiLabelUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +20,7 @@ public class GrafiskInterface extends JFrame {
     private JLabel scoreLabel;
     private int score = 0; //Start score from 0
     private JPanel finalScorePanel;
+    private boolean isTimerActive;
 
     ObjectInputStream objectInputStream = null;
     ObjectOutputStream objectOutputStream = null;
@@ -75,6 +74,7 @@ public class GrafiskInterface extends JFrame {
     }
 
     public void updateQuizPanel(Question question) {
+        isTimerActive = true;
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS)); //meaning components added to this panel will be arranged vertically (from top to bottom).
@@ -88,8 +88,19 @@ public class GrafiskInterface extends JFrame {
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titlePanel.add(titleLabel);
         titlePanel.setBackground(HEADER);
-        titlePanel.setMaximumSize(new Dimension(350,30));
+        titlePanel.setMaximumSize(new Dimension(350, 30));
         mainPanel.add(titlePanel);
+
+        ////
+        JPanel timerPanel = new JPanel(new BorderLayout());
+        JProgressBar timerBar = new JProgressBar(0, 15); // Range from 0 to 15 seconds
+        timerBar.setValue(15);
+        timerBar.setStringPainted(true);
+        timerBar.setForeground(Color.GREEN);
+        timerBar.setBackground(Color.RED);
+        timerPanel.add(timerBar, BorderLayout.CENTER);
+        timerPanel.setMaximumSize(new Dimension(350, 20));
+        mainPanel.add(timerPanel);
 
         // Server.Question Panel with light blue background and border
         JPanel questionPanel = new JPanel();
@@ -104,7 +115,7 @@ public class GrafiskInterface extends JFrame {
         questionTextArea.setWrapStyleWord(true);
         questionTextArea.setBackground(BUTTON_DEFAULT);
         questionPanel.add(questionTextArea, BorderLayout.CENTER);
-        questionPanel.setMaximumSize(new Dimension(350,120));
+        questionPanel.setMaximumSize(new Dimension(350, 120));
 
         //// Set max size for consistent look
         questionPanel.setMaximumSize(new Dimension(350, 60));
@@ -130,11 +141,20 @@ public class GrafiskInterface extends JFrame {
 
         String correctAnswer = options[question.getCorrectOption()];
 
+        ActionListener answerListener = e -> {
+            if (isTimerActive) { // Check if the timer is still active
+                JButton clickedButton = (JButton) e.getSource();
+                handleAnswerSelection(clickedButton, correctAnswer);
+            } else {
+                JOptionPane.showMessageDialog(quizPanel, "Tiden är ute, inga poäng för detta svar.");
+            }
+        };
+
         //Each button is linked to an ActionListener that checks if the clicked answer is correct.
-        addAnswerButtonListener(answerButton1, correctAnswer);
-        addAnswerButtonListener(answerButton2, correctAnswer);
-        addAnswerButtonListener(answerButton3, correctAnswer);
-        addAnswerButtonListener(answerButton4, correctAnswer);
+        answerButton1.addActionListener(answerListener);
+        answerButton2.addActionListener(answerListener);
+        answerButton3.addActionListener(answerListener);
+        answerButton4.addActionListener(answerListener);
 
         answerPanel.add(answerButton1);
         answerPanel.add(answerButton2);
@@ -148,7 +168,7 @@ public class GrafiskInterface extends JFrame {
         scorePanel = new JPanel();
         scoreLabel = new JLabel("Poäng: 0");
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        scorePanel.setMaximumSize(new Dimension(350,25));
+        scorePanel.setMaximumSize(new Dimension(350, 25));
         scorePanel.add(scoreLabel);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacing
         mainPanel.add(scorePanel);
@@ -156,6 +176,29 @@ public class GrafiskInterface extends JFrame {
         quizPanel = mainPanel;
         setContentPane(quizPanel);
         revalidate();
+
+        //// Timer logic
+        Timer timer = new Timer(1000, new ActionListener() {
+            int timeLeft = 15;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timeLeft--;
+                timerBar.setValue(timeLeft);
+                timerBar.setString(timeLeft + " sekunder");
+
+                if (timeLeft <= 0) {
+                    isTimerActive = false; // Mark timer as inactive
+                    ((Timer) e.getSource()).stop();
+
+                    JOptionPane.showMessageDialog(quizPanel, "Tiden är ute, gå vidare till nästa fråga.");
+                    fetchNextQuestion();
+
+                }
+            }
+        });
+        timer.start();
+
     }
 
     private void addAnswerButtonListener(JButton button, String correctAnswer) {
@@ -163,6 +206,12 @@ public class GrafiskInterface extends JFrame {
     }
 
     private void handleAnswerSelection(JButton selectedButton, String correctAnswer) {
+        if (!isTimerActive){
+            return;
+        }
+
+        isTimerActive = false;
+
         if (selectedButton.getText().equals(correctAnswer)) {
             selectedButton.setBackground(BUTTON_CORRECT); // Highlight correct answer
             score++; // Increment score
@@ -180,5 +229,18 @@ public class GrafiskInterface extends JFrame {
         }
 
         scoreLabel.setText("Poäng: " + score); // Update score label
+
+        Timer delayTimer = new Timer(1000, e -> fetchNextQuestion());
+        delayTimer.setRepeats(false); // Execute only once
+        delayTimer.start();
+    }
+    private void fetchNextQuestion() {
+        try {
+            Question nextQuestion = (Question) objectInputStream.readObject(); // Receive next question from server
+            updateQuizPanel(nextQuestion); // Update the panel with the new question
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "error occurred when fetching question");
+        }
     }
 }
