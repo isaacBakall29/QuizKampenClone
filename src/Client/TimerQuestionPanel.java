@@ -1,7 +1,5 @@
 package Client;
 
-import Messages.TimeExpired;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +12,7 @@ public class TimerQuestionPanel {
     private boolean isTimerActive = true;
     private Timer timer;
 
-    TimerQuestionPanel (JPanel mainPanel, ObjectOutputStream objectOutputStream, JPanel quizPanel) {
+    TimerQuestionPanel(JPanel mainPanel, ObjectOutputStream objectOutputStream, JPanel quizPanel) {
         ////Timer
         JPanel timerPanel = new JPanel(new BorderLayout());
         JProgressBar timerBar = new JProgressBar(0, 15); // Range from 0 to 15 seconds
@@ -41,7 +39,7 @@ public class TimerQuestionPanel {
                     ((Timer) e.getSource()).stop();
 
                     try {
-                        objectOutputStream.writeObject(new TimeExpired());
+                        objectOutputStream.writeObject("Tiden är ute, gå vidare till nästa fråga.");
 
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
@@ -57,7 +55,7 @@ public class TimerQuestionPanel {
 
     }
 
-    public void stopTimer(){
+    public void stopTimer() {
         timer.stop();
     }
 

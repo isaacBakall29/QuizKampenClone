@@ -1,12 +1,10 @@
 package Client;
 
 import Messages.QuizAnswer;
-import Messages.TimeExpired;
 import Server.Question;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
@@ -233,15 +231,6 @@ public class GrafiskInterface extends JFrame {
 
     private void handleAnswerSelection(JButton selectedButton, String correctAnswer) {
 
-/*
-        if (!isTimerActive) {
-            return;
-        }
-
-        isTimerActive = false;
-
- */
-
         if (selectedButton.getText().equals(correctAnswer)) {
             selectedButton.setBackground(BUTTON_CORRECT); // Highlight correct answer
             score++; // Increment score
@@ -260,25 +249,5 @@ public class GrafiskInterface extends JFrame {
 
         scoreLabel.setText("Poäng: " + score); // Update score label
 
-        /*
-        Timer delayTimer = new Timer(1000, e -> fetchNextQuestion());
-        delayTimer.setRepeats(false); // Execute only once
-        delayTimer.start();
-
-         */
     }
-
-    /*
-    private void fetchNextQuestion() {
-        try {
-            Question nextQuestion = (Question) objectInputStream.readObject();
-            updateQuizPanel(nextQuestion);
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "error occurred when fetching question");
-        }
-    }
-
-     */
 }
