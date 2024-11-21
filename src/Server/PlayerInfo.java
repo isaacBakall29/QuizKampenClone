@@ -7,8 +7,8 @@ import java.net.Socket;
 public class PlayerInfo {
 
     private Socket socket;
-    private ObjectInputStream clientObjectInputStream; //to read object coming from client
-    private ObjectOutputStream clientObjectOutputStream; // to write object to the client from server
+    private ObjectInputStream clientObjectInputStream;
+    private ObjectOutputStream clientObjectOutputStream;
 
     public PlayerInfo(Socket socket, ObjectInputStream in, ObjectOutputStream out) {
         this.socket = socket;

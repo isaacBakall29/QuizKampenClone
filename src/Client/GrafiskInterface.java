@@ -18,7 +18,7 @@ public class GrafiskInterface extends JFrame {
     private JPanel quizPanel;
     private JPanel scorePanel;
     private JLabel scoreLabel;
-    private int score = 0; //Start score from 0
+    private int score = 0;
     private JPanel finalScorePanel;
     private boolean isTimerActive;
 

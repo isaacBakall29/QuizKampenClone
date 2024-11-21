@@ -3,15 +3,17 @@ package Server;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class GameEngine {
 
     private final List<Question> questions = new ArrayList<>();
     private final Map<String, Integer> scores = new HashMap<>();
+    public final Map<String, List<Question>> questionsByCategory = new HashMap<>();
 
-    Integer nrOfRounds;
-    Integer nrOfQuestions;
+    Integer nrOfRounds = 3;
+    Integer nrOfQuestions = 2;
 
     public GameEngine() {
         myJDBC db = new myJDBC();
@@ -22,9 +24,26 @@ public class GameEngine {
         } else {
             System.out.println("No questions found in the database.");
         }
-        Collections.shuffle(questions);
 
+        Collections.shuffle(questions);
+        groupQuestionsByCategory();
         readPropertiesFile();
+    }
+
+    private void groupQuestionsByCategory() {
+        questionsByCategory.putAll(questions.stream().collect(Collectors.groupingBy(Question::getCategory)));
+    }
+
+
+    public List<Question> getQuestionsForCategory(String category){
+        return questionsByCategory.getOrDefault(category, new ArrayList<>());
+    }
+
+    public void displayCategories() {
+        System.out.println("Kategorier: \n");
+        for (String category : questionsByCategory.keySet()) {
+            System.out.println(category);
+        }
     }
 
     public List<Question> getQuestions() {
@@ -38,18 +57,18 @@ public class GameEngine {
             System.out.println("Rätt svar!");
         } else {
             System.out.println("Fel svar!");
-            scores.put(playerName, scores.get(playerName));  // Ska vi ge minuspoäng om en svarar fel?
+            scores.put(playerName, scores.get(playerName));
         }
     }
 
     public void displayScore() {
         System.out.println("Poängställning:");
-        for (Map.Entry<String, Integer> entry : scores.entrySet()) {  //Nyckeln är PlayerName för att hämta värddet (poängen)
+        for (Map.Entry<String, Integer> entry : scores.entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
         }
     }
 
-    public void addPlayer(String playerName) { //Adda spelare
+    public void addPlayer(String playerName) {
         scores.put(playerName, 0);
     }
 
@@ -71,6 +90,14 @@ public class GameEngine {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public int nrOfRounds() {
+        return this.nrOfRounds;
+    }
+
+    public int nrOfQuestions() {
+        return this.nrOfQuestions;
     }
 }
 
