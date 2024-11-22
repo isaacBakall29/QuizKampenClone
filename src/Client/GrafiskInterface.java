@@ -259,7 +259,7 @@ public class GrafiskInterface extends JFrame {
     }
 
     public void displayWaitingForPlayers (){
-        JLabel waitingForPlayersLabel = new JLabel("vänta på motståndare");
+        JLabel waitingForPlayersLabel = new JLabel("väntar på motståndare");
         waitingForPlayersLabel.setFont(new Font("Arial", Font.BOLD, 16));
         waitingForPlayersLabel.setHorizontalAlignment(SwingConstants.CENTER);
         waitingForPlayersLabel.setMaximumSize(new Dimension(350, 25));

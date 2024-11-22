@@ -19,7 +19,7 @@ public class QuizServer {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Servern är igång och väntar på anslutningar...");
 
-            //// every 5 sek , it will check if there is other player waiting
+            //// every 3 sek , it will check if there is other player waiting
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -37,7 +37,7 @@ public class QuizServer {
                         } else {
                             //System.out.println("waiting for more players");
                             try {
-                                Thread.sleep(5000);
+                                Thread.sleep(3000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
