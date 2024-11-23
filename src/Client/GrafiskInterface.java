@@ -33,13 +33,14 @@ public class GrafiskInterface extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         startPanel = createStartPanel();
+        scorePanel = createScorePanel();
         //quizPanel = createQuizPanel();
 
         setContentPane(startPanel);
         setVisible(true);
     }
 
-    //// start panel
+    //// start panelg
     private JPanel createStartPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -143,6 +144,7 @@ public class GrafiskInterface extends JFrame {
         titlePanel.setBackground(HEADER);
         titlePanel.setMaximumSize(new Dimension(350, 30));
         mainPanel.add(titlePanel);
+        mainPanel.add(scorePanel);
 
         // Server.Question Panel with light blue background and border
         JPanel questionPanel = new JPanel();
@@ -214,14 +216,14 @@ public class GrafiskInterface extends JFrame {
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacing
         mainPanel.add(answerPanel);
 
-        //// Score Panel within quiz panel
-        scorePanel = new JPanel();
-        scoreLabel = new JLabel("Poäng: 0");
-        scoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        scorePanel.setMaximumSize(new Dimension(350, 25));
-        scorePanel.add(scoreLabel);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacing
-        mainPanel.add(scorePanel);
+//        //// Score Panel within quiz panel
+//        scorePanel = new JPanel();
+//        scoreLabel = new JLabel("Poäng: 0");
+//        scoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
+//        scorePanel.setMaximumSize(new Dimension(350, 25));
+//        scorePanel.add(scoreLabel);
+//        mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacing
+//        mainPanel.add(scorePanel);
 
         quizPanel = mainPanel;
         setContentPane(quizPanel);
@@ -230,7 +232,25 @@ public class GrafiskInterface extends JFrame {
     }
 
     // TODO score panel
+    private JPanel createScorePanel() {
+        scorePanel = new JPanel();
+        scoreLabel = new JLabel("0 - 0");
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        scorePanel.add(scoreLabel);
+        scorePanel.setMaximumSize(new Dimension(350, 25));
+        return scorePanel;
+    }
 
+    public void updateScorePanel(int player1Score, int player2Score){ //TODO get player scores from GameEngine
+        scoreLabel.setText(player1Score + " - " + player2Score);
+        scorePanel.revalidate();
+        scorePanel.repaint();
+        //        JPanel scorePanel = new JPanel();
+        //        scoreLabel = new JLabel(String.valueOf(player1Score) + " - " + String.valueOf(player2Score));
+        //        scoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        //        scorePanel.setMaximumSize(new Dimension(350, 25));
+        //        scorePanel.add(scoreLabel);
+    }
 
     private void addAnswerButtonListener(JButton button, String correctAnswer) {
         button.addActionListener(e -> handleAnswerSelection(button, correctAnswer));
@@ -240,7 +260,7 @@ public class GrafiskInterface extends JFrame {
 
         if (selectedButton.getText().equals(correctAnswer)) {
             selectedButton.setBackground(BUTTON_CORRECT); // Highlight correct answer
-            score++; // Increment score
+//            score++; // Increment score
         } else {
             selectedButton.setBackground(BUTTON_WRONG); // Highlight incorrect answer
         }
@@ -254,7 +274,9 @@ public class GrafiskInterface extends JFrame {
             e.printStackTrace();
         }
 
-        scoreLabel.setText("Poäng: " + score); // Update score label
+        // TODO update the score for the player in GameEngine score map
+        // TODO figure out where to use the updateScorePanel(); method
+//        scoreLabel.setText("Poäng: " + score); // Update score label
 
     }
 
