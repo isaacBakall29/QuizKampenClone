@@ -50,16 +50,16 @@ public class GameEngine {
         return questions;
     }
 
-    public void checkAnswer(String playerName, String chosenOption) {
-        Question currentQuestion =  questions.get(0);
-        if (currentQuestion.isCorrect(chosenOption)) {
-            scores.put(playerName, scores.get(playerName) + 1);
-            System.out.println("Rätt svar!");
-        } else {
-            System.out.println("Fel svar!");
-            scores.put(playerName, scores.get(playerName));
-        }
-    }
+//    public void checkAnswer(String playerName, String chosenOption) {
+//        Question currentQuestion =  questions.get(0);
+//        if (currentQuestion.isCorrect(chosenOption)) {
+//            scores.put(playerName, scores.get(playerName) + 1);
+//            System.out.println("Rätt svar!");
+//        } else {
+//            System.out.println("Fel svar!");
+//            scores.put(playerName, scores.get(playerName));
+//        }
+//    }
 
     public void displayScore() {
         System.out.println("Poängställning:");
@@ -98,6 +98,11 @@ public class GameEngine {
 
     public int nrOfQuestions() {
         return this.nrOfQuestions;
+    }
+
+    public void updateScore(String player) {
+        Integer score = scores.get(player);
+        scores.put(player, score + 1);
     }
 }
 

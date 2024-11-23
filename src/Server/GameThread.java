@@ -77,12 +77,18 @@ public class GameThread implements Runnable{
 
                     if (answer1 instanceof QuizAnswer quizAnswer) {
                         out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
+                        if (question.isCorrect(quizAnswer.getAnswer())) {
+                            gameEngine.updateScore(player1.toString());
+                        }
                     } else {
                         out1.writeObject("Spelare 1 svarade inte");
                     }
 
                     if (answer2 instanceof QuizAnswer quizAnswer) {
                         out2.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
+                        if (question.isCorrect(quizAnswer.getAnswer())) {
+                            gameEngine.updateScore(player2.toString());
+                        }
                     } else {
                         out2.writeObject("Spelare 2 svarade inte");
                     }
