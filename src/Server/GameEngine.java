@@ -3,14 +3,15 @@ package Server;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 
 public class GameEngine {
 
     private final List<Question> questions = new ArrayList<>();
-    private final Map<String, Integer> scores = new HashMap<>();
-    public final Map<String, List<Question>> questionsByCategory = new HashMap<>();
+    private final Map<String, Integer> scores = new ConcurrentHashMap<>();
+    public final Map<String, List<Question>> questionsByCategory = new ConcurrentHashMap<>();
 
     Integer nrOfRounds = 3;
     Integer nrOfQuestions = 2;
@@ -100,7 +101,7 @@ public class GameEngine {
         return this.nrOfQuestions;
     }
 
-    public void updateScore(String player) {
+    public void updateScoreHashmap(String player) {
         Integer score = scores.get(player);
         scores.put(player, score + 1);
     }

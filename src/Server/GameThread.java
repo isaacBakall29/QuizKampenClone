@@ -78,7 +78,8 @@ public class GameThread implements Runnable{
                     if (answer1 instanceof QuizAnswer quizAnswer) {
                         out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
-                            gameEngine.updateScore(player1.toString());
+                            //gameEngine.updateScoreHashmap(player1.toString());
+                            //TODO add updateScoreIntPlayer1
                         }
                     } else {
                         out1.writeObject("Spelare 1 svarade inte");
@@ -87,7 +88,8 @@ public class GameThread implements Runnable{
                     if (answer2 instanceof QuizAnswer quizAnswer) {
                         out2.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
-                            gameEngine.updateScore(player2.toString());
+                            //gameEngine.updateScoreHashmap(player2.toString());
+                            //TODO add updateScoreIntPlayer2
                         }
                     } else {
                         out2.writeObject("Spelare 2 svarade inte");
