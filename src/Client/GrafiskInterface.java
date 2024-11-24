@@ -16,11 +16,11 @@ public class GrafiskInterface extends JFrame {
     private JPanel startPanel;
     private JPanel quizPanel;
     private JPanel scorePanel;
+    private JPanel finalScorePanel; //TODO todo
     private JLabel scoreLabel;
     private int score = 0; //TODO remove
     private int player1Score;
     private int player2Score;
-    private JPanel finalScorePanel; //TODO todo
     TimerQuestionPanel timerQuestionPanel;
 
     ObjectInputStream objectInputStream = null;
@@ -36,6 +36,7 @@ public class GrafiskInterface extends JFrame {
 
         startPanel = createStartPanel();
         scorePanel = createScorePanel();
+        finalScorePanel = createFinalScorePanel();
         //quizPanel = createQuizPanel();
 
         setContentPane(startPanel);
@@ -146,6 +147,8 @@ public class GrafiskInterface extends JFrame {
         titlePanel.setBackground(HEADER);
         titlePanel.setMaximumSize(new Dimension(350, 30));
         mainPanel.add(titlePanel);
+        getScores();
+        updateScorePanel(player1Score, player2Score);
         mainPanel.add(scorePanel);
 
         // Server.Question Panel with light blue background and border
@@ -218,22 +221,11 @@ public class GrafiskInterface extends JFrame {
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacing
         mainPanel.add(answerPanel);
 
-//        //// Score Panel within quiz panel
-//        scorePanel = new JPanel();
-//        scoreLabel = new JLabel("Poäng: 0");
-//        scoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
-//        scorePanel.setMaximumSize(new Dimension(350, 25));
-//        scorePanel.add(scoreLabel);
-//        mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacing
-//        mainPanel.add(scorePanel);
-
         quizPanel = mainPanel;
         setContentPane(quizPanel);
         revalidate();
-
     }
 
-    // TODO score panel
     private JPanel createScorePanel() {
         scorePanel = new JPanel();
         scoreLabel = new JLabel("0 - 0");
@@ -244,18 +236,17 @@ public class GrafiskInterface extends JFrame {
     }
 
     public void getScores(){
-        player1Score = objectInputStream.readInt()
+        //TODO get scores så att updateScorePanel kan få nya poängen. Input stream?
     }
 
     public void updateScorePanel(int player1Score, int player2Score){ //TODO get player scores from GameEngine
         scoreLabel.setText(player1Score + " - " + player2Score);
         scorePanel.revalidate();
         scorePanel.repaint();
-        //        JPanel scorePanel = new JPanel();
-        //        scoreLabel = new JLabel(String.valueOf(player1Score) + " - " + String.valueOf(player2Score));
-        //        scoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        //        scorePanel.setMaximumSize(new Dimension(350, 25));
-        //        scorePanel.add(scoreLabel);
+    }
+
+    private JPanel createFinalScorePanel(){
+
     }
 
     private void addAnswerButtonListener(JButton button, String correctAnswer) {
@@ -266,7 +257,6 @@ public class GrafiskInterface extends JFrame {
 
         if (selectedButton.getText().equals(correctAnswer)) {
             selectedButton.setBackground(BUTTON_CORRECT); // Highlight correct answer
-//            score++; // Increment score
         } else {
             selectedButton.setBackground(BUTTON_WRONG); // Highlight incorrect answer
         }
@@ -279,11 +269,6 @@ public class GrafiskInterface extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // TODO update the score for the player in GameEngine score map
-        // TODO figure out where to use the updateScorePanel(); method
-//        scoreLabel.setText("Poäng: " + score); // Update score label
-
     }
 
     public void displayWaitingForPlayers (){

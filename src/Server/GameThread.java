@@ -81,12 +81,8 @@ public class GameThread implements Runnable{
                         out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
                             gameEngine.updateScoreHashmap(player1.getSocket().toString());
-                            int player1Score = gameEngine.getScoreFromHashmap(player1.getSocket().toString());
-                            int player2Score = gameEngine.getScoreFromHashmap(player2.getSocket().toString());
-                            out1.writeObject(player1Score);
-                            out1.writeObject(player2Score);
-                            out2.writeObject(player1Score);
-                            out2.writeObject(player2Score);
+                            sendScore(); //TODO jag vet inte hur man kan skicka till client eller GUI
+
                         }
                     } else {
                         out1.writeObject("Spelare 1 svarade inte");
@@ -96,9 +92,7 @@ public class GameThread implements Runnable{
                         out2.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
                             gameEngine.updateScoreHashmap(player2.getSocket().toString());
-                            int player2Score = gameEngine.getScoreFromHashmap(player2.getSocket().toString());
-                            out1.writeObject(player2Score);
-                            out2.writeObject(player2Score);
+                            sendScore();//TODO jag vet inte hur man kan skicka till client eller GUI
                         }
                     } else {
                         out2.writeObject("Spelare 2 svarade inte");
@@ -120,6 +114,12 @@ public class GameThread implements Runnable{
         }
 
             gameEngine.displayScore();
+        }
+
+        public void sendScore(){
+            int player1Score = gameEngine.getScoreFromHashmap(player1.getSocket().toString());
+            int player2Score = gameEngine.getScoreFromHashmap(player2.getSocket().toString());
+            //TODO jag vet inte hur man kan skicka till client eller GUI
         }
 
 }
