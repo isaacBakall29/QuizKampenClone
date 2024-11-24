@@ -16,9 +16,8 @@ public class GrafiskInterface extends JFrame {
     private JPanel startPanel;
     private JPanel quizPanel;
     private JPanel scorePanel;
-    private JPanel finalScorePanel; //TODO todo
+    private JPanel finalScorePanel;
     private JLabel scoreLabel;
-    private int score = 0; //TODO remove
     private int player1Score;
     private int player2Score;
     TimerQuestionPanel timerQuestionPanel;
@@ -36,7 +35,7 @@ public class GrafiskInterface extends JFrame {
 
         startPanel = createStartPanel();
         scorePanel = createScorePanel();
-        finalScorePanel = createFinalScorePanel();
+//        finalScorePanel = createFinalScorePanel(0,0);
         //quizPanel = createQuizPanel();
 
         setContentPane(startPanel);
@@ -147,7 +146,6 @@ public class GrafiskInterface extends JFrame {
         titlePanel.setBackground(HEADER);
         titlePanel.setMaximumSize(new Dimension(350, 30));
         mainPanel.add(titlePanel);
-        getScores();
         updateScorePanel(player1Score, player2Score);
         mainPanel.add(scorePanel);
 
@@ -235,19 +233,22 @@ public class GrafiskInterface extends JFrame {
         return scorePanel;
     }
 
-    public void getScores(){
-        //TODO get scores så att updateScorePanel kan få nya poängen. Input stream?
-    }
-
-    public void updateScorePanel(int player1Score, int player2Score){ //TODO get player scores from GameEngine
+    public void updateScorePanel(int player1Score, int player2Score){
         scoreLabel.setText(player1Score + " - " + player2Score);
         scorePanel.revalidate();
         scorePanel.repaint();
     }
 
-    private JPanel createFinalScorePanel(){
-        return null; //TODO fix score panel
+    private JPanel createFinalScorePanel(int player1Score, int player2Score){
+        finalScorePanel = new JPanel();
+        scoreLabel = new JLabel(player1Score + " - " + player2Score);
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        scorePanel.add(scoreLabel);
+        scorePanel.setMaximumSize(new Dimension(350, 25));
+        //TODO lägga till mer text och vem som vinner
+        return scorePanel;
     }
+
 
     private void addAnswerButtonListener(JButton button, String correctAnswer) {
         button.addActionListener(e -> handleAnswerSelection(button, correctAnswer));
@@ -282,5 +283,6 @@ public class GrafiskInterface extends JFrame {
         startPanel.add(waitingForPlayersLabel, BorderLayout.SOUTH);
         revalidate();
     }
+
 
 }

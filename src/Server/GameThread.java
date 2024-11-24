@@ -82,7 +82,7 @@ public class GameThread implements Runnable{
                         out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
                             gameEngine.updateScoreHashmap(player1.getSocket().toString());
-                            sendScore(); //TODO jag vet inte hur man kan skicka till client eller GUI
+                            sendScore();
 
                         }
                     } else {
@@ -93,7 +93,7 @@ public class GameThread implements Runnable{
                         out2.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
                             gameEngine.updateScoreHashmap(player2.getSocket().toString());
-                            sendScore();//TODO jag vet inte hur man kan skicka till client eller GUI
+                            sendScore();
                         }
                     } else {
                         out2.writeObject("Spelare 2 svarade inte");
@@ -120,9 +120,11 @@ public class GameThread implements Runnable{
         public void sendScore(){
             int player1Score = gameEngine.getScoreFromHashmap(player1.getSocket().toString());
             int player2Score = gameEngine.getScoreFromHashmap(player2.getSocket().toString());
-            //TODO jag vet inte hur man kan skicka till client eller GUI
+
 
             try {
+                player1.writeObject(ServerMessage.UPDATESCORE);
+                player2.writeObject(ServerMessage.UPDATESCORE);
                 player1.writeObject(new QuizScore(player1Score, player2Score));
                 player2.writeObject(new QuizScore(player2Score, player1Score));
 
