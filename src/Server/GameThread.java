@@ -19,6 +19,8 @@ public class GameThread implements Runnable{
         this.player1 = player1;
         this.player2 = player2;
         this.gameEngine = new GameEngine();
+        gameEngine.addPlayer(player1.getSocket().toString());
+        gameEngine.addPlayer(player2.getSocket().toString());
     }
 
     @Override
@@ -78,7 +80,7 @@ public class GameThread implements Runnable{
                     if (answer1 instanceof QuizAnswer quizAnswer) {
                         out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
-                            //gameEngine.updateScoreHashmap(player1.toString());
+                            gameEngine.updateScoreHashmap(player1.getSocket().toString());
                             //TODO add updateScoreIntPlayer1
                         }
                     } else {
@@ -88,7 +90,7 @@ public class GameThread implements Runnable{
                     if (answer2 instanceof QuizAnswer quizAnswer) {
                         out2.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
-                            //gameEngine.updateScoreHashmap(player2.toString());
+                            gameEngine.updateScoreHashmap(player2.getSocket().toString());
                             //TODO add updateScoreIntPlayer2
                         }
                     } else {

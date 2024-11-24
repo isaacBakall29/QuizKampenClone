@@ -92,8 +92,6 @@ public class QuizServer {
             } catch (ClassNotFoundException | IOException e) {
                 throw new RuntimeException(e);
             }
-
-            gameEngine.addPlayer(socket.toString());
         }
     }
 
