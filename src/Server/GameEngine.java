@@ -105,6 +105,10 @@ public class GameEngine {
         Integer score = scores.get(player);
         scores.put(player, score + 1);
     }
+
+    public Integer getScoreFromHashmap(String player) {
+        return scores.get(player);
+    }
 }
 
 

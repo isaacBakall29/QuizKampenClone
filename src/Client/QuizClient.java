@@ -35,6 +35,8 @@ public class QuizClient {
 
                     }  else if (message.equals(ServerMessage.CHOOSECATEGORY)){
                         gui.createCategory();
+                    } else if (message.equals(ServerMessage.UPDATESCORE)){
+                        gui.updateScorePanel(in.);
                     }
                 }
             }

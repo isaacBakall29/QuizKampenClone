@@ -17,8 +17,10 @@ public class GrafiskInterface extends JFrame {
     private JPanel quizPanel;
     private JPanel scorePanel;
     private JLabel scoreLabel;
-    private int score = 0;
-    private JPanel finalScorePanel;
+    private int score = 0; //TODO remove
+    private int player1Score;
+    private int player2Score;
+    private JPanel finalScorePanel; //TODO todo
     TimerQuestionPanel timerQuestionPanel;
 
     ObjectInputStream objectInputStream = null;
@@ -239,6 +241,10 @@ public class GrafiskInterface extends JFrame {
         scorePanel.add(scoreLabel);
         scorePanel.setMaximumSize(new Dimension(350, 25));
         return scorePanel;
+    }
+
+    public void getScores(){
+        player1Score = objectInputStream.readInt()
     }
 
     public void updateScorePanel(int player1Score, int player2Score){ //TODO get player scores from GameEngine
