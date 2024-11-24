@@ -1,5 +1,6 @@
 package Client;
 
+import Messages.QuizScore;
 import Messages.ServerMessage;
 import Server.Question;
 
@@ -35,8 +36,13 @@ public class QuizClient {
 
                     }  else if (message.equals(ServerMessage.CHOOSECATEGORY)){
                         gui.createCategory();
+
                     } else if (message.equals(ServerMessage.UPDATESCORE)){
-                        gui.updateScorePanel(in.);
+                        Object score = in.readObject();
+
+                        if(score instanceof QuizScore quizScore){
+                            gui.updateScorePanel(quizScore.getYourScore(), quizScore.getOpponentScore());
+                        }
                     }
                 }
             }

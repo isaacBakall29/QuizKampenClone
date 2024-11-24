@@ -246,7 +246,7 @@ public class GrafiskInterface extends JFrame {
     }
 
     private JPanel createFinalScorePanel(){
-
+        return null; //TODO fix score panel
     }
 
     private void addAnswerButtonListener(JButton button, String correctAnswer) {

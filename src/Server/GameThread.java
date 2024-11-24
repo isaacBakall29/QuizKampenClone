@@ -1,6 +1,7 @@
 package Server;
 
 import Messages.QuizAnswer;
+import Messages.QuizScore;
 import Messages.ServerMessage;
 
 import java.io.IOException;
@@ -120,8 +121,16 @@ public class GameThread implements Runnable{
             int player1Score = gameEngine.getScoreFromHashmap(player1.getSocket().toString());
             int player2Score = gameEngine.getScoreFromHashmap(player2.getSocket().toString());
             //TODO jag vet inte hur man kan skicka till client eller GUI
-        }
 
+            try {
+                player1.writeObject(new QuizScore(player1Score, player2Score));
+                player2.writeObject(new QuizScore(player2Score, player1Score));
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
 }
 
 
