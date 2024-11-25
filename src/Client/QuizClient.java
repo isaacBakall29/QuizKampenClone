@@ -52,6 +52,7 @@ public class QuizClient {
 
                         if(score instanceof QuizScore quizScore){
                             gui.updateScorePanel(quizScore.getYourScore(), quizScore.getOpponentScore());
+                            gui.scorePanelBetweenRounds(quizScore);
                         }
                     }
                 }

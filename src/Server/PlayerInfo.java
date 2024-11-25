@@ -29,6 +29,10 @@ public class PlayerInfo {
         return clientObjectOutputStream;
     }
 
+    public void resetOutStream() throws IOException {
+        clientObjectOutputStream.reset();
+    }
+
     public void writeObject(Object obj) throws IOException {
         clientObjectOutputStream.writeObject(obj);
     }

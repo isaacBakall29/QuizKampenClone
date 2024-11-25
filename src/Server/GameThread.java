@@ -7,9 +7,10 @@ import Messages.ServerMessage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
-public class GameThread implements Runnable{
+public class GameThread implements Runnable {
     private PlayerInfo player1;
     private PlayerInfo player2;
     private GameEngine gameEngine;
@@ -76,22 +77,29 @@ public class GameThread implements Runnable{
                         out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
                             gameEngine.updateScoreHashmap(player1.getSocket().toString());
-                            sendScoreToGui();
+                            gameEngine.player1Answer(round, i, true);
+                        } else {
+                            gameEngine.player1Answer(round, i, false);
                         }
+
                     } else {
+                        gameEngine.player1Answer(round, i, false);
                         out1.writeObject("Spelare 1 svarade inte");
                     }
+
 
                     if (answer2 instanceof QuizAnswer quizAnswer) {
                         out2.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
                             gameEngine.updateScoreHashmap(player2.getSocket().toString());
-                            sendScoreToGui();
+                            gameEngine.player2Answer(round, i, true);
+                        } else {
+                            gameEngine.player2Answer(round, i, false);
                         }
                     } else {
+                        gameEngine.player2Answer(round, i, false);
                         out2.writeObject("Spelare 2 svarade inte");
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
 
@@ -101,27 +109,34 @@ public class GameThread implements Runnable{
                 gameEngine.displayScore();
 
             }
-            try{
+            sendScoreToGui();
+
+            try {
                 System.out.println("Runda " + (round + 1) + " avklarad!");
-                Thread.sleep(1000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
-            gameEngine.displayScore();
-        }
+        gameEngine.displayScore();
+    }
 
-    public void sendScoreToGui(){
+    public void sendScoreToGui() {
         int player1Score = gameEngine.getScoreFromHashmap(player1.getSocket().toString());
         int player2Score = gameEngine.getScoreFromHashmap(player2.getSocket().toString());
-
+        Integer[][] player1ScoreBoard = gameEngine.getPlayer1ScoreBoard();
+        Integer[][] player2ScoreBoard = gameEngine.getPlayer2ScoreBoard();
 
         try {
+            var quizScoreP1 = new QuizScore(player1Score, player2Score, player1ScoreBoard, player2ScoreBoard);
+            var quizScoreP2 = new QuizScore(player2Score, player1Score, player2ScoreBoard, player1ScoreBoard);
+            player1.resetOutStream();
+            player2.resetOutStream();
             player1.writeObject(ServerMessage.UPDATESCORE);
             player2.writeObject(ServerMessage.UPDATESCORE);
-            player1.writeObject(new QuizScore(player1Score, player2Score));
-            player2.writeObject(new QuizScore(player2Score, player1Score));
+            player1.writeObject(quizScoreP1);
+            player2.writeObject(quizScoreP2);
 
         } catch (IOException e) {
             throw new RuntimeException(e);

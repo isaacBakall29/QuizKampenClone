@@ -13,6 +13,8 @@ public class GameEngine {
     private final Map<String, Integer> scores = new ConcurrentHashMap<>();
     public final Map<String, List<Question>> questionsByCategory = new ConcurrentHashMap<>();
     private final List<String> categoryUsed = new ArrayList<>();
+    private Integer [][] player1ScoreBoard;
+    private Integer [][] player2ScoreBoard;
 
     Integer nrOfRounds;
     Integer nrOfQuestions;
@@ -31,6 +33,16 @@ public class GameEngine {
         Collections.shuffle(questions);
         groupQuestionsByCategory();
         readPropertiesFile();
+
+        player1ScoreBoard = new Integer[nrOfRounds][nrOfQuestions];
+        player2ScoreBoard = new Integer[nrOfRounds][nrOfQuestions];
+        //Setup default value for array of Integer
+        for(int i = 0; i < nrOfRounds; i++) {
+            for(int j = 0; j < nrOfQuestions; j++) {
+                player1ScoreBoard[i][j] = 0;
+                player2ScoreBoard[i][j] = 0;
+            }
+        }
     }
 
     private void groupQuestionsByCategory() {
@@ -90,6 +102,33 @@ public class GameEngine {
     public Integer getScoreFromHashmap(String player) {
         return scores.get(player);
     }
+
+    public void player1Answer(int round, int question, boolean correct) {
+        // 2 for correct answer, 1 for incorrect answer, 0 for has not answered
+        if (correct) {
+            player1ScoreBoard[round][question] = 2;
+
+        } else {
+            player1ScoreBoard[round][question] = 1;
+        }
+    }
+
+    public void player2Answer(int round, int question, boolean correct) {
+        if (correct) {
+            player2ScoreBoard[round][question] = 2;
+        } else {
+            player2ScoreBoard[round][question] = 1;
+        }
+    }
+
+    public Integer[][] getPlayer1ScoreBoard() {
+        return player1ScoreBoard;
+    }
+
+    public Integer[][] getPlayer2ScoreBoard() {
+        return player2ScoreBoard;
+    }
+
 }
 
 

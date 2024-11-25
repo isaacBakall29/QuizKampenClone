@@ -1,6 +1,7 @@
 package Client;
 
 import Messages.QuizAnswer;
+import Messages.QuizScore;
 import Server.Question;
 
 import javax.swing.*;
@@ -14,12 +15,15 @@ import java.util.Collections;
 
 
 import static Client.ColorGUI.*;
+import static java.awt.Color.*;
+import static java.awt.Transparency.OPAQUE;
 
 public class GrafiskInterface extends JFrame {
 
     private JPanel startPanel;
     private JPanel quizPanel;
     private JPanel scorePanel;
+    private JPanel scoreBetweenRoundPanel;
     private JPanel finalScorePanel;
     private JLabel scoreLabel;
     private int player1Score;
@@ -46,7 +50,7 @@ public class GrafiskInterface extends JFrame {
         setVisible(true);
     }
 
-    //// start panelg
+    /// / start panelg
     private JPanel createStartPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -81,8 +85,8 @@ public class GrafiskInterface extends JFrame {
         return panel;
     }
 
-    ////Category Panel
-    public void createCategory(List <String> categories) {
+    /// /Category Panel
+    public void createCategory(List<String> categories) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Category"));
@@ -100,9 +104,9 @@ public class GrafiskInterface extends JFrame {
         JButton button2 = new JButton(categoryList.get(1));
         JButton button3 = new JButton(categoryList.get(2));
 
-        button1.addActionListener(e -> handleCategorySelection((JButton)e.getSource()));
-        button2.addActionListener(e -> handleCategorySelection((JButton)e.getSource()));
-        button3.addActionListener(e -> handleCategorySelection((JButton)e.getSource()));
+        button1.addActionListener(e -> handleCategorySelection((JButton) e.getSource()));
+        button2.addActionListener(e -> handleCategorySelection((JButton) e.getSource()));
+        button3.addActionListener(e -> handleCategorySelection((JButton) e.getSource()));
 
         // Add buttons to a sub-panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -117,7 +121,7 @@ public class GrafiskInterface extends JFrame {
         repaint();
     }
 
-    //// Handle Category Selection in the future
+    /// / Handle Category Selection in the future
     private void handleCategorySelection(JButton categorySelection) {
         System.out.println("Button clicked: " + categorySelection.getText());
         try {
@@ -137,7 +141,7 @@ public class GrafiskInterface extends JFrame {
 
     }
 
-    //// quiz panel
+    /// / quiz panel
     public void updateQuizPanel(Question question) {
 
         JPanel mainPanel = new JPanel();
@@ -160,7 +164,7 @@ public class GrafiskInterface extends JFrame {
         // Server.Question Panel with light blue background and border
         JPanel questionPanel = new JPanel();
         questionPanel.setLayout(new BorderLayout());
-        questionPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
+        questionPanel.setBorder(BorderFactory.createLineBorder(GRAY, 2));
         questionPanel.setBackground(CARD_BACKGROUND);
 
         ////Question
@@ -241,13 +245,87 @@ public class GrafiskInterface extends JFrame {
         return scorePanel;
     }
 
-    public void updateScorePanel(int player1Score, int player2Score){
+    public void updateScorePanel(int player1Score, int player2Score) {
         scoreLabel.setText(player1Score + " - " + player2Score);
         scorePanel.revalidate();
         scorePanel.repaint();
     }
 
-    private JPanel createFinalScorePanel(int player1Score, int player2Score){
+    /// / Score panel between rounds
+    public void scorePanelBetweenRounds(QuizScore yourScoreBoard) {
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.setOpaque(false);
+        panel.setOpaque(false);
+
+        setVisible(true);
+        int gridLayoutRounds = yourScoreBoard.getYourScoreBoard().length;
+        int questionsPerRound = yourScoreBoard.getYourScoreBoard()[0].length;
+
+        JPanel roundPanel = new JPanel(new GridLayout(gridLayoutRounds, 1));
+        roundPanel.setOpaque(false);
+        for (int i = 0; i < gridLayoutRounds; i++) {
+            JPanel rowPanel = new JPanel(new GridLayout(1, questionsPerRound * 2 + 1));
+            rowPanel.setOpaque(false);
+            //TODO add player 1 row answers
+            Integer[] yourScore = yourScoreBoard.getYourScoreBoard()[i];
+            for (int j = 0; j < yourScore.length; j++) {
+                int answered = yourScore[j];
+                JLabel label = new JLabel(String.valueOf(answered));
+
+                if (answered == 2) {
+                    label.setBackground(GREEN); //TODO change to nice picture
+                    label.setOpaque(true);
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                } else if (answered == 1) {
+                    label.setBackground(RED);
+                    label.setOpaque(true);
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                } else {
+                    label.setBackground(GRAY);
+                    label.setOpaque(true);
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                }
+                rowPanel.add(label);
+            }
+
+            //TODO add label with round number
+            JLabel roundNrPanel = new JLabel(String.valueOf(i));
+            rowPanel.add(roundNrPanel);
+            roundNrPanel.setHorizontalAlignment(SwingConstants.CENTER);
+
+            //TODO add player 2 row answers
+            Integer[] opponentScore = yourScoreBoard.getOpponentScoreBoard()[i];
+            for (int j = 0; j < opponentScore.length; j++) {
+                int answered = opponentScore[j];
+                JLabel label = new JLabel(String.valueOf(answered));
+
+                if (answered == 2) {
+                    label.setBackground(GREEN); //TODO change to nice picture
+                    label.setOpaque(true);
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                } else if (answered == 1) {
+                    label.setBackground(RED);
+                    label.setOpaque(true);
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                } else {
+                    label.setBackground(GRAY);
+                    label.setOpaque(true);
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                }
+                rowPanel.add(label);
+            }
+            roundPanel.add(rowPanel);
+        }
+        panel.add(roundPanel, BorderLayout.CENTER);
+        scoreBetweenRoundPanel = panel;
+        setContentPane(scoreBetweenRoundPanel);
+        revalidate();
+        repaint();
+    }
+
+    private JPanel createFinalScorePanel(int player1Score, int player2Score) {
         finalScorePanel = new JPanel();
         scoreLabel = new JLabel(player1Score + " - " + player2Score);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 30));
@@ -256,7 +334,6 @@ public class GrafiskInterface extends JFrame {
         //TODO lägga till mer text och vem som vinner
         return scorePanel;
     }
-
 
     private void addAnswerButtonListener(JButton button, String correctAnswer) {
         button.addActionListener(e -> handleAnswerSelection(button, correctAnswer));
@@ -280,7 +357,7 @@ public class GrafiskInterface extends JFrame {
         }
     }
 
-    public void displayWaitingForPlayers (){
+    public void displayWaitingForPlayers() {
         JLabel waitingForPlayersLabel = new JLabel("väntar på motståndare");
         waitingForPlayersLabel.setFont(new Font("Arial", Font.BOLD, 16));
         waitingForPlayersLabel.setHorizontalAlignment(SwingConstants.CENTER);
