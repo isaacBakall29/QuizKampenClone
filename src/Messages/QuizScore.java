@@ -5,8 +5,8 @@ import java.util.List;
 
 public class QuizScore implements Serializable {
 
-    private int yourScore; // player score for the one who receives message
-    private int opponentScore;
+    private final int yourScore; // player score for the one who receives message
+    private final int opponentScore;
     private final Integer[][] yourScoreBoard;
     private final Integer[][] opponentScoreBoard;
 
@@ -21,16 +21,8 @@ public class QuizScore implements Serializable {
         return opponentScore;
     }
 
-    public void setOpponentScore(int opponentScore) {
-        this.opponentScore = opponentScore;
-    }
-
     public int getYourScore() {
         return yourScore;
-    }
-
-    public void setYourScore(int yourScore) {
-        this.yourScore = yourScore;
     }
 
     public Integer[][] getYourScoreBoard() {

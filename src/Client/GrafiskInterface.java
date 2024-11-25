@@ -16,7 +16,6 @@ import java.util.Collections;
 
 import static Client.ColorGUI.*;
 import static java.awt.Color.*;
-import static java.awt.Transparency.OPAQUE;
 
 public class GrafiskInterface extends JFrame {
 
@@ -155,7 +154,7 @@ public class GrafiskInterface extends JFrame {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titlePanel.add(titleLabel);
-        titlePanel.setBackground(HEADER);
+        titlePanel.setBackground(header);
         titlePanel.setMaximumSize(new Dimension(350, 30));
         mainPanel.add(titlePanel);
         updateScorePanel(player1Score, player2Score);
@@ -165,14 +164,14 @@ public class GrafiskInterface extends JFrame {
         JPanel questionPanel = new JPanel();
         questionPanel.setLayout(new BorderLayout());
         questionPanel.setBorder(BorderFactory.createLineBorder(GRAY, 2));
-        questionPanel.setBackground(CARD_BACKGROUND);
+        questionPanel.setBackground(card_background);
 
         ////Question
         JTextArea questionTextArea = new JTextArea(question.getQuestionText());
         questionTextArea.setEditable(false);
         questionTextArea.setLineWrap(true);
         questionTextArea.setWrapStyleWord(true);
-        questionTextArea.setBackground(BUTTON_DEFAULT);
+        questionTextArea.setBackground(button_default);
         questionPanel.add(questionTextArea, BorderLayout.CENTER);
         questionPanel.setMaximumSize(new Dimension(350, 120));
 
@@ -345,9 +344,9 @@ public class GrafiskInterface extends JFrame {
     private void handleAnswerSelection(JButton selectedButton, String correctAnswer) {
 
         if (selectedButton.getText().equals(correctAnswer)) {
-            selectedButton.setBackground(BUTTON_CORRECT);
+            selectedButton.setBackground(button_default);
         } else {
-            selectedButton.setBackground(BUTTON_WRONG);
+            selectedButton.setBackground(button_wrong);
         }
 
         QuizAnswer quizAnswer = new QuizAnswer();
@@ -366,7 +365,7 @@ public class GrafiskInterface extends JFrame {
         waitingForPlayersLabel.setHorizontalAlignment(SwingConstants.CENTER);
         waitingForPlayersLabel.setMaximumSize(new Dimension(350, 25));
         waitingForPlayersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        waitingForPlayersLabel.setBackground(BUTTON_DEFAULT);
+        waitingForPlayersLabel.setBackground(button_default);
 
         startPanel.add(waitingForPlayersLabel, BorderLayout.SOUTH);
         revalidate();

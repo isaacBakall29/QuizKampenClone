@@ -17,7 +17,7 @@ public class TimerQuestionPanel {
         JPanel timerPanel = new JPanel(new BorderLayout());
         JProgressBar timerBar = new JProgressBar(0, 15); // 0-15 sek
         timerBar.setValue(15);
-        timerBar.setStringPainted(false); //to now to show percentage in timebar
+        timerBar.setStringPainted(false); //to not show percentage in time bar
         timerBar.setForeground(Color.GREEN);
         timerBar.setBackground(Color.RED);
         timerPanel.add(timerBar, BorderLayout.CENTER);

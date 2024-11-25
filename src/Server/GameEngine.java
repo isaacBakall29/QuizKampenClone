@@ -13,8 +13,8 @@ public class GameEngine {
     private final Map<String, Integer> scores = new ConcurrentHashMap<>();
     public final Map<String, List<Question>> questionsByCategory = new ConcurrentHashMap<>();
     private final List<String> categoryUsed = new ArrayList<>();
-    private Integer [][] player1ScoreBoard;
-    private Integer [][] player2ScoreBoard;
+    private final Integer [][] player1ScoreBoard;
+    private final Integer [][] player2ScoreBoard;
 
     Integer nrOfRounds;
     Integer nrOfQuestions;

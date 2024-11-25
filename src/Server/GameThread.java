@@ -93,7 +93,6 @@ public class GameThread implements Runnable {
                         out1.writeObject("Spelare 1 svarade inte");
                     }
 
-
                     if (answer2 instanceof QuizAnswer quizAnswer) {
                         out2.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {

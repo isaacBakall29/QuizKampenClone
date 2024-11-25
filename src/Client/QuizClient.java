@@ -3,7 +3,6 @@ package Client;
 import Messages.QuizScore;
 import Messages.ServerMessage;
 import Server.Question;
-
 import java.io.*;
 import java.net.*;
 import java.util.List;
