@@ -11,7 +11,6 @@ import java.util.Properties;
 
 public class QuizServer {
     private static final int PORT = 1113;
-    private static final GameEngine gameEngine = new GameEngine();
     private static final List<PlayerInfo> playerSockets = new ArrayList<>();
     private static final List<PlayerInfo> connectedSockets = new ArrayList<>();
 
@@ -35,7 +34,6 @@ public class QuizServer {
                             new Thread(new GameThread(player1, player2)).start();
 
                         } else {
-                            //System.out.println("waiting for more players");
                             try {
                                 Thread.sleep(3000);
                             } catch (InterruptedException e) {

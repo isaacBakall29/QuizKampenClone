@@ -7,9 +7,7 @@ import Messages.ServerMessage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GameThread implements Runnable{
     private PlayerInfo player1;
@@ -28,7 +26,7 @@ public class GameThread implements Runnable{
     public void run() {
         int nrOfRounds = gameEngine.nrOfRounds;
         int nrOfQuestions = gameEngine.nrOfQuestions;
-        List<String> categories = new ArrayList<>(gameEngine.getQuestions().stream().map(Question::getCategory).distinct().collect(Collectors.toList()));
+
 
         gameEngine.displayCategories();
 
@@ -44,7 +42,6 @@ public class GameThread implements Runnable{
                 throw new RuntimeException(e);
             }
 
-            //String category = categories.get(round % categories.size());
 
             //TODO receive answer from player which category
 
@@ -82,8 +79,7 @@ public class GameThread implements Runnable{
                         out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
                             gameEngine.updateScoreHashmap(player1.getSocket().toString());
-                            sendScore();
-
+                            sendScoreToGui();
                         }
                     } else {
                         out1.writeObject("Spelare 1 svarade inte");
@@ -93,7 +89,7 @@ public class GameThread implements Runnable{
                         out2.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
                             gameEngine.updateScoreHashmap(player2.getSocket().toString());
-                            sendScore();
+                            sendScoreToGui();
                         }
                     } else {
                         out2.writeObject("Spelare 2 svarade inte");
@@ -105,10 +101,12 @@ public class GameThread implements Runnable{
                 } catch (ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
+                gameEngine.displayScore();
+
             }
             try{
                 System.out.println("Runda " + (round + 1) + " avklarad!");
-                Thread.sleep(1000); //
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -117,22 +115,25 @@ public class GameThread implements Runnable{
             gameEngine.displayScore();
         }
 
-        public void sendScore(){
-            int player1Score = gameEngine.getScoreFromHashmap(player1.getSocket().toString());
-            int player2Score = gameEngine.getScoreFromHashmap(player2.getSocket().toString());
+    public void sendScoreToGui(){
+        int player1Score = gameEngine.getScoreFromHashmap(player1.getSocket().toString());
+        int player2Score = gameEngine.getScoreFromHashmap(player2.getSocket().toString());
 
 
-            try {
-                player1.writeObject(ServerMessage.UPDATESCORE);
-                player2.writeObject(ServerMessage.UPDATESCORE);
-                player1.writeObject(new QuizScore(player1Score, player2Score));
-                player2.writeObject(new QuizScore(player2Score, player1Score));
+        try {
+            player1.writeObject(ServerMessage.UPDATESCORE);
+            player2.writeObject(ServerMessage.UPDATESCORE);
+            player1.writeObject(new QuizScore(player1Score, player2Score));
+            player2.writeObject(new QuizScore(player2Score, player1Score));
 
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+    }
+
 }
+
+
 
 

@@ -8,6 +8,10 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+
 
 import static Client.ColorGUI.*;
 
@@ -88,9 +92,16 @@ public class GrafiskInterface extends JFrame {
         label.setFont(new Font("Arial", Font.BOLD, 18));
         panel.add(label, BorderLayout.NORTH);
 
-        JButton button1 = new JButton("Sverige");
-        JButton button2 = new JButton("Musik");
-        JButton button3 = new JButton("Java");
+        String[] categories = {"Sverige", "Stockholm", "EU", "Musik", "Java", "Fun Facts"};
+
+        List<String> categoryList = new ArrayList<>(List.of(categories));
+        Collections.shuffle(categoryList);
+
+        JButton button1 = new JButton(categoryList.get(0));
+        JButton button2 = new JButton(categoryList.get(1));
+        JButton button3 = new JButton(categoryList.get(2));
+
+
 
         button1.addActionListener(e -> handleCategorySelection((JButton)e.getSource()));
         button2.addActionListener(e -> handleCategorySelection((JButton)e.getSource()));
@@ -205,7 +216,7 @@ public class GrafiskInterface extends JFrame {
             }
         };
 
-        //Each button is linked to an ActionListener that checks if the clicked answer is correct.
+
         answerButton1.addActionListener(answerListener);
         answerButton2.addActionListener(answerListener);
         answerButton3.addActionListener(answerListener);
@@ -216,7 +227,7 @@ public class GrafiskInterface extends JFrame {
         answerPanel.add(answerButton3);
         answerPanel.add(answerButton4);
 
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacing
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         mainPanel.add(answerPanel);
 
         quizPanel = mainPanel;
@@ -257,9 +268,9 @@ public class GrafiskInterface extends JFrame {
     private void handleAnswerSelection(JButton selectedButton, String correctAnswer) {
 
         if (selectedButton.getText().equals(correctAnswer)) {
-            selectedButton.setBackground(BUTTON_CORRECT); // Highlight correct answer
+            selectedButton.setBackground(BUTTON_CORRECT);
         } else {
-            selectedButton.setBackground(BUTTON_WRONG); // Highlight incorrect answer
+            selectedButton.setBackground(BUTTON_WRONG);
         }
 
         QuizAnswer quizAnswer = new QuizAnswer();

@@ -21,24 +21,12 @@ public class PlayerInfo {
         return socket;
     }
 
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
-
     public ObjectInputStream getClientObjectInputStream() {
         return clientObjectInputStream;
     }
 
-    public void setClientObjectInputStream(ObjectInputStream clientObjectInputStream) {
-        this.clientObjectInputStream = clientObjectInputStream;
-    }
-
     public ObjectOutputStream getClientObjectOutputStream() {
         return clientObjectOutputStream;
-    }
-
-    public void setClientObjectOutputStream(ObjectOutputStream clientObjectOutputStream) {
-        this.clientObjectOutputStream = clientObjectOutputStream;
     }
 
     public void writeObject(Object obj) throws IOException {
