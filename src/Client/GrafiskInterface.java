@@ -20,6 +20,8 @@ import static java.awt.Transparency.OPAQUE;
 
 public class GrafiskInterface extends JFrame {
 
+    public static final int RIGHT = 2;
+    public static final int WRONG = 1;
     private JPanel startPanel;
     private JPanel quizPanel;
     private JPanel scorePanel;
@@ -42,9 +44,7 @@ public class GrafiskInterface extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         startPanel = createStartPanel();
-        scorePanel = createScorePanel();
-//        finalScorePanel = createFinalScorePanel(0,0);
-        //quizPanel = createQuizPanel();
+        //scorePanel = createScorePanel();
 
         setContentPane(startPanel);
         setVisible(true);
@@ -263,6 +263,15 @@ public class GrafiskInterface extends JFrame {
         int gridLayoutRounds = yourScoreBoard.getYourScoreBoard().length;
         int questionsPerRound = yourScoreBoard.getYourScoreBoard()[0].length;
 
+        JPanel headerPanel = new JPanel(new GridLayout(1, questionsPerRound * 2 + 1));
+        JLabel player1Label = new JLabel("Player 1");
+        headerPanel.add(player1Label);
+        JLabel spaceLabel = new JLabel();
+        headerPanel.add(spaceLabel);
+        JLabel roundLabel = new JLabel("Round");
+        headerPanel.add(roundLabel);
+        JLabel player2Label = new JLabel("Player 2");
+        headerPanel.add(player2Label);
         JPanel roundPanel = new JPanel(new GridLayout(gridLayoutRounds, 1));
         roundPanel.setOpaque(false);
         for (int i = 0; i < gridLayoutRounds; i++) {
@@ -273,12 +282,11 @@ public class GrafiskInterface extends JFrame {
             for (int j = 0; j < yourScore.length; j++) {
                 int answered = yourScore[j];
                 JLabel label = new JLabel(String.valueOf(answered));
-
-                if (answered == 2) {
+                if (answered == RIGHT) {
                     label.setBackground(GREEN); //TODO change to nice picture
                     label.setOpaque(true);
                     label.setHorizontalAlignment(SwingConstants.CENTER);
-                } else if (answered == 1) {
+                } else if (answered == WRONG) {
                     label.setBackground(RED);
                     label.setOpaque(true);
                     label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -291,7 +299,7 @@ public class GrafiskInterface extends JFrame {
             }
 
             //TODO add label with round number
-            JLabel roundNrPanel = new JLabel(String.valueOf(i));
+            JLabel roundNrPanel = new JLabel(String.valueOf(i+1));
             rowPanel.add(roundNrPanel);
             roundNrPanel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -301,11 +309,11 @@ public class GrafiskInterface extends JFrame {
                 int answered = opponentScore[j];
                 JLabel label = new JLabel(String.valueOf(answered));
 
-                if (answered == 2) {
+                if (answered == RIGHT) {
                     label.setBackground(GREEN); //TODO change to nice picture
                     label.setOpaque(true);
                     label.setHorizontalAlignment(SwingConstants.CENTER);
-                } else if (answered == 1) {
+                } else if (answered == WRONG) {
                     label.setBackground(RED);
                     label.setOpaque(true);
                     label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -318,6 +326,7 @@ public class GrafiskInterface extends JFrame {
             }
             roundPanel.add(rowPanel);
         }
+        panel.add(headerPanel, BorderLayout.NORTH);
         panel.add(roundPanel, BorderLayout.CENTER);
         scoreBetweenRoundPanel = panel;
         setContentPane(scoreBetweenRoundPanel);
@@ -331,7 +340,7 @@ public class GrafiskInterface extends JFrame {
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 30));
         scorePanel.add(scoreLabel);
         scorePanel.setMaximumSize(new Dimension(350, 25));
-        //TODO lägga till mer text och vem som vinner
+        //TODO lägga till mer text och vem som vinner0
         return scorePanel;
     }
 

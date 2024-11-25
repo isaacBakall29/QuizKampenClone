@@ -28,36 +28,29 @@ public class QuizClient {
             gui = new GrafiskInterface(socket, in, out);
             readCategoryFromPropertiesFile();
 
-            Object question;
-
-            while ((question = in.readObject()) != null) {
-                if (question instanceof Question) {
-                    gui.updateQuizPanel((Question) question);
-
-                } else if (question instanceof ServerMessage message) {
-
-                    if (message.equals(ServerMessage.WAITINGFORPLAYERS)){
+            Object task;
+            while ((task = in.readObject()) != null) {
+                if (task instanceof Question) {
+                    gui.updateQuizPanel((Question) task);
+                } else if (task instanceof ServerMessage message) {
+                    if (message.equals(ServerMessage.WAITINGFORPLAYERS)) {
                         gui.displayWaitingForPlayers();
-
-                    }  else if (message.equals(ServerMessage.CHOOSECATEGORY)){
+                    } else if (message.equals(ServerMessage.CHOOSECATEGORY)) {
                         Object object = in.readObject();
                         if (object instanceof List categoryList) {
                             gui.createCategory(categoryList);
                         } else {
                             gui.createCategory(List.of(categories));
                         }
-
-                    } else if (message.equals(ServerMessage.UPDATESCORE)){
+                    } else if (message.equals(ServerMessage.UPDATESCORE)) {
                         Object score = in.readObject();
-
-                        if(score instanceof QuizScore quizScore){
+                        if (score instanceof QuizScore quizScore) {
                             gui.updateScorePanel(quizScore.getYourScore(), quizScore.getOpponentScore());
                             gui.scorePanelBetweenRounds(quizScore);
                         }
                     }
                 }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

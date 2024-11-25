@@ -141,9 +141,7 @@ public class GameThread implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
-
 }
 
 
