@@ -26,8 +26,8 @@ public class GrafiskInterface extends JFrame {
     private JPanel scoreBetweenRoundPanel;
     private JPanel finalScorePanel;
     private JLabel scoreLabel;
-    private int player1Score;
-    private int player2Score;
+    private int player1Score = 0;
+    private int player2Score = 0;
     TimerQuestionPanel timerQuestionPanel;
 
     ObjectInputStream objectInputStream = null;
@@ -131,13 +131,13 @@ public class GrafiskInterface extends JFrame {
         }
 
         // Transition to Quiz Panel (or any other action)
-        JPanel quizPanel = new JPanel();
-        JLabel label = new JLabel("Selected: " + categorySelection);
-        quizPanel.add(label);
+        //JPanel quizPanel = new JPanel();
+       // JLabel label = new JLabel("Selected: " + categorySelection);
+        //quizPanel.add(label);
 
-        setContentPane(quizPanel);
-        revalidate();
-        repaint();
+        //setContentPane(quizPanel);
+        //revalidate();
+       // repaint();
 
     }
 
@@ -234,6 +234,7 @@ public class GrafiskInterface extends JFrame {
         quizPanel = mainPanel;
         setContentPane(quizPanel);
         revalidate();
+        repaint();
     }
 
     private JPanel createScorePanel() {
@@ -246,6 +247,8 @@ public class GrafiskInterface extends JFrame {
     }
 
     public void updateScorePanel(int player1Score, int player2Score) {
+        this.player1Score = player1Score;
+        this.player2Score = player2Score;
         scoreLabel.setText(player1Score + " - " + player2Score);
         scorePanel.revalidate();
         scorePanel.repaint();
