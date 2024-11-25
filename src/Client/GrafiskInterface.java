@@ -299,7 +299,7 @@ public class GrafiskInterface extends JFrame {
             }
 
             //TODO add label with round number
-            JLabel roundNrPanel = new JLabel(String.valueOf(i+1));
+            JLabel roundNrPanel = new JLabel(String.valueOf(i + 1));
             rowPanel.add(roundNrPanel);
             roundNrPanel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -334,15 +334,139 @@ public class GrafiskInterface extends JFrame {
         repaint();
     }
 
-    private JPanel createFinalScorePanel(int player1Score, int player2Score) {
-        finalScorePanel = new JPanel();
-        scoreLabel = new JLabel(player1Score + " - " + player2Score);
-        scoreLabel.setFont(new Font("Arial", Font.BOLD, 30));
-        scorePanel.add(scoreLabel);
-        scorePanel.setMaximumSize(new Dimension(350, 25));
-        //TODO lägga till mer text och vem som vinner0
-        return scorePanel;
+
+    public void finalScorePanel(QuizScore finalScoreBoard) {
+        // Create the main panel
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.setOpaque(false); // Transparent background if needed
+
+        // Calculate total scores from the scoreboards
+        int yourTotalScore = 0;
+        int opponentTotalScore = 0;
+
+        for (Integer[] roundScores : finalScoreBoard.getYourScoreBoard()) {
+            for (int score : roundScores) {
+                if (score == RIGHT) {
+                    yourTotalScore++;
+                }
+            }
+        }
+
+        for (Integer[] roundScores : finalScoreBoard.getOpponentScoreBoard()) {
+            for (int score : roundScores) {
+                if (score == RIGHT) {
+                    opponentTotalScore++;
+                }
+            }
+        }
+
+        // Top section: FINAL SCORE label
+        JLabel finalScoreLabel = new JLabel("FINAL SCORE", SwingConstants.CENTER);
+        finalScoreLabel.setFont(new Font("Arial", Font.BOLD, 24)); // Larger font for emphasis
+        finalScoreLabel.setOpaque(true);
+        finalScoreLabel.setBackground(Color.WHITE);
+        panel.add(finalScoreLabel, BorderLayout.NORTH);
+
+        // Middle section: Player scores
+        JPanel scoresPanel = new JPanel(new GridLayout(2, 1)); // Two rows: one for the scores, one for the message
+        scoresPanel.setOpaque(false);
+
+        // Player 1 and Player 2 scores
+        JLabel scoresLabel = new JLabel(
+                "Player 1 score: " + yourTotalScore +
+                        "  -  Player 2 score: " + opponentTotalScore,
+                SwingConstants.CENTER
+        );
+        scoresLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        scoresLabel.setOpaque(true);
+        scoresLabel.setBackground(Color.LIGHT_GRAY);
+        scoresPanel.add(scoresLabel);
+
+        // Bottom section: Win/Lose/Tie message
+        JLabel resultLabel = new JLabel("", SwingConstants.CENTER);
+        resultLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        resultLabel.setOpaque(true);
+
+        // Determine result message
+        if (yourTotalScore > opponentTotalScore) {
+            resultLabel.setText("You won!");
+            resultLabel.setBackground(Color.GREEN);
+        } else if (yourTotalScore < opponentTotalScore) {
+            resultLabel.setText("You lost!");
+            resultLabel.setBackground(Color.RED);
+        } else {
+            resultLabel.setText("Both won!");
+            resultLabel.setBackground(Color.YELLOW);
+        }
+        scoresPanel.add(resultLabel);
+
+        // Add the middle section to the main panel
+        panel.add(scoresPanel, BorderLayout.CENTER);
+
+        // Bottom section: Round-by-round scores (same design as the current panel)
+        int gridLayoutRounds = finalScoreBoard.getYourScoreBoard().length;
+        int questionsPerRound = finalScoreBoard.getYourScoreBoard()[0].length;
+
+        JPanel roundPanel = new JPanel(new GridLayout(gridLayoutRounds, 1));
+        roundPanel.setOpaque(false);
+
+        for (int i = 0; i < gridLayoutRounds; i++) {
+            JPanel rowPanel = new JPanel(new GridLayout(1, questionsPerRound * 2 + 1));
+            rowPanel.setOpaque(false);
+
+            // Player 1 scores for the round
+            Integer[] yourScore = finalScoreBoard.getYourScoreBoard()[i];
+            for (int j = 0; j < yourScore.length; j++) {
+                int answered = yourScore[j];
+                JLabel label = new JLabel(String.valueOf(answered));
+                label.setOpaque(true);
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+
+                if (answered == RIGHT) {
+                    label.setBackground(GREEN);
+                } else if (answered == WRONG) {
+                    label.setBackground(RED);
+                } else {
+                    label.setBackground(GRAY);
+                }
+                rowPanel.add(label);
+            }
+
+            // Round number
+            JLabel roundNrPanel = new JLabel(String.valueOf(i + 1), SwingConstants.CENTER);
+            rowPanel.add(roundNrPanel);
+
+            // Player 2 scores for the round
+            Integer[] opponentScore = finalScoreBoard.getOpponentScoreBoard()[i];
+            for (int j = 0; j < opponentScore.length; j++) {
+                int answered = opponentScore[j];
+                JLabel label = new JLabel(String.valueOf(answered));
+                label.setOpaque(true);
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+
+                if (answered == RIGHT) {
+                    label.setBackground(GREEN);
+                } else if (answered == WRONG) {
+                    label.setBackground(RED);
+                } else {
+                    label.setBackground(GRAY);
+                }
+                rowPanel.add(label);
+            }
+            roundPanel.add(rowPanel);
+        }
+
+        // Add the round-by-round scores to the bottom of the panel
+        panel.add(roundPanel, BorderLayout.SOUTH);
+
+        // Set this panel as the content pane
+        setContentPane(panel);
+        revalidate();
+        repaint();
     }
+
+
 
     private void addAnswerButtonListener(JButton button, String correctAnswer) {
         button.addActionListener(e -> handleAnswerSelection(button, correctAnswer));
