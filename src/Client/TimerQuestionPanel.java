@@ -46,8 +46,6 @@ public class TimerQuestionPanel {
                     }
 
                     JOptionPane.showMessageDialog(quizPanel, "Tiden är ute, gå vidare till nästa fråga.");
-                    //fetchNextQuestion();
-
                 }
             }
         });
