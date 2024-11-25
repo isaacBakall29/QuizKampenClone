@@ -46,6 +46,11 @@ public class QuizClient {
                         Object score = in.readObject();
                         if (score instanceof QuizScore quizScore) {
                             gui.updateScorePanel(quizScore.getYourScore(), quizScore.getOpponentScore());
+                            gui.scorePanelBetweenRounds(quizScore);
+                        }
+                    } else if (message.equals(ServerMessage.GAMEFINISHED)) {
+                        Object score = in.readObject();
+                        if (score instanceof QuizScore quizScore) {
                             gui.finalScorePanel(quizScore);
                         }
                     }
