@@ -44,7 +44,7 @@ public class GrafiskInterface extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         startPanel = createStartPanel();
-        //scorePanel = createScorePanel();
+        scorePanel = createScorePanel();
 
         setContentPane(startPanel);
         setVisible(true);
