@@ -3,7 +3,6 @@ package Client;
 import Messages.QuizAnswer;
 import Messages.QuizScore;
 import Server.Question;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -12,8 +11,6 @@ import java.net.Socket;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-
-
 import static Client.ColorGUI.*;
 import static java.awt.Color.*;
 
@@ -32,7 +29,7 @@ public class GrafiskInterface extends JFrame {
     ObjectInputStream objectInputStream = null;
     ObjectOutputStream objectOutputStream = null;
 
-    public GrafiskInterface(Socket socket, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
+    public GrafiskInterface(ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
 
@@ -42,14 +39,12 @@ public class GrafiskInterface extends JFrame {
 
         startPanel = createStartPanel();
         scorePanel = createScorePanel();
-//        finalScorePanel = createFinalScorePanel(0,0);
-        //quizPanel = createQuizPanel();
 
         setContentPane(startPanel);
         setVisible(true);
     }
 
-    /// / start panelg
+    //// start panel
     private JPanel createStartPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -84,7 +79,7 @@ public class GrafiskInterface extends JFrame {
         return panel;
     }
 
-    /// /Category Panel
+    ////Category Panel
     public void createCategory(List<String> categories) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -120,7 +115,7 @@ public class GrafiskInterface extends JFrame {
         repaint();
     }
 
-    /// / Handle Category Selection in the future
+    //// Handle Category Selection in the future
     private void handleCategorySelection(JButton categorySelection) {
         System.out.println("Button clicked: " + categorySelection.getText());
         try {
@@ -128,26 +123,14 @@ public class GrafiskInterface extends JFrame {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        // Transition to Quiz Panel (or any other action)
-        //JPanel quizPanel = new JPanel();
-       // JLabel label = new JLabel("Selected: " + categorySelection);
-        //quizPanel.add(label);
-
-        //setContentPane(quizPanel);
-        //revalidate();
-       // repaint();
-
     }
 
-    /// / quiz panel
+    //// quiz panel
     public void updateQuizPanel(Question question) {
 
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS)); //meaning components added to this panel will be arranged vertically (from top to bottom).
-        //add(mainPanel, BorderLayout.CENTER);
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-        // Title Panel
         ////Category
         JPanel titlePanel = new JPanel();
         JLabel titleLabel = new JLabel(question.getCategory());
@@ -160,7 +143,6 @@ public class GrafiskInterface extends JFrame {
         updateScorePanel(player1Score, player2Score);
         mainPanel.add(scorePanel);
 
-        // Server.Question Panel with light blue background and border
         JPanel questionPanel = new JPanel();
         questionPanel.setLayout(new BorderLayout());
         questionPanel.setBorder(BorderFactory.createLineBorder(GRAY, 2));
@@ -186,7 +168,7 @@ public class GrafiskInterface extends JFrame {
 
         // Answer Buttons Panel with GridLayout and Spacing
         JPanel answerPanel = new JPanel();
-        answerPanel.setLayout(new GridLayout(2, 2, 10, 10)); // 2x2 grid with spacing
+        answerPanel.setLayout(new GridLayout(2, 2, 10, 10));
         answerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         answerPanel.setMaximumSize(new Dimension(350, 200));
 
@@ -215,7 +197,6 @@ public class GrafiskInterface extends JFrame {
                 JOptionPane.showMessageDialog(quizPanel, "Tiden är ute, gå vidare till nästa fråga.");
             }
         };
-
 
         answerButton1.addActionListener(answerListener);
         answerButton2.addActionListener(answerListener);
@@ -253,12 +234,11 @@ public class GrafiskInterface extends JFrame {
         scorePanel.repaint();
     }
 
-    /// / Score panel between rounds
+    //// Score panel between rounds
     public void scorePanelBetweenRounds(QuizScore yourScoreBoard) {
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        panel.setOpaque(false);
         panel.setOpaque(false);
 
         setVisible(true);
@@ -270,7 +250,7 @@ public class GrafiskInterface extends JFrame {
         for (int i = 0; i < gridLayoutRounds; i++) {
             JPanel rowPanel = new JPanel(new GridLayout(1, questionsPerRound * 2 + 1));
             rowPanel.setOpaque(false);
-            //TODO add player 1 row answers
+
             Integer[] yourScore = yourScoreBoard.getYourScoreBoard()[i];
             for (int j = 0; j < yourScore.length; j++) {
                 int answered = yourScore[j];
@@ -370,6 +350,4 @@ public class GrafiskInterface extends JFrame {
         startPanel.add(waitingForPlayersLabel, BorderLayout.SOUTH);
         revalidate();
     }
-
-
 }

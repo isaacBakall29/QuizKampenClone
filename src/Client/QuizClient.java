@@ -24,7 +24,7 @@ public class QuizClient {
              ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
         ) {
 
-            gui = new GrafiskInterface(socket, in, out);
+            gui = new GrafiskInterface(in, out);
             readCategoryFromPropertiesFile();
 
             Object question;

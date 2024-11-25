@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+//// it enables to two players can play together
 public class GameThread implements Runnable {
     private PlayerInfo player1;
     private PlayerInfo player2;
@@ -42,8 +43,6 @@ public class GameThread implements Runnable {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
-            //TODO alternative who is getting category and who is getting to wait
 
             Object category;
 
@@ -80,7 +79,6 @@ public class GameThread implements Runnable {
                     System.out.println("Have received answer from both players");
 
                     if (answer1 instanceof QuizAnswer quizAnswer) {
-                        out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
                             gameEngine.updateScoreHashmap(player1.getSocket().toString());
                             gameEngine.player1Answer(round, i, true);
@@ -90,11 +88,9 @@ public class GameThread implements Runnable {
 
                     } else {
                         gameEngine.player1Answer(round, i, false);
-                        out1.writeObject("Spelare 1 svarade inte");
                     }
 
                     if (answer2 instanceof QuizAnswer quizAnswer) {
-                        out2.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
                             gameEngine.updateScoreHashmap(player2.getSocket().toString());
                             gameEngine.player2Answer(round, i, true);
@@ -103,7 +99,6 @@ public class GameThread implements Runnable {
                         }
                     } else {
                         gameEngine.player2Answer(round, i, false);
-                        out2.writeObject("Spelare 2 svarade inte");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

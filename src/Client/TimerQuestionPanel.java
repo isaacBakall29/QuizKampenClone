@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+//// part of GUI, it handles only time bar block
 public class TimerQuestionPanel {
 
     private boolean isTimerActive = true;

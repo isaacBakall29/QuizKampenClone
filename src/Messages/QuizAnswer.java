@@ -2,6 +2,7 @@ package Messages;
 
 import java.io.Serializable;
 
+//// this class save answers that player has clicked and send them to server
 public class QuizAnswer implements Serializable {
 
     private String answer;

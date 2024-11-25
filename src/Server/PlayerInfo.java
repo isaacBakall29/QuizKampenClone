@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+//// it keeps socket, input&outstream in one place to talk to client
 public class PlayerInfo {
 
     private Socket socket;

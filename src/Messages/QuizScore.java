@@ -1,8 +1,8 @@
 package Messages;
 
 import java.io.Serializable;
-import java.util.List;
 
+//// it sends back your score, opponent score from Server to GUI and Client
 public class QuizScore implements Serializable {
 
     private final int yourScore; // player score for the one who receives message
