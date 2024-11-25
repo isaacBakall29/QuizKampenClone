@@ -33,9 +33,11 @@ public class GameThread implements Runnable {
         for (int round = 0; round < nrOfRounds; round++) {
 
             try {
-                player1.writeObject(ServerMessage.CHOOSECATEGORY);
-                player1.writeObject(gameEngine.getCategoriesFromDB());
-                player2.writeObject(ServerMessage.WAITINGFOROTHERTOCHOOSECATEGORY);
+                if(round%2==0) {
+                    chooseCategoryPlayer(player1, player2);
+                } else {
+                    chooseCategoryPlayer(player2, player1);
+                }
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -46,7 +48,11 @@ public class GameThread implements Runnable {
             Object category;
 
             try {
-                category = player1.readObject();
+                if(round%2==0) {
+                    category = player1.readObject();
+                } else {
+                    category = player2.readObject();
+                }
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -120,6 +126,12 @@ public class GameThread implements Runnable {
         }
 
         gameEngine.displayScore();
+    }
+
+    private void chooseCategoryPlayer(PlayerInfo chooseCategoryPlayer, PlayerInfo otherPlayer) throws IOException {
+        chooseCategoryPlayer.writeObject(ServerMessage.CHOOSECATEGORY);
+        chooseCategoryPlayer.writeObject(gameEngine.getCategoriesFromDB());
+        otherPlayer.writeObject(ServerMessage.WAITINGFOROTHERTOCHOOSECATEGORY);
     }
 
     public void sendScoreToGui() {
