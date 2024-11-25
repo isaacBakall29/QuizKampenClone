@@ -14,6 +14,8 @@ public class GameThread implements Runnable{
     private PlayerInfo player2;
     private GameEngine gameEngine;
 
+
+
     public GameThread(PlayerInfo player1, PlayerInfo player2) {
         this.player1 = player1;
         this.player2 = player2;
@@ -22,11 +24,11 @@ public class GameThread implements Runnable{
         gameEngine.addPlayer(player2.getSocket().toString());
     }
 
+    private boolean isPlayer1Turn = true;
     @Override
     public void run() {
         int nrOfRounds = gameEngine.nrOfRounds;
         int nrOfQuestions = gameEngine.nrOfQuestions;
-
 
         gameEngine.displayCategories();
 
@@ -35,80 +37,87 @@ public class GameThread implements Runnable{
             //TODO ask player for category, LATER it needs to changed which player get to choose category
 
             try {
-                player1.writeObject(ServerMessage.CHOOSECATEGORY);
-                player2.writeObject(ServerMessage.WAITINGFOROTHERTOCHOOSECATEGORY);
 
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+                if (isPlayer1Turn) {
+
+                    player1.writeObject(ServerMessage.CHOOSECATEGORY);
+                    player2.writeObject(ServerMessage.WAITINGFOROTHERTOCHOOSECATEGORY);
+                } else {
+                    player2.writeObject(ServerMessage.CHOOSECATEGORY);
+                    player1.writeObject(ServerMessage.WAITINGFOROTHERTOCHOOSECATEGORY);
+                }
 
 
-            //TODO receive answer from player which category
+                //TODO receive answer from player which category
 
-            Object category;
+                Object category;
+                if (isPlayer1Turn) {
+                    category = player1.readObject();
+                } else {
+                    category = player2.readObject();
+                }
 
-            try {
-                category = player1.readObject();
+                System.out.println(category);
+                List<Question> questions = gameEngine.getQuestionsForCategory((String) category);
 
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            System.out.println(category);
-            List<Question> questions = gameEngine.getQuestionsForCategory((String) category);
+                for (int i = 0; i < nrOfQuestions; i++) {
+                    Question question = questions.get(i);
+                    try {
+                        ObjectOutputStream out1 = player1.getClientObjectOutputStream();
+                        ObjectOutputStream out2 = player2.getClientObjectOutputStream();
 
-            for (int i = 0; i < nrOfQuestions; i++) {
-                Question question = questions.get(i);
+
+                        out1.writeObject(question);
+                        out2.writeObject(question);
+
+                        ObjectInputStream in1 = player1.getClientObjectInputStream();
+                        ObjectInputStream in2 = player2.getClientObjectInputStream();
+
+
+                        Object answer1 = in1.readObject();
+                        Object answer2 = in2.readObject();
+
+                        System.out.println("Have received answer from both players");
+                        if (answer1 instanceof QuizAnswer quizAnswer) {
+                            out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
+                            if (question.isCorrect(quizAnswer.getAnswer())) {
+                                gameEngine.updateScoreHashmap(player1.getSocket().toString());
+                                sendScoreToGui();
+                            }
+                        } else {
+                            out1.writeObject("Spelare 1 svarade inte");
+                        }
+
+                        if (answer2 instanceof QuizAnswer quizAnswer) {
+                            out2.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
+                            if (question.isCorrect(quizAnswer.getAnswer())) {
+                                gameEngine.updateScoreHashmap(player2.getSocket().toString());
+                                sendScoreToGui();
+                            }
+                        } else {
+                            out2.writeObject("Spelare 2 svarade inte");
+                        }
+
+                    } catch (IOException | ClassNotFoundException e) {
+                        e.printStackTrace();
+
+                    }
+                    gameEngine.displayScore();
+
+                }
+                isPlayer1Turn = !isPlayer1Turn;
                 try {
-                    ObjectOutputStream out1 = player1.getClientObjectOutputStream();
-                    ObjectOutputStream out2 = player2.getClientObjectOutputStream();
-
-                    out1.writeObject(question);
-                    out2.writeObject(question);
-
-                    ObjectInputStream in1 = player1.getClientObjectInputStream();
-                    ObjectInputStream in2 = player2.getClientObjectInputStream();
-
-                    Object answer1 = in1.readObject();
-                    Object answer2 = in2.readObject();
-
-                    System.out.println("Have received answer from both players");
-
-                    if (answer1 instanceof QuizAnswer quizAnswer) {
-                        out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
-                        if (question.isCorrect(quizAnswer.getAnswer())) {
-                            gameEngine.updateScoreHashmap(player1.getSocket().toString());
-                            sendScoreToGui();
-                        }
-                    } else {
-                        out1.writeObject("Spelare 1 svarade inte");
-                    }
-
-                    if (answer2 instanceof QuizAnswer quizAnswer) {
-                        out2.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
-                        if (question.isCorrect(quizAnswer.getAnswer())) {
-                            gameEngine.updateScoreHashmap(player2.getSocket().toString());
-                            sendScoreToGui();
-                        }
-                    } else {
-                        out2.writeObject("Spelare 2 svarade inte");
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-
-                } catch (ClassNotFoundException e) {
+                    System.out.println("Runda " + (round + 1) + " avklarad!");
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                gameEngine.displayScore();
 
-            }
-            try{
-                System.out.println("Runda " + (round + 1) + " avklarad!");
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
+
+            } catch (IOException e) {
                 e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }
 

@@ -26,7 +26,7 @@ public class GameEngine {
             System.out.println("No questions found in the database.");
         }
 
-        Collections.shuffle(questions);
+        Collections.shuffle(questions); // this way you get shuffled questions within each category
         groupQuestionsByCategory();
         readPropertiesFile();
     }
@@ -46,16 +46,21 @@ public class GameEngine {
         }
     }
 
-    public void displayScore() {
-        System.out.println("Poängställning:");
-        for (Map.Entry<String, Integer> entry : scores.entrySet()) {
-            System.out.println(entry.getKey().toString() + ": " + entry.getValue());
-        }
-    }
 
     public void addPlayer(String playerName) {
         scores.put(playerName, 0);
     }
+
+    public void displayScore() {
+        System.out.println("Poängställning:");
+        int playerNr = 1;
+        for (Map.Entry<String, Integer> entry : scores.entrySet()) {
+            String playerName = "Player " + playerNr;
+            System.out.println(playerName + ": " + entry.getValue());
+            playerNr++;
+        }
+    }
+
 
     private void readPropertiesFile() {
 
