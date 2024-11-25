@@ -324,7 +324,7 @@ public class GrafiskInterface extends JFrame {
     private void handleAnswerSelection(JButton selectedButton, String correctAnswer) {
 
         if (selectedButton.getText().equals(correctAnswer)) {
-            selectedButton.setBackground(button_default);
+            selectedButton.setBackground(button_correct);
         } else {
             selectedButton.setBackground(button_wrong);
         }
