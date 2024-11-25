@@ -81,4 +81,17 @@ public class myJDBC {
         }
         return questions;
     }
+
+    public List<String> getCategoriesFromDB() {
+        List<String> categories = new ArrayList<>();
+        try {
+            ResultSet resultSet = statement.executeQuery("SELECT distinct (CATEGORY) FROM QuizDB");
+            while (resultSet.next()) {
+                categories.add(resultSet.getString("CATEGORY"));
+            }
+            return categories;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

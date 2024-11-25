@@ -74,7 +74,7 @@ public class GrafiskInterface extends JFrame {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(startButton);
-        buttonPanel.setBackground(BACKGROUND);
+        buttonPanel.setBackground(ColorGUI.background);
 
         panel.add(buttonPanel, BorderLayout.CENTER);
 
@@ -82,7 +82,7 @@ public class GrafiskInterface extends JFrame {
     }
 
     ////Category Panel
-    public void createCategory(String [] categories) {
+    public void createCategory(List <String> categories) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Category"));
@@ -93,7 +93,7 @@ public class GrafiskInterface extends JFrame {
         panel.add(label, BorderLayout.NORTH);
 
         // read array of categories into a list and shuffles it
-        List<String> categoryList = new ArrayList<>(List.of(categories));
+        List<String> categoryList = new ArrayList<>(categories);
         Collections.shuffle(categoryList);
 
         JButton button1 = new JButton(categoryList.get(0));

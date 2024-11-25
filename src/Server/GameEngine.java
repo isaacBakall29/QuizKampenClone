@@ -12,12 +12,14 @@ public class GameEngine {
     private final List<Question> questions = new ArrayList<>();
     private final Map<String, Integer> scores = new ConcurrentHashMap<>();
     public final Map<String, List<Question>> questionsByCategory = new ConcurrentHashMap<>();
+    private final List<String> categoryUsed = new ArrayList<>();
 
-    Integer nrOfRounds = 3;
-    Integer nrOfQuestions = 2;
+    Integer nrOfRounds;
+    Integer nrOfQuestions;
+
+    myJDBC db = new myJDBC();
 
     public GameEngine() {
-        myJDBC db = new myJDBC();
         List<Question> dbQuestions = db.getQuestionsFromDB();
 
         if (!dbQuestions.isEmpty()) {
@@ -36,7 +38,15 @@ public class GameEngine {
     }
 
     public List<Question> getQuestionsForCategory(String category){
+        categoryUsed.add(category);
         return questionsByCategory.getOrDefault(category, new ArrayList<>());
+    }
+
+    //// to filter out used categories
+    public List <String> getCategoriesFromDB(){
+        List<String> categories = db.getCategoriesFromDB();
+        categories.removeAll(categoryUsed);
+        return categories;
     }
 
     public void displayCategories() {

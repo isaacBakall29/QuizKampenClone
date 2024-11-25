@@ -27,23 +27,20 @@ public class GameThread implements Runnable{
         int nrOfRounds = gameEngine.nrOfRounds;
         int nrOfQuestions = gameEngine.nrOfQuestions;
 
-
         gameEngine.displayCategories();
 
         for (int round = 0; round < nrOfRounds; round++) {
 
-            //TODO ask player for category, LATER it needs to changed which player get to choose category
-
             try {
                 player1.writeObject(ServerMessage.CHOOSECATEGORY);
+                player1.writeObject(gameEngine.getCategoriesFromDB());
                 player2.writeObject(ServerMessage.WAITINGFOROTHERTOCHOOSECATEGORY);
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
-
-            //TODO receive answer from player which category
+            //TODO alternative who is getting category and who is getting to wait
 
             Object category;
 

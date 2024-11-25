@@ -6,6 +6,7 @@ import Server.Question;
 
 import java.io.*;
 import java.net.*;
+import java.util.List;
 import java.util.Properties;
 
 public class QuizClient {
@@ -39,7 +40,12 @@ public class QuizClient {
                         gui.displayWaitingForPlayers();
 
                     }  else if (message.equals(ServerMessage.CHOOSECATEGORY)){
-                        gui.createCategory(categories);
+                        Object object = in.readObject();
+                        if (object instanceof List categoryList) {
+                            gui.createCategory(categoryList);
+                        } else {
+                            gui.createCategory(List.of(categories));
+                        }
 
                     } else if (message.equals(ServerMessage.UPDATESCORE)){
                         Object score = in.readObject();

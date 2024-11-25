@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class ColorGUI {
 
-    public static Color BACKGROUND = new Color(240, 244, 248); // Light Grayish Blue
+    public static Color background = new Color(240, 244, 248); // Light Grayish Blue
     public static Color CARD_BACKGROUND = new Color(255, 255, 255); // Soft White
     public static Color BUTTON_DEFAULT = new Color(173, 216, 230); // Light Pastel Blue
     public static Color BUTTON_CORRECT = new Color(144, 238, 144); // Soft Green
