@@ -6,8 +6,11 @@ import Server.Question;
 
 import java.io.*;
 import java.net.*;
+import java.util.Properties;
 
 public class QuizClient {
+
+    private String [] categories;
 
     String serverAddress = "localhost";
     int port = 1113;
@@ -22,6 +25,7 @@ public class QuizClient {
         ) {
 
             gui = new GrafiskInterface(socket, in, out);
+            readCategoryFromPropertiesFile();
 
             Object question;
 
@@ -35,7 +39,7 @@ public class QuizClient {
                         gui.displayWaitingForPlayers();
 
                     }  else if (message.equals(ServerMessage.CHOOSECATEGORY)){
-                        gui.createCategory();
+                        gui.createCategory(categories);
 
                     } else if (message.equals(ServerMessage.UPDATESCORE)){
                         Object score = in.readObject();
@@ -50,6 +54,20 @@ public class QuizClient {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void readCategoryFromPropertiesFile() {
+
+        Properties properties = new Properties();
+
+        try (FileInputStream fileInputStream = new FileInputStream("src/Server/setting.properties")) {
+            properties.load(fileInputStream);
+
+            categories = properties.getProperty("gui.categories").split(",");
+
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

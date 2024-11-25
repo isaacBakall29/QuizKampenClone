@@ -82,7 +82,7 @@ public class GrafiskInterface extends JFrame {
     }
 
     ////Category Panel
-    public void createCategory() {
+    public void createCategory(String [] categories) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Category"));
@@ -92,16 +92,13 @@ public class GrafiskInterface extends JFrame {
         label.setFont(new Font("Arial", Font.BOLD, 18));
         panel.add(label, BorderLayout.NORTH);
 
-        String[] categories = {"Sverige", "Stockholm", "EU", "Musik", "Java", "Fun Facts"};
-
+        // read array of categories into a list and shuffles it
         List<String> categoryList = new ArrayList<>(List.of(categories));
         Collections.shuffle(categoryList);
 
         JButton button1 = new JButton(categoryList.get(0));
         JButton button2 = new JButton(categoryList.get(1));
         JButton button3 = new JButton(categoryList.get(2));
-
-
 
         button1.addActionListener(e -> handleCategorySelection((JButton)e.getSource()));
         button2.addActionListener(e -> handleCategorySelection((JButton)e.getSource()));
