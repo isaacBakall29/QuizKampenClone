@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.net.Socket;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +15,7 @@ import java.util.Collections;
 
 import static Client.ColorGUI.*;
 import static java.awt.Color.*;
-import static java.awt.Transparency.OPAQUE;
+
 
 public class GrafiskInterface extends JFrame {
 

@@ -36,7 +36,7 @@ public class GameEngine {
 
         player1ScoreBoard = new Integer[nrOfRounds][nrOfQuestions];
         player2ScoreBoard = new Integer[nrOfRounds][nrOfQuestions];
-        //Setup default value for array of Integer
+
         for(int i = 0; i < nrOfRounds; i++) {
             for(int j = 0; j < nrOfQuestions; j++) {
                 player1ScoreBoard[i][j] = 0;
@@ -109,7 +109,7 @@ public class GameEngine {
     }
 
     public void player1Answer(int round, int question, boolean correct) {
-        // 2 for correct answer, 1 for incorrect answer, 0 for has not answered
+
         if (correct) {
             player1ScoreBoard[round][question] = 2;
 
