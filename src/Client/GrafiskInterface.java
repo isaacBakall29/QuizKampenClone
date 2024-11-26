@@ -122,11 +122,9 @@ public class GrafiskInterface extends JFrame {
 
     //// quiz panel
     public void updateQuizPanel(Question question) {
-
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-        ////Category
         JPanel titlePanel = new JPanel();
         JLabel titleLabel = new JLabel(question.getCategory());
         titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
@@ -136,37 +134,39 @@ public class GrafiskInterface extends JFrame {
         titlePanel.setMaximumSize(new Dimension(350, 30));
         mainPanel.add(titlePanel);
 
-        // Server.Question Panel with light blue background and border
         JPanel questionPanel = new JPanel();
         questionPanel.setLayout(new BorderLayout());
         questionPanel.setBorder(BorderFactory.createLineBorder(GRAY, 2));
         questionPanel.setBackground(card_background);
 
-        ////Question
         JTextArea questionTextArea = new JTextArea(question.getQuestionText());
         questionTextArea.setEditable(false);
         questionTextArea.setLineWrap(true);
         questionTextArea.setWrapStyleWord(true);
         questionTextArea.setBackground(button_default);
+        questionTextArea.setFont(new Font("Arial", Font.BOLD, 20));
+        questionTextArea.setMargin(new Insets(30, 20, 20, 20));
         questionPanel.add(questionTextArea, BorderLayout.CENTER);
+
+        // Add image to the right
+        if (question.getImage() != null) {
+            JLabel imageLabel = new JLabel();
+            ImageIcon imageIcon = new ImageIcon(question.getImage());
+            Image scaledImage = imageIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            imageLabel.setIcon(new ImageIcon(scaledImage));
+            questionPanel.add(imageLabel, BorderLayout.EAST);
+        }
+
         questionPanel.setMaximumSize(new Dimension(350, 120));
-
-        //// Set max size for consistent look
-        questionPanel.setMaximumSize(new Dimension(350, 60));
-        // Center-align within BoxLayout
         questionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Add question panel to the main panel
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add vertical spacing
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         mainPanel.add(questionPanel);
 
-        // Answer Buttons Panel with GridLayout and Spacing
         JPanel answerPanel = new JPanel();
-        answerPanel.setLayout(new GridLayout(2, 2, 10, 10)); // 2x2 grid with spacing
+        answerPanel.setLayout(new GridLayout(2, 2, 10, 10));
         answerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         answerPanel.setMaximumSize(new Dimension(350, 200));
 
-        ////answers
         String[] options = question.getOptions();
         JButton answerButton1 = new JButton(options[0]);
         JButton answerButton2 = new JButton(options[1]);
@@ -175,7 +175,6 @@ public class GrafiskInterface extends JFrame {
 
         String correctAnswer = options[question.getCorrectOption()];
 
-        ////Timer and action listener
         timerQuestionPanel = new TimerQuestionPanel(mainPanel, objectOutputStream, quizPanel);
 
         ActionListener answerListener = e -> {
@@ -191,7 +190,6 @@ public class GrafiskInterface extends JFrame {
                 JOptionPane.showMessageDialog(quizPanel, "Tiden är ute, gå vidare till nästa fråga.");
             }
         };
-
 
         answerButton1.addActionListener(answerListener);
         answerButton2.addActionListener(answerListener);
@@ -211,6 +209,7 @@ public class GrafiskInterface extends JFrame {
         revalidate();
         repaint();
     }
+
 
     //// Score panel between rounds
     public void scorePanelBetweenRounds(QuizScore yourScoreBoard) {
