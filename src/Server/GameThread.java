@@ -24,17 +24,17 @@ public class GameThread implements Runnable{
         gameEngine.addPlayer(player2.getSocket().toString());
     }
 
-    private boolean isPlayer1Turn = true;
+
     @Override
     public void run() {
         int nrOfRounds = gameEngine.nrOfRounds;
         int nrOfQuestions = gameEngine.nrOfQuestions;
 
         gameEngine.displayCategories();
+        boolean isPlayer1Turn = true;
 
         for (int round = 0; round < nrOfRounds; round++) {
 
-            //TODO ask player for category, LATER it needs to changed which player get to choose category
 
             try {
 
@@ -46,9 +46,6 @@ public class GameThread implements Runnable{
                     player2.writeObject(ServerMessage.CHOOSECATEGORY);
                     player1.writeObject(ServerMessage.WAITINGFOROTHERTOCHOOSECATEGORY);
                 }
-
-
-                //TODO receive answer from player which category
 
                 Object category;
                 if (isPlayer1Turn) {
@@ -105,7 +102,7 @@ public class GameThread implements Runnable{
                     gameEngine.displayScore();
 
                 }
-                isPlayer1Turn = !isPlayer1Turn;
+
                 try {
                     System.out.println("Runda " + (round + 1) + " avklarad!");
                     Thread.sleep(1000);
@@ -119,6 +116,7 @@ public class GameThread implements Runnable{
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
+            isPlayer1Turn = !isPlayer1Turn;
         }
 
             gameEngine.displayScore();

@@ -128,16 +128,6 @@ public class GrafiskInterface extends JFrame {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        // Transition to Quiz Panel (or any other action)
-        JPanel quizPanel = new JPanel();
-        JLabel label = new JLabel("Selected: " + categorySelection);
-        quizPanel.add(label);
-
-        setContentPane(quizPanel);
-        revalidate();
-        repaint();
-
     }
 
     //// quiz panel

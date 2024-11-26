@@ -26,7 +26,7 @@ public class GameEngine {
             System.out.println("No questions found in the database.");
         }
 
-        Collections.shuffle(questions); // this way you get shuffled questions within each category
+        Collections.shuffle(questions);
         groupQuestionsByCategory();
         readPropertiesFile();
     }
