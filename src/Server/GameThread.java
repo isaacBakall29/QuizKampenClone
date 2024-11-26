@@ -118,8 +118,9 @@ public class GameThread implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
 
+        }
+        sendGameFinishedMessage();
         gameEngine.displayScore();
     }
 
@@ -148,7 +149,26 @@ public class GameThread implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    private void sendGameFinishedMessage() {
+        int player1Score = gameEngine.getScoreFromHashmap(player1.getSocket().toString());
+        int player2Score = gameEngine.getScoreFromHashmap(player2.getSocket().toString());
+        Integer[][] player1ScoreBoard = gameEngine.getPlayer1ScoreBoard();
+        Integer[][] player2ScoreBoard = gameEngine.getPlayer2ScoreBoard();
+
+        try {
+            var quizScoreP1 = new QuizScore(player1Score, player2Score, player1ScoreBoard, player2ScoreBoard);
+            var quizScoreP2 = new QuizScore(player2Score, player1Score, player2ScoreBoard, player1ScoreBoard);
+
+            player1.writeObject(ServerMessage.GAMEFINISHED);
+            player2.writeObject(ServerMessage.GAMEFINISHED);
+            player1.writeObject(quizScoreP1);
+            player2.writeObject(quizScoreP2);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
