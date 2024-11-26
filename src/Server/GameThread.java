@@ -10,7 +10,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-//// it enables to two players can play together
+//// it enables to tw
+/// o players can play together
 public class GameThread implements Runnable {
     private PlayerInfo player1;
     private PlayerInfo player2;
