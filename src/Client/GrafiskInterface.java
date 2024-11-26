@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,8 +22,6 @@ public class GrafiskInterface extends JFrame {
     private JPanel startPanel;
     private JPanel quizPanel;
     private JPanel scoreBetweenRoundPanel;
-    private int player1Score;
-    private int player2Score;
     TimerQuestionPanel timerQuestionPanel;
 
     ObjectInputStream objectInputStream = null;
@@ -31,19 +31,20 @@ public class GrafiskInterface extends JFrame {
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
 
-        setTitle("Quiz Kampen");
+        setTitle("QuizKampen");
         setSize(400, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         startPanel = createStartPanel();
-
         setContentPane(startPanel);
         setVisible(true);
     }
 
     //// start panel
     private JPanel createStartPanel() {
-        JPanel panel = new JPanel();
+
+
+        JPanel panel = new ImagePanel("src/Client/Resources/Imagebackground.jpg");
         panel.setLayout(new BorderLayout());
 
         JLabel titleLabel = new JLabel("QuizKampen");
