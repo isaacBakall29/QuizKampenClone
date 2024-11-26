@@ -7,8 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,9 +42,8 @@ public class GrafiskInterface extends JFrame {
     //// start panel
     private JPanel createStartPanel() {
 
-        Path path = Paths.get("src/Client/Resources/background.png");
 
-        JPanel panel = new ImagePanel(path.toString());
+        JPanel panel = new ImagePanel("https://loremflickr.com/400/500");
 
         panel.setLayout(new BorderLayout());
 
@@ -82,8 +79,8 @@ public class GrafiskInterface extends JFrame {
 
     /// /Category Panel
     public void createCategory(List<String> categories) {
-        Path path = Paths.get("src/Client/Resources/catsbackground.png");
-        JPanel panel = new ImagePanel(path.toString());
+
+        JPanel panel = new ImagePanel("https://loremflickr.com/400/500");
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Category"));
 
@@ -130,9 +127,8 @@ public class GrafiskInterface extends JFrame {
     //// quiz panel
     public JPanel createQuizPanel(Question question) {
 
-        Path path = Paths.get("src/Client/Resources/aquabackground.png");
 
-        JPanel mainPanel = new ImagePanel(path.toString());
+        JPanel mainPanel = new ImagePanel("https://loremflickr.com/400/500");
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         ////Category
@@ -229,7 +225,7 @@ public class GrafiskInterface extends JFrame {
     //// Score panel between rounds
     public void scorePanelBetweenRounds(QuizScore yourScoreBoard) {
 
-        JPanel panel = new JPanel();
+        JPanel panel = new ImagePanel("https://loremflickr.com/400/500");
         panel.setLayout(new BorderLayout());
         panel.setOpaque(false);
 
@@ -312,7 +308,8 @@ public class GrafiskInterface extends JFrame {
 
     public void finalScorePanel(QuizScore finalScoreBoard) {
         // skapa main panel
-        JPanel panel = new JPanel(new BorderLayout());
+        JPanel panel = new ImagePanel("https://loremflickr.com/400/500");
+        panel.setLayout(new BorderLayout());
         panel.setOpaque(false);
 
         // räkna poängställning

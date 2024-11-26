@@ -16,11 +16,11 @@ public class ImagePanel extends JPanel {
 
     public ImagePanel(String filepath) {
         try {
-            File imageFile = new File(filepath);
-            System.out.println("Loading image from: " + imageFile.getAbsolutePath());
-            System.out.println("exxits: " + imageFile.exists());
+//            File imageFile = new File(filepath);
+//            System.out.println("Loading image from: " + imageFile.getAbsolutePath());
+//            System.out.println("exxits: " + imageFile.exists());
 
-            backgroundImage = ImageIO.read(imageFile);
+            backgroundImage = ImageIO.read(new URL(filepath));
 
 
             if (backgroundImage == null) {
