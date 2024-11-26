@@ -14,5 +14,4 @@ public class ColorGUI {
     public static Color text_subtitle = new Color(110, 123, 139);
     public static Color progress_bar = new Color(255, 215, 0);
     public static Color header = new Color(68, 123, 241, 255);
-
 }
