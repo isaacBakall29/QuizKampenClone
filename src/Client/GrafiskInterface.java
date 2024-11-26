@@ -20,8 +20,6 @@ public class GrafiskInterface extends JFrame {
     private JPanel startPanel;
     private JPanel quizPanel;
     private JPanel scoreBetweenRoundPanel;
-    private int player1Score;
-    private int player2Score;
     TimerQuestionPanel timerQuestionPanel;
 
     ObjectInputStream objectInputStream = null;
