@@ -3,7 +3,6 @@ package Client;
 import Messages.QuizAnswer;
 import Messages.QuizScore;
 import Server.Question;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -11,11 +10,8 @@ import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-
-
 import static Client.ColorGUI.*;
 import static java.awt.Color.*;
-
 
 public class GrafiskInterface extends JFrame {
 
@@ -23,10 +19,7 @@ public class GrafiskInterface extends JFrame {
     public static final int WRONG = 1;
     private JPanel startPanel;
     private JPanel quizPanel;
-    private JPanel scorePanel;
     private JPanel scoreBetweenRoundPanel;
-    private JPanel finalScorePanel;
-    private JLabel scoreLabel;
     private int player1Score;
     private int player2Score;
     TimerQuestionPanel timerQuestionPanel;
@@ -43,7 +36,6 @@ public class GrafiskInterface extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         startPanel = createStartPanel();
-        scorePanel = createScorePanel();
 
         setContentPane(startPanel);
         setVisible(true);
@@ -145,8 +137,6 @@ public class GrafiskInterface extends JFrame {
         titlePanel.setBackground(header);
         titlePanel.setMaximumSize(new Dimension(350, 30));
         mainPanel.add(titlePanel);
-        updateScorePanel(player1Score, player2Score);
-        mainPanel.add(scorePanel);
 
         // Server.Question Panel with light blue background and border
         JPanel questionPanel = new JPanel();
@@ -224,24 +214,6 @@ public class GrafiskInterface extends JFrame {
         repaint();
     }
 
-    /// / Score panel mellan ronder
-    private JPanel createScorePanel() {
-        scorePanel = new JPanel();
-        scoreLabel = new JLabel("0 - 0");
-        scoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        scorePanel.add(scoreLabel);
-        scorePanel.setMaximumSize(new Dimension(350, 25));
-        return scorePanel;
-    }
-
-    public void updateScorePanel(int player1Score, int player2Score) {
-        this.player1Score = player1Score;
-        this.player2Score = player2Score;
-        scoreLabel.setText(player1Score + " - " + player2Score);
-        scorePanel.revalidate();
-        scorePanel.repaint();
-    }
-
     //// Score panel between rounds
     public void scorePanelBetweenRounds(QuizScore yourScoreBoard) {
 
@@ -277,13 +249,13 @@ public class GrafiskInterface extends JFrame {
                 JLabel label = new JLabel();
                 if (answered == RIGHT) {
                     label.setText("Rätt");
-                    label.setBackground(GREEN); //TODO change to nice picture
+                    label.setBackground(button_correct); //TODO change to nice picture
                 } else if (answered == WRONG) {
                     label.setText("Fel");
-                    label.setBackground(RED);
+                    label.setBackground(button_wrong);
                 } else {
                     label.setText("");
-                    label.setBackground(GRAY);
+                    label.setBackground(text_subtitle);
                 }
                 label.setOpaque(true);
                 label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -291,7 +263,7 @@ public class GrafiskInterface extends JFrame {
             }
 
             //TODO add label with round number
-            JLabel roundNrPanel = new JLabel(String.valueOf(i));
+            JLabel roundNrPanel = new JLabel(String.valueOf((i) + 1));
             rowPanel.add(roundNrPanel);
             roundNrPanel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -302,13 +274,13 @@ public class GrafiskInterface extends JFrame {
                 JLabel label = new JLabel();
                 if (answered == RIGHT) {
                     label.setText("Rätt");
-                    label.setBackground(GREEN); //TODO change to nice picture
+                    label.setBackground(button_correct); //TODO change to nice picture
                 } else if (answered == WRONG) {
                     label.setText("Fel");
-                    label.setBackground(RED);
+                    label.setBackground(button_wrong);
                 } else {
                     label.setText("");
-                    label.setBackground(GRAY);
+                    label.setBackground(text_subtitle);
                 }
                 label.setOpaque(true);
                 label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -383,13 +355,13 @@ public class GrafiskInterface extends JFrame {
         // kolla om client vann förlorade eller samma poäng
         if (yourTotalScore > opponentTotalScore) {
             resultLabel.setText("Du vann!");
-            resultLabel.setBackground(Color.GREEN);
+            resultLabel.setBackground(button_correct);
         } else if (yourTotalScore < opponentTotalScore) {
             resultLabel.setText("Du förlorade!");
-            resultLabel.setBackground(Color.RED);
+            resultLabel.setBackground(button_wrong);
         } else {
             resultLabel.setText("Both won!");
-            resultLabel.setBackground(Color.YELLOW);
+            resultLabel.setBackground(button_hover);
         }
         scoresPanel.add(resultLabel);
 
@@ -448,12 +420,12 @@ public class GrafiskInterface extends JFrame {
 
         if (score == RIGHT) {
             displayText = "Rätt";
-            backgroundColor = GREEN;
+            backgroundColor = button_correct;
         } else if (score == WRONG) {
             displayText = "Fel";
-            backgroundColor = RED;
+            backgroundColor = button_wrong;
         } else {
-            backgroundColor = GRAY;
+            backgroundColor = text_subtitle;
         }
 
         JLabel label = new JLabel(displayText, SwingConstants.CENTER);
