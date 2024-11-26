@@ -223,18 +223,56 @@ public class GrafiskInterface extends JFrame {
         int gridLayoutRounds = yourScoreBoard.getYourScoreBoard().length;
         int questionsPerRound = yourScoreBoard.getYourScoreBoard()[0].length;
 
-        JPanel headerPanel = new JPanel(new GridLayout(1, questionsPerRound * 2 + 1));
-        JLabel player1Label = new JLabel("Dina svar");
+
+        JPanel headerPanel = new JPanel(new GridLayout(1, questionsPerRound * 2 + 3));
+
+        for (int i = 0; i < questionsPerRound - 1; i++) {
+            headerPanel.add(new JLabel());
+        }
+        JLabel player1Label = new JLabel("PLAYER 1");
+        player1Label.setFont(new Font("Arial", Font.BOLD, 11));
+        player1Label.setHorizontalAlignment(SwingConstants.CENTER);
+        player1Label.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+
         headerPanel.add(player1Label);
+
         JLabel spaceLabel = new JLabel();
         headerPanel.add(spaceLabel);
+
         JLabel roundLabel = new JLabel("Round");
+        roundLabel.setFont(new Font("Arial", Font.BOLD, 11));
+        roundLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        roundLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         headerPanel.add(roundLabel);
-        JLabel player2Label = new JLabel("Motståndarens svar");
+
+        for (int i = 0; i < questionsPerRound - 1; i++) {
+            headerPanel.add(new JLabel());
+        }
+        JLabel player2Label = new JLabel("PLAYER 2");
+        player2Label.setFont(new Font("Arial", Font.BOLD, 11
+
+        ));
+        player2Label.setHorizontalAlignment(SwingConstants.CENTER);
+        player2Label.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+
         headerPanel.add(player2Label);
+
+        for (int i = 0; i < questionsPerRound - 1; i++) {
+            headerPanel.add(new JLabel());
+        }
 
         JPanel roundPanel = new JPanel(new GridLayout(gridLayoutRounds, 1));
         roundPanel.setOpaque(false);
+
+        panel.add(headerPanel, BorderLayout.NORTH);
+        panel.add(roundPanel, BorderLayout.CENTER);
+
+
+        roundPanel = new JPanel(new GridLayout(gridLayoutRounds, 1));
+        roundPanel.setOpaque(false);
+
+        panel.add(headerPanel, BorderLayout.NORTH);
+        panel.add(roundPanel, BorderLayout.CENTER);
 
         for (int i = 0; i < gridLayoutRounds; i++) {
             JPanel rowPanel = new JPanel(new GridLayout(1, questionsPerRound * 2 + 1));
