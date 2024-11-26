@@ -36,6 +36,7 @@ public class GrafiskInterface extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         startPanel = createStartPanel();
+
         setContentPane(startPanel);
         setVisible(true);
     }
@@ -43,8 +44,10 @@ public class GrafiskInterface extends JFrame {
     //// start panel
     private JPanel createStartPanel() {
 
+        Path path = Paths.get("src/Client/Resources/background.png");
 
-        JPanel panel = new ImagePanel("src/Client/Resources/Imagebackground.jpg");
+        JPanel panel = new ImagePanel(path.toString());
+
         panel.setLayout(new BorderLayout());
 
         JLabel titleLabel = new JLabel("QuizKampen");
@@ -70,7 +73,7 @@ public class GrafiskInterface extends JFrame {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(startButton);
-        buttonPanel.setBackground(ColorGUI.background);
+        buttonPanel.setOpaque(false);
 
         panel.add(buttonPanel, BorderLayout.CENTER);
 
@@ -79,7 +82,8 @@ public class GrafiskInterface extends JFrame {
 
     /// /Category Panel
     public void createCategory(List<String> categories) {
-        JPanel panel = new JPanel();
+        Path path = Paths.get("src/Client/Resources/catsbackground.png");
+        JPanel panel = new ImagePanel(path.toString());
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Category"));
 
@@ -124,9 +128,11 @@ public class GrafiskInterface extends JFrame {
     }
 
     //// quiz panel
-    public void updateQuizPanel(Question question) {
+    public JPanel createQuizPanel(Question question) {
 
-        JPanel mainPanel = new JPanel();
+        Path path = Paths.get("src/Client/Resources/aquabackground.png");
+
+        JPanel mainPanel = new ImagePanel(path.toString());
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         ////Category
@@ -209,10 +215,15 @@ public class GrafiskInterface extends JFrame {
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         mainPanel.add(answerPanel);
 
-        quizPanel = mainPanel;
+        return mainPanel;
+    }
+
+    public void updateQuizPanel(Question question) {
+        quizPanel = createQuizPanel(question);
         setContentPane(quizPanel);
         revalidate();
         repaint();
+
     }
 
     //// Score panel between rounds
@@ -464,6 +475,8 @@ public class GrafiskInterface extends JFrame {
     }
 
     public void displayWaitingForPlayers() {
+
+
         JLabel waitingForPlayersLabel = new JLabel("väntar på motståndare");
         waitingForPlayersLabel.setFont(new Font("Arial", Font.BOLD, 16));
         waitingForPlayersLabel.setHorizontalAlignment(SwingConstants.CENTER);

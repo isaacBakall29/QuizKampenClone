@@ -21,23 +21,4 @@ public class ColorGUI {
     public static Color progress_bar = new Color(255, 215, 0);
     public static Color header = new Color(68, 123, 241, 255);
 
-    private static Path path = Paths.get("src/Client/Resources/Imagebackground.jpg");
-
-    private static BufferedImage backgroundImage;
-
-    static {
-        try {
-            backgroundImage = ImageIO.read(path.toFile());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    static void paintComponent (Graphics g) {
-        g.drawImage(backgroundImage, 0, 0, null);
-    }
-
-
-
-
 }
