@@ -3,7 +3,6 @@ package Client;
 import Messages.QuizAnswer;
 import Messages.QuizScore;
 import Server.Question;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -12,11 +11,8 @@ import java.net.Socket;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-
-
 import static Client.ColorGUI.*;
 import static java.awt.Color.*;
-import static java.awt.Transparency.OPAQUE;
 
 public class GrafiskInterface extends JFrame {
 
@@ -26,14 +22,14 @@ public class GrafiskInterface extends JFrame {
     private JPanel scoreBetweenRoundPanel;
     private JPanel finalScorePanel;
     private JLabel scoreLabel;
-    private int player1Score;
-    private int player2Score;
+    private int player1Score = 0;
+    private int player2Score = 0;
     TimerQuestionPanel timerQuestionPanel;
 
     ObjectInputStream objectInputStream = null;
     ObjectOutputStream objectOutputStream = null;
 
-    public GrafiskInterface(Socket socket, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
+    public GrafiskInterface(ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
 
@@ -43,14 +39,12 @@ public class GrafiskInterface extends JFrame {
 
         startPanel = createStartPanel();
         scorePanel = createScorePanel();
-//        finalScorePanel = createFinalScorePanel(0,0);
-        //quizPanel = createQuizPanel();
 
         setContentPane(startPanel);
         setVisible(true);
     }
 
-    /// / start panelg
+    //// start panel
     private JPanel createStartPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -85,7 +79,7 @@ public class GrafiskInterface extends JFrame {
         return panel;
     }
 
-    /// /Category Panel
+    ////Category Panel
     public void createCategory(List<String> categories) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -121,7 +115,7 @@ public class GrafiskInterface extends JFrame {
         repaint();
     }
 
-    /// / Handle Category Selection in the future
+    //// Handle Category Selection in the future
     private void handleCategorySelection(JButton categorySelection) {
         System.out.println("Button clicked: " + categorySelection.getText());
         try {
@@ -131,38 +125,35 @@ public class GrafiskInterface extends JFrame {
         }
     }
 
-    /// / quiz panel
+    //// quiz panel
     public void updateQuizPanel(Question question) {
 
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS)); //meaning components added to this panel will be arranged vertically (from top to bottom).
-        //add(mainPanel, BorderLayout.CENTER);
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-        // Title Panel
         ////Category
         JPanel titlePanel = new JPanel();
         JLabel titleLabel = new JLabel(question.getCategory());
         titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titlePanel.add(titleLabel);
-        titlePanel.setBackground(HEADER);
+        titlePanel.setBackground(header);
         titlePanel.setMaximumSize(new Dimension(350, 30));
         mainPanel.add(titlePanel);
         updateScorePanel(player1Score, player2Score);
         mainPanel.add(scorePanel);
 
-        // Server.Question Panel with light blue background and border
         JPanel questionPanel = new JPanel();
         questionPanel.setLayout(new BorderLayout());
         questionPanel.setBorder(BorderFactory.createLineBorder(GRAY, 2));
-        questionPanel.setBackground(CARD_BACKGROUND);
+        questionPanel.setBackground(card_background);
 
         ////Question
         JTextArea questionTextArea = new JTextArea(question.getQuestionText());
         questionTextArea.setEditable(false);
         questionTextArea.setLineWrap(true);
         questionTextArea.setWrapStyleWord(true);
-        questionTextArea.setBackground(BUTTON_DEFAULT);
+        questionTextArea.setBackground(button_default);
         questionPanel.add(questionTextArea, BorderLayout.CENTER);
         questionPanel.setMaximumSize(new Dimension(350, 120));
 
@@ -177,7 +168,7 @@ public class GrafiskInterface extends JFrame {
 
         // Answer Buttons Panel with GridLayout and Spacing
         JPanel answerPanel = new JPanel();
-        answerPanel.setLayout(new GridLayout(2, 2, 10, 10)); // 2x2 grid with spacing
+        answerPanel.setLayout(new GridLayout(2, 2, 10, 10));
         answerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         answerPanel.setMaximumSize(new Dimension(350, 200));
 
@@ -207,7 +198,6 @@ public class GrafiskInterface extends JFrame {
             }
         };
 
-
         answerButton1.addActionListener(answerListener);
         answerButton2.addActionListener(answerListener);
         answerButton3.addActionListener(answerListener);
@@ -224,6 +214,7 @@ public class GrafiskInterface extends JFrame {
         quizPanel = mainPanel;
         setContentPane(quizPanel);
         revalidate();
+        repaint();
     }
 
     private JPanel createScorePanel() {
@@ -236,17 +227,18 @@ public class GrafiskInterface extends JFrame {
     }
 
     public void updateScorePanel(int player1Score, int player2Score) {
+        this.player1Score = player1Score;
+        this.player2Score = player2Score;
         scoreLabel.setText(player1Score + " - " + player2Score);
         scorePanel.revalidate();
         scorePanel.repaint();
     }
 
-    /// / Score panel between rounds
+    //// Score panel between rounds
     public void scorePanelBetweenRounds(QuizScore yourScoreBoard) {
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        panel.setOpaque(false);
         panel.setOpaque(false);
 
         setVisible(true);
@@ -258,7 +250,7 @@ public class GrafiskInterface extends JFrame {
         for (int i = 0; i < gridLayoutRounds; i++) {
             JPanel rowPanel = new JPanel(new GridLayout(1, questionsPerRound * 2 + 1));
             rowPanel.setOpaque(false);
-            //TODO add player 1 row answers
+
             Integer[] yourScore = yourScoreBoard.getYourScoreBoard()[i];
             for (int j = 0; j < yourScore.length; j++) {
                 int answered = yourScore[j];
@@ -332,9 +324,9 @@ public class GrafiskInterface extends JFrame {
     private void handleAnswerSelection(JButton selectedButton, String correctAnswer) {
 
         if (selectedButton.getText().equals(correctAnswer)) {
-            selectedButton.setBackground(BUTTON_CORRECT);
+            selectedButton.setBackground(button_correct);
         } else {
-            selectedButton.setBackground(BUTTON_WRONG);
+            selectedButton.setBackground(button_wrong);
         }
 
         QuizAnswer quizAnswer = new QuizAnswer();
@@ -353,11 +345,9 @@ public class GrafiskInterface extends JFrame {
         waitingForPlayersLabel.setHorizontalAlignment(SwingConstants.CENTER);
         waitingForPlayersLabel.setMaximumSize(new Dimension(350, 25));
         waitingForPlayersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        waitingForPlayersLabel.setBackground(BUTTON_DEFAULT);
+        waitingForPlayersLabel.setBackground(button_default);
 
         startPanel.add(waitingForPlayersLabel, BorderLayout.SOUTH);
         revalidate();
     }
-
-
 }

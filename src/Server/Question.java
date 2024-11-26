@@ -2,6 +2,7 @@ package Server;
 
 import java.io.Serializable;
 
+//// it reads data from DB and create question object about question, use to send to GUI and client
 public class Question implements Serializable {
 
     String question;

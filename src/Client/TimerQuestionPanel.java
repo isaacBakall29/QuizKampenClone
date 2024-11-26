@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+//// part of GUI, it handles only time bar block
 public class TimerQuestionPanel {
 
     private boolean isTimerActive = true;
@@ -17,7 +18,7 @@ public class TimerQuestionPanel {
         JPanel timerPanel = new JPanel(new BorderLayout());
         JProgressBar timerBar = new JProgressBar(0, 15); // 0-15 sek
         timerBar.setValue(15);
-        timerBar.setStringPainted(false); //to now to show percentage in timebar
+        timerBar.setStringPainted(false); //to not show percentage in time bar
         timerBar.setForeground(Color.GREEN);
         timerBar.setBackground(Color.RED);
         timerPanel.add(timerBar, BorderLayout.CENTER);
@@ -45,8 +46,6 @@ public class TimerQuestionPanel {
                     }
 
                     JOptionPane.showMessageDialog(quizPanel, "Tiden är ute, gå vidare till nästa fråga.");
-                    //fetchNextQuestion();
-
                 }
             }
         });

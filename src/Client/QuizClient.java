@@ -3,7 +3,6 @@ package Client;
 import Messages.QuizScore;
 import Messages.ServerMessage;
 import Server.Question;
-
 import java.io.*;
 import java.net.*;
 import java.util.List;
@@ -25,7 +24,7 @@ public class QuizClient {
              ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
         ) {
 
-            gui = new GrafiskInterface(socket, in, out);
+            gui = new GrafiskInterface(in, out);
             readCategoryFromPropertiesFile();
 
             Object question;

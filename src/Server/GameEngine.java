@@ -6,15 +6,15 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-
+//// work as protocol, talks to DB fetching questions & it has player score which keeps track of answered right and wrong
 public class GameEngine {
 
     private final List<Question> questions = new ArrayList<>();
     private final Map<String, Integer> scores = new ConcurrentHashMap<>();
     public final Map<String, List<Question>> questionsByCategory = new ConcurrentHashMap<>();
     private final List<String> categoryUsed = new ArrayList<>();
-    private Integer [][] player1ScoreBoard;
-    private Integer [][] player2ScoreBoard;
+    private final Integer [][] player1ScoreBoard;
+    private final Integer [][] player2ScoreBoard;
 
     Integer nrOfRounds;
     Integer nrOfQuestions;

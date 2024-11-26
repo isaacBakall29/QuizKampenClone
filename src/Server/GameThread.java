@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+//// it enables to two players can play together
 public class GameThread implements Runnable {
     private PlayerInfo player1;
     private PlayerInfo player2;
@@ -34,20 +35,24 @@ public class GameThread implements Runnable {
         for (int round = 0; round < nrOfRounds; round++) {
 
             try {
-                player1.writeObject(ServerMessage.CHOOSECATEGORY);
-                player1.writeObject(gameEngine.getCategoriesFromDB());
-                player2.writeObject(ServerMessage.WAITINGFOROTHERTOCHOOSECATEGORY);
+                if(round%2==0) {
+                    chooseCategoryPlayer(player1, player2);
+                } else {
+                    chooseCategoryPlayer(player2, player1);
+                }
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
-            //TODO alternative who is getting category and who is getting to wait
-
             Object category;
 
             try {
-                category = player1.readObject();
+                if(round%2==0) {
+                    category = player1.readObject();
+                } else {
+                    category = player2.readObject();
+                }
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -75,7 +80,6 @@ public class GameThread implements Runnable {
                     System.out.println("Have received answer from both players");
 
                     if (answer1 instanceof QuizAnswer quizAnswer) {
-                        out1.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
                             gameEngine.updateScoreHashmap(player1.getSocket().toString());
                             gameEngine.player1Answer(round, i, true);
@@ -85,12 +89,9 @@ public class GameThread implements Runnable {
 
                     } else {
                         gameEngine.player1Answer(round, i, false);
-                        out1.writeObject("Spelare 1 svarade inte");
                     }
 
-
                     if (answer2 instanceof QuizAnswer quizAnswer) {
-                        out2.writeObject(question.isCorrect(quizAnswer.getAnswer()) ? "Rätt svar!" : "Fel svar!");
                         if (question.isCorrect(quizAnswer.getAnswer())) {
                             gameEngine.updateScoreHashmap(player2.getSocket().toString());
                             gameEngine.player2Answer(round, i, true);
@@ -99,7 +100,6 @@ public class GameThread implements Runnable {
                         }
                     } else {
                         gameEngine.player2Answer(round, i, false);
-                        out2.writeObject("Spelare 2 svarade inte");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -121,6 +121,12 @@ public class GameThread implements Runnable {
         }
 
         gameEngine.displayScore();
+    }
+
+    private void chooseCategoryPlayer(PlayerInfo chooseCategoryPlayer, PlayerInfo otherPlayer) throws IOException {
+        chooseCategoryPlayer.writeObject(ServerMessage.CHOOSECATEGORY);
+        chooseCategoryPlayer.writeObject(gameEngine.getCategoriesFromDB());
+        otherPlayer.writeObject(ServerMessage.WAITINGFOROTHERTOCHOOSECATEGORY);
     }
 
     public void sendScoreToGui() {
