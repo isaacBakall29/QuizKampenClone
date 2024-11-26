@@ -68,16 +68,21 @@ public class GameEngine {
         }
     }
 
-    public void displayScore() {
-        System.out.println("Poängställning:");
-        for (Map.Entry<String, Integer> entry : scores.entrySet()) {
-            System.out.println(entry.getKey().toString() + ": " + entry.getValue());
-        }
-    }
 
     public void addPlayer(String playerName) {
         scores.put(playerName, 0);
     }
+
+    public void displayScore() {
+        System.out.println("Poängställning:");
+        int playerNr = 1;
+        for (Map.Entry<String, Integer> entry : scores.entrySet()) {
+            String playerName = "Player " + playerNr;
+            System.out.println(playerName + ": " + entry.getValue());
+            playerNr++;
+        }
+    }
+
 
     private void readPropertiesFile() {
 

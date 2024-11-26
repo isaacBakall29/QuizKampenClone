@@ -28,6 +28,7 @@ public class GameThread implements Runnable {
         int nrOfRounds = gameEngine.nrOfRounds;
         int nrOfQuestions = gameEngine.nrOfQuestions;
 
+
         gameEngine.displayCategories();
 
         for (int round = 0; round < nrOfRounds; round++) {
