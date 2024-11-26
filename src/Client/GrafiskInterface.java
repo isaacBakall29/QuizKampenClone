@@ -374,11 +374,11 @@ public class GrafiskInterface extends JFrame {
 
         // Player 1 och Player 2 poäng
         JLabel scoresLabel = new JLabel(
-                "Dina poäng: " + yourTotalScore + "  -  Motståndarens poäng: " + opponentTotalScore,
+                "PLAYER 1 score :  " + yourTotalScore + "  -  PLAYER 2 score: " + opponentTotalScore,
                 SwingConstants.CENTER
         );
 
-        scoresLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        scoresLabel.setFont(new Font("Arial", Font.PLAIN, 15));
         scoresLabel.setOpaque(true);
         scoresLabel.setBackground(Color.LIGHT_GRAY);
         scoresPanel.add(scoresLabel);
