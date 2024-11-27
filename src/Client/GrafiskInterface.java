@@ -29,7 +29,7 @@ public class GrafiskInterface extends JFrame {
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
 
-        setTitle("Quiz Kampen");
+        setTitle("QuizKampen");
         setSize(400, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -41,7 +41,10 @@ public class GrafiskInterface extends JFrame {
 
     //// start panel
     private JPanel createStartPanel() {
-        JPanel panel = new JPanel();
+
+
+        JPanel panel = new ImagePanel("https://loremflickr.com/400/500");
+
         panel.setLayout(new BorderLayout());
 
         JLabel titleLabel = new JLabel("QuizKampen");
@@ -67,7 +70,7 @@ public class GrafiskInterface extends JFrame {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(startButton);
-        buttonPanel.setBackground(ColorGUI.background);
+        buttonPanel.setOpaque(false);
 
         panel.add(buttonPanel, BorderLayout.CENTER);
 
@@ -76,7 +79,8 @@ public class GrafiskInterface extends JFrame {
 
     /// /Category Panel
     public void createCategory(List<String> categories) {
-        JPanel panel = new JPanel();
+
+        JPanel panel = new ImagePanel("https://loremflickr.com/400/500");
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Category"));
 
@@ -121,9 +125,10 @@ public class GrafiskInterface extends JFrame {
     }
 
     //// quiz panel
-    public void updateQuizPanel(Question question) {
+    public JPanel createQuizPanel(Question question) {
 
-        JPanel mainPanel = new JPanel();
+
+        JPanel mainPanel = new ImagePanel("https://loremflickr.com/400/500");
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         //Category
@@ -208,16 +213,22 @@ public class GrafiskInterface extends JFrame {
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         mainPanel.add(answerPanel);
 
-        quizPanel = mainPanel;
+        return mainPanel;
+    }
+
+    public void updateQuizPanel(Question question) {
+        quizPanel = createQuizPanel(question);
         setContentPane(quizPanel);
         revalidate();
         repaint();
+
+
     }
 
-
+    //// Score panel between rounds
     public void scorePanelBetweenRounds(QuizScore yourScoreBoard) {
 
-        JPanel panel = new JPanel();
+        JPanel panel = new ImagePanel("https://loremflickr.com/400/500");
         panel.setLayout(new BorderLayout());
         panel.setOpaque(false);
 
@@ -335,6 +346,7 @@ public class GrafiskInterface extends JFrame {
         repaint();
     }
 
+
     public void finalScorePanel(QuizScore finalScoreBoard) {
         // skapa main panel
         JPanel panel = new JPanel(new BorderLayout());
@@ -368,17 +380,18 @@ public class GrafiskInterface extends JFrame {
         finalScoreLabel.setForeground(Color.WHITE);
         panel.add(finalScoreLabel, BorderLayout.NORTH);
 
-        // Display scores
-        JPanel scoresPanel = new JPanel(new GridLayout(2, 1, 10, 10));
-        scoresPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        // visa poängställning
+        JPanel scoresPanel = new JPanel(new GridLayout(2, 1, 10, 10)); // två rader poäng resultat
+        scoresPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // lite space runt
         scoresPanel.setOpaque(false);
 
         // Player 1 och Player 2 poäng
         JLabel scoresLabel = new JLabel(
-                "PLAYER 1 score :  " + yourTotalScore + "  -  PLAYER 2 score: " + opponentTotalScore,
+                "Dina poäng: " + yourTotalScore + "  -  Motståndarens poäng: " + opponentTotalScore,
                 SwingConstants.CENTER
         );
-        scoresLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        scoresLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         scoresLabel.setOpaque(true);
         scoresLabel.setBackground(Color.LIGHT_GRAY);
         scoresPanel.add(scoresLabel);
@@ -431,6 +444,9 @@ public class GrafiskInterface extends JFrame {
             // Rond number
             JLabel roundNrLabel = new JLabel("R" + (i + 1), SwingConstants.CENTER);
             roundNrLabel.setFont(new Font("Arial", Font.BOLD, 14));
+            roundNrLabel.setBackground(Color.WHITE);
+            roundNrLabel.setForeground(Color.BLACK);
+            roundNrLabel.setOpaque(true);
             rowPanel.add(roundNrLabel);
 
             // Player 2 poäng
@@ -510,6 +526,8 @@ public class GrafiskInterface extends JFrame {
     }
 
     public void displayWaitingForPlayers() {
+
+
         JLabel waitingForPlayersLabel = new JLabel("väntar på motståndare");
         waitingForPlayersLabel.setFont(new Font("Arial", Font.BOLD, 16));
         waitingForPlayersLabel.setHorizontalAlignment(SwingConstants.CENTER);
