@@ -400,6 +400,9 @@ public class GrafiskInterface extends JFrame {
             // Rond number
             JLabel roundNrLabel = new JLabel("R" + (i + 1), SwingConstants.CENTER);
             roundNrLabel.setFont(new Font("Arial", Font.BOLD, 14));
+            roundNrLabel.setBackground(Color.WHITE);
+            roundNrLabel.setForeground(Color.BLACK);
+            roundNrLabel.setOpaque(true);
             rowPanel.add(roundNrLabel);
 
             // Player 2 poäng
