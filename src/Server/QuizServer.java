@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Properties;
 
 public class QuizServer {
-    private static final int PORT = 1113;
+    private static final int PORT = 11114;
     private static final List<PlayerInfo> playerSockets = new ArrayList<>();
     private static final List<PlayerInfo> connectedSockets = new ArrayList<>();
 

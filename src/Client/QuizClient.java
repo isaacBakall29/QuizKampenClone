@@ -13,7 +13,7 @@ public class QuizClient {
     private String [] categories;
 
     String serverAddress = "localhost";
-    int port = 1113;
+    int port = 11114;
 
     GrafiskInterface gui;
 
