@@ -87,6 +87,9 @@ public class GrafiskInterface extends JFrame {
         JLabel label = new JLabel("Please choose a category");
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setFont(new Font("Arial", Font.BOLD, 18));
+        label.setOpaque(true);
+        label.setBackground(PINK);
+        label.setBorder(BorderFactory.crea(20, 50, 20, 50));
         panel.add(label, BorderLayout.NORTH);
 
         // hämta array med kategorier till en lista och blanda
@@ -103,6 +106,7 @@ public class GrafiskInterface extends JFrame {
 
         // lägg till knappar till knapp panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setOpaque(false);
         buttonPanel.add(button1);
         buttonPanel.add(button2);
         buttonPanel.add(button3);
