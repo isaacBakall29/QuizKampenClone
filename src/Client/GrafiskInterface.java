@@ -349,8 +349,9 @@ public class GrafiskInterface extends JFrame {
 
     public void finalScorePanel(QuizScore finalScoreBoard) {
         // skapa main panel
-        JPanel panel = new JPanel(new BorderLayout());
+        JPanel panel = new ImagePanel("https://loremflickr.com/400/500");
         panel.setOpaque(false);
+        panel.setLayout(new BorderLayout());
 
         // räkna poängställning
         int yourTotalScore = 0;
