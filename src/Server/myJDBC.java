@@ -60,6 +60,7 @@ public class myJDBC {
                 };
                 String correctAnswerText = resultSet.getString("ANSWER");
                 String category = resultSet.getString("CATEGORY");
+                byte[] imageBytes = resultSet.getBytes("IMAGE");
 
 
                 int correctAnswerIndex = -1;
@@ -73,7 +74,7 @@ public class myJDBC {
                 if (correctAnswerIndex == -1) {
                     System.err.println("Correct answer text not found in options for question: " + questionText);
                 } else {
-                    questions.add(new Question(questionText, options, correctAnswerIndex, category));
+                    questions.add(new Question(questionText, options, correctAnswerIndex, category, imageBytes));
                 }
             }
         } catch (SQLException e) {
