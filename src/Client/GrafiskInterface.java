@@ -39,7 +39,7 @@ public class GrafiskInterface extends JFrame {
         setVisible(true);
     }
 
-    //// start panel
+    // Start panel
     private JPanel createStartPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -74,7 +74,7 @@ public class GrafiskInterface extends JFrame {
         return panel;
     }
 
-    /// /Category Panel
+    // Category Panel
     public void createCategory(List<String> categories) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -110,7 +110,6 @@ public class GrafiskInterface extends JFrame {
         repaint();
     }
 
-    /// / Handle Category Selection in the future
     private void handleCategorySelection(JButton categorySelection) {
         System.out.println("Button clicked: " + categorySelection.getText());
         try {
@@ -120,13 +119,13 @@ public class GrafiskInterface extends JFrame {
         }
     }
 
-    //// quiz panel
+    // Quiz panel
     public void updateQuizPanel(Question question) {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-        ////Category
+        //Category
         JPanel titlePanel = new JPanel();
         JLabel titleLabel = new JLabel(question.getCategory());
         titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
@@ -192,7 +191,6 @@ public class GrafiskInterface extends JFrame {
             }
         };
 
-
         answerButton1.addActionListener(answerListener);
         answerButton2.addActionListener(answerListener);
         answerButton3.addActionListener(answerListener);
@@ -212,7 +210,6 @@ public class GrafiskInterface extends JFrame {
         repaint();
     }
 
-    //// Score panel between rounds
     public void scorePanelBetweenRounds(QuizScore yourScoreBoard) {
 
         JPanel panel = new JPanel();
@@ -333,13 +330,12 @@ public class GrafiskInterface extends JFrame {
         repaint();
     }
 
-
     public void finalScorePanel(QuizScore finalScoreBoard) {
-        // skapa main panel
+        // Create main panel
         JPanel panel = new JPanel(new BorderLayout());
         panel.setOpaque(false);
 
-        // räkna poängställning
+        // Calculate scores
         int yourTotalScore = 0;
         int opponentTotalScore = 0;
 
@@ -359,7 +355,7 @@ public class GrafiskInterface extends JFrame {
             }
         }
 
-        // final score högst upp
+        // Final score at the top
         JLabel finalScoreLabel = new JLabel("RESULTAT", SwingConstants.CENTER);
         finalScoreLabel.setFont(new Font("Arial", Font.BOLD, 24));
         finalScoreLabel.setOpaque(true);
@@ -367,28 +363,24 @@ public class GrafiskInterface extends JFrame {
         finalScoreLabel.setForeground(Color.WHITE);
         panel.add(finalScoreLabel, BorderLayout.NORTH);
 
-        // visa poängställning
-        JPanel scoresPanel = new JPanel(new GridLayout(2, 1, 10, 10)); // två rader poäng resultat
-        scoresPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // lite space runt
+        // Display scores
+        JPanel scoresPanel = new JPanel(new GridLayout(2, 1, 10, 10));
+        scoresPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         scoresPanel.setOpaque(false);
 
-        // Player 1 och Player 2 poäng
         JLabel scoresLabel = new JLabel(
                 "PLAYER 1 score :  " + yourTotalScore + "  -  PLAYER 2 score: " + opponentTotalScore,
                 SwingConstants.CENTER
         );
-
         scoresLabel.setFont(new Font("Arial", Font.PLAIN, 15));
         scoresLabel.setOpaque(true);
         scoresLabel.setBackground(Color.LIGHT_GRAY);
         scoresPanel.add(scoresLabel);
 
-        // visa om spelar vinner förlorar eller om det blev samma poäng
         JLabel resultLabel = new JLabel("", SwingConstants.CENTER);
         resultLabel.setFont(new Font("Arial", Font.BOLD, 20));
         resultLabel.setOpaque(true);
 
-        // kolla om client vann förlorade eller samma poäng
         if (yourTotalScore > opponentTotalScore) {
             resultLabel.setText("Du vann!");
             resultLabel.setBackground(button_correct);
@@ -401,10 +393,14 @@ public class GrafiskInterface extends JFrame {
         }
         scoresPanel.add(resultLabel);
 
-        // lägg till scoresPanel
+        // Add the scores panel to the center of the main panel
         panel.add(scoresPanel, BorderLayout.CENTER);
 
-        // visa poängen för alla rundor
+        // Create a combined panel for round scores and the exit button
+        JPanel southContainer = new JPanel(new BorderLayout());
+        southContainer.setOpaque(false);
+
+        // Display scores for all rounds
         int gridLayoutRounds = finalScoreBoard.getYourScoreBoard().length;
         int questionsPerRound = finalScoreBoard.getYourScoreBoard()[0].length;
 
@@ -416,7 +412,7 @@ public class GrafiskInterface extends JFrame {
             JPanel rowPanel = new JPanel(new GridLayout(1, questionsPerRound * 2 + 1, 5, 0));
             rowPanel.setOpaque(false);
 
-            // Player 1 poäng
+            // Player 1 scores
             Integer[] yourScore = finalScoreBoard.getYourScoreBoard()[i];
             for (int j = 0; j < yourScore.length; j++) {
                 int answered = yourScore[j];
@@ -424,12 +420,12 @@ public class GrafiskInterface extends JFrame {
                 rowPanel.add(label);
             }
 
-            // Rond number
+            // Round number
             JLabel roundNrLabel = new JLabel("R" + (i + 1), SwingConstants.CENTER);
             roundNrLabel.setFont(new Font("Arial", Font.BOLD, 14));
             rowPanel.add(roundNrLabel);
 
-            // Player 2 poäng
+            // Player 2 scores
             Integer[] opponentScore = finalScoreBoard.getOpponentScoreBoard()[i];
             for (int j = 0; j < opponentScore.length; j++) {
                 int answered = opponentScore[j];
@@ -440,10 +436,24 @@ public class GrafiskInterface extends JFrame {
             roundPanel.add(rowPanel);
         }
 
-        // lägg till panel som visar poäng för alla ronder
-        panel.add(roundPanel, BorderLayout.SOUTH);
+        southContainer.add(roundPanel, BorderLayout.CENTER);
 
-        // visa panel
+        JPanel exitButtonPanel = new JPanel();
+        exitButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        exitButtonPanel.setOpaque(false);
+
+        JButton exitButton = new JButton("Exit the Game");
+        exitButton.setFont(new Font("Arial", Font.BOLD, 14));
+        exitButton.setBackground(new Color(192, 192, 192));
+        exitButton.setForeground(Color.BLACK);
+        exitButton.setFocusPainted(false);
+
+        exitButton.addActionListener(e -> System.exit(0));
+        exitButtonPanel.add(exitButton);
+
+        southContainer.add(exitButtonPanel, BorderLayout.SOUTH);
+        panel.add(southContainer, BorderLayout.SOUTH);
+
         setContentPane(panel);
         revalidate();
         repaint();
@@ -471,13 +481,6 @@ public class GrafiskInterface extends JFrame {
         label.setPreferredSize(new Dimension(40, 30));
 
         return label;
-    }
-
-
-
-
-    private void addAnswerButtonListener(JButton button, String correctAnswer) { //TODO ta bort
-        button.addActionListener(e -> handleAnswerSelection(button, correctAnswer));
     }
 
     private void handleAnswerSelection(JButton selectedButton, String correctAnswer) {
@@ -509,6 +512,4 @@ public class GrafiskInterface extends JFrame {
         startPanel.add(waitingForPlayersLabel, BorderLayout.SOUTH);
         revalidate();
     }
-
-
 }
