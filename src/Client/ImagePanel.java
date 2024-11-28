@@ -6,9 +6,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class ImagePanel extends JPanel {
     private BufferedImage backgroundImage;
@@ -16,12 +15,7 @@ public class ImagePanel extends JPanel {
 
     public ImagePanel(String filepath) {
         try {
-//            File imageFile = new File(filepath);
-//            System.out.println("Loading image from: " + imageFile.getAbsolutePath());
-//            System.out.println("exxits: " + imageFile.exists());
-
-            backgroundImage = ImageIO.read(new URL(filepath));
-
+            backgroundImage = ImageIO.read(new File(filepath));
 
             if (backgroundImage == null) {
                 System.err.println("Image not found: " + filepath);
@@ -29,7 +23,9 @@ public class ImagePanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
+
 
     @Override
     protected void paintComponent (Graphics g) {
