@@ -1,11 +1,6 @@
 package Client;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 
 public class ColorGUI {
@@ -20,5 +15,7 @@ public class ColorGUI {
     public static Color text_subtitle = new Color(110, 123, 139);
     public static Color progress_bar = new Color(255, 215, 0);
     public static Color header = new Color(68, 123, 241, 255);
+    public static Color transparent =new Color(188, 193, 189, 1);
+    public static Color golden = new Color(203, 161, 53);
 
 }

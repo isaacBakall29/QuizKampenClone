@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,21 +43,18 @@ public class GrafiskInterface extends JFrame {
 
     //// start panel
     private JPanel createStartPanel() {
+        Path path = Paths.get("src/Client/Resources/QKBanner2.png");
 
-
-        JPanel panel = new ImagePanel("https://loremflickr.com/400/500");
+        JPanel panel = new ImagePanel(path.toString());
 
         panel.setLayout(new BorderLayout());
 
-        JLabel titleLabel = new JLabel("QuizKampen");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        panel.add(titleLabel, BorderLayout.NORTH);
-
-        JButton startButton = new JButton("Starta nytt spel");
+        JButton startButton = new JButton("STARTA SPELET");
         startButton.setPreferredSize(new Dimension(200, 50));
-        startButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        startButton.setFont(new Font("Lato", Font.BOLD, 20));
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        startButton.setBackground(golden);
+        startButton.setBorder(BorderGUI.THIN_BORDER);
 
         startButton.addActionListener(e -> {
             try {
@@ -79,8 +78,8 @@ public class GrafiskInterface extends JFrame {
 
     /// /Category Panel
     public void createCategory(List<String> categories) {
-
-        JPanel panel = new ImagePanel("https://loremflickr.com/400/500");
+        Path path = Paths.get("src/Client/Resources/background.png");
+        JPanel panel = new ImagePanel(path.toString());
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Category"));
 
@@ -88,8 +87,8 @@ public class GrafiskInterface extends JFrame {
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setFont(new Font("Arial", Font.BOLD, 18));
         label.setOpaque(true);
-        label.setBackground(PINK);
-        label.setBorder(BorderFactory.crea(20, 50, 20, 50));
+        label.setBackground(WHITE);
+        label.setBorder(BorderGUI.THICK_BORDER);
         panel.add(label, BorderLayout.NORTH);
 
         // hämta array med kategorier till en lista och blanda
@@ -97,8 +96,14 @@ public class GrafiskInterface extends JFrame {
         Collections.shuffle(categoryList);
 
         JButton button1 = new JButton(categoryList.get(0));
+        button1.setFont(new Font("Lato", Font.BOLD, 16));
+        button1.setBackground(golden);
         JButton button2 = new JButton(categoryList.get(1));
+        button2.setFont(new Font("Lato", Font.BOLD, 16));
+        button2.setBackground(golden);
         JButton button3 = new JButton(categoryList.get(2));
+        button3.setFont(new Font("Lato", Font.BOLD, 16));
+        button3.setBackground(golden);
 
         button1.addActionListener(e -> handleCategorySelection((JButton) e.getSource()));
         button2.addActionListener(e -> handleCategorySelection((JButton) e.getSource()));
@@ -132,7 +137,7 @@ public class GrafiskInterface extends JFrame {
     public JPanel createQuizPanel(Question question) {
 
 
-        JPanel mainPanel = new ImagePanel("https://loremflickr.com/400/500");
+        JPanel mainPanel = new ImagePanel("src/Client/Resources/aquabackground.png");
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         //Category
@@ -148,7 +153,7 @@ public class GrafiskInterface extends JFrame {
         // Server.Question Panel with light blue background and border
         JPanel questionPanel = new JPanel();
         questionPanel.setLayout(new BorderLayout());
-        questionPanel.setBorder(BorderFactory.createLineBorder(GRAY, 2));
+        questionPanel.setBorder(BorderGUI.THIN_BORDER);
         questionPanel.setBackground(card_background);
 
         ////Question
@@ -177,14 +182,23 @@ public class GrafiskInterface extends JFrame {
 
         JPanel answerPanel = new JPanel();
         answerPanel.setLayout(new GridLayout(2, 2, 10, 10));
-        answerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        answerPanel.setBorder(BorderGUI.THIN_BORDER);
+        answerPanel.setBackground(transparent);
         answerPanel.setMaximumSize(new Dimension(350, 200));
 
         String[] options = question.getOptions();
         JButton answerButton1 = new JButton(options[0]);
+        answerButton1.setBackground(golden);
+        answerButton1.setBorder(BorderGUI.THIN_BORDER);
         JButton answerButton2 = new JButton(options[1]);
+        answerButton2.setBackground(golden);
+        answerButton2.setBorder(BorderGUI.THIN_BORDER);
         JButton answerButton3 = new JButton(options[2]);
+        answerButton3.setBackground(golden);
+        answerButton3.setBorder(BorderGUI.THIN_BORDER);
         JButton answerButton4 = new JButton(options[3]);
+        answerButton4.setBackground(golden);
+        answerButton4.setBorder(BorderGUI.THIN_BORDER);
 
         String correctAnswer = options[question.getCorrectOption()];
 
@@ -232,7 +246,7 @@ public class GrafiskInterface extends JFrame {
     //// Score panel between rounds
     public void scorePanelBetweenRounds(QuizScore yourScoreBoard) {
 
-        JPanel panel = new ImagePanel("https://loremflickr.com/400/500");
+        JPanel panel = new ImagePanel("src/Client/Resources/one.jpeg");
         panel.setLayout(new BorderLayout());
         panel.setOpaque(false);
 
@@ -242,12 +256,14 @@ public class GrafiskInterface extends JFrame {
 
 
         JPanel headerPanel = new JPanel(new GridLayout(1, questionsPerRound * 2 + 3));
+        headerPanel.setOpaque(true);
+        headerPanel.setBorder(BorderGUI.THIN_BORDER);
 
         for (int i = 0; i < questionsPerRound - 1; i++) {
             headerPanel.add(new JLabel());
         }
         JLabel player1Label = new JLabel("PLAYER 1");
-        player1Label.setFont(new Font("Arial", Font.BOLD, 11));
+        player1Label.setFont(new Font("Lato", Font.BOLD, 11));
         player1Label.setHorizontalAlignment(SwingConstants.CENTER);
         player1Label.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 
@@ -257,7 +273,7 @@ public class GrafiskInterface extends JFrame {
         headerPanel.add(spaceLabel);
 
         JLabel roundLabel = new JLabel("Round");
-        roundLabel.setFont(new Font("Arial", Font.BOLD, 11));
+        roundLabel.setFont(new Font("Lato", Font.BOLD, 11));
         roundLabel.setHorizontalAlignment(SwingConstants.CENTER);
         roundLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         headerPanel.add(roundLabel);
@@ -301,14 +317,17 @@ public class GrafiskInterface extends JFrame {
                 int answered = yourScore[j];
                 JLabel label = new JLabel();
                 if (answered == RIGHT) {
-                    label.setText("Rätt");
-                    label.setBackground(button_correct); //TODO change to nice picture
+                    label.setText("RÄTT");
+                    label.setBackground(button_correct);
+                    label.setBorder(BorderGUI.THIN_BORDER); //TODO change to nice picture
                 } else if (answered == WRONG) {
-                    label.setText("Fel");
+                    label.setText("FEL");
                     label.setBackground(button_wrong);
+                    label.setBorder(BorderGUI.THIN_BORDER);
                 } else {
                     label.setText("");
-                    label.setBackground(text_subtitle);
+                    label.setBackground(transparent);
+                    label.setBorder(BorderGUI.THIN_BORDER);
                 }
                 label.setOpaque(true);
                 label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -319,6 +338,9 @@ public class GrafiskInterface extends JFrame {
             JLabel roundNrPanel = new JLabel(String.valueOf((i) + 1));
             rowPanel.add(roundNrPanel);
             roundNrPanel.setHorizontalAlignment(SwingConstants.CENTER);
+            roundNrPanel.setFont(new Font("Lato", Font.BOLD, 58));
+            roundNrPanel.setForeground(golden);
+            roundNrPanel.setBorder(BorderGUI.THIN_BORDER);
 
             //TODO add player 2 row answers
             Integer[] opponentScore = yourScoreBoard.getOpponentScoreBoard()[i];
@@ -326,14 +348,17 @@ public class GrafiskInterface extends JFrame {
                 int answered = opponentScore[j];
                 JLabel label = new JLabel();
                 if (answered == RIGHT) {
-                    label.setText("Rätt");
-                    label.setBackground(button_correct); //TODO change to nice picture
+                    label.setText("RÄTT");
+                    label.setBackground(button_correct);
+                    label.setBorder(BorderGUI.THIN_BORDER);//TODO change to nice picture
                 } else if (answered == WRONG) {
-                    label.setText("Fel");
+                    label.setText("FEL");
                     label.setBackground(button_wrong);
+                    label.setBorder(BorderGUI.THIN_BORDER);
                 } else {
                     label.setText("");
-                    label.setBackground(text_subtitle);
+                    label.setBackground(transparent);
+                    label.setBorder(BorderGUI.THIN_BORDER);
                 }
                 label.setOpaque(true);
                 label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -353,7 +378,7 @@ public class GrafiskInterface extends JFrame {
 
     public void finalScorePanel(QuizScore finalScoreBoard) {
         // skapa main panel
-        JPanel panel = new ImagePanel("https://loremflickr.com/400/500");
+        JPanel panel = new ImagePanel("src/Client/Resources/QKBanner2.png");
         panel.setOpaque(false);
         panel.setLayout(new BorderLayout());
 
@@ -381,13 +406,13 @@ public class GrafiskInterface extends JFrame {
         JLabel finalScoreLabel = new JLabel("RESULTAT", SwingConstants.CENTER);
         finalScoreLabel.setFont(new Font("Arial", Font.BOLD, 24));
         finalScoreLabel.setOpaque(true);
-        finalScoreLabel.setBackground(new Color(192, 192, 192));
-        finalScoreLabel.setForeground(Color.WHITE);
+        finalScoreLabel.setBackground(new Color(144, 238, 144));
+        finalScoreLabel.setForeground(WHITE);
         panel.add(finalScoreLabel, BorderLayout.NORTH);
 
         // visa poängställning
         JPanel scoresPanel = new JPanel(new GridLayout(2, 1, 10, 10)); // två rader poäng resultat
-        scoresPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // lite space runt
+        scoresPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));// lite space runt
         scoresPanel.setOpaque(false);
 
         // Player 1 och Player 2 poäng
@@ -398,12 +423,14 @@ public class GrafiskInterface extends JFrame {
 
         scoresLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         scoresLabel.setOpaque(true);
-        scoresLabel.setBackground(Color.LIGHT_GRAY);
+        scoresLabel.setBorder(BorderGUI.THICK_BORDER);
+        scoresLabel.setBackground(golden);
         scoresPanel.add(scoresLabel);
 
         // visa om spelar vinner förlorar eller om det blev samma poäng
         JLabel resultLabel = new JLabel("", SwingConstants.CENTER);
         resultLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        resultLabel.setBorder(BorderGUI.THICK_BORDER);
         resultLabel.setOpaque(true);
 
         // kolla om client vann förlorade eller samma poäng
@@ -432,6 +459,7 @@ public class GrafiskInterface extends JFrame {
 
         JPanel roundPanel = new JPanel(new GridLayout(gridLayoutRounds, 1, 5, 5));
         roundPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        roundPanel.setBorder(BorderGUI.THIN_BORDER);
         roundPanel.setOpaque(false);
 
         for (int i = 0; i < gridLayoutRounds; i++) {
@@ -472,8 +500,8 @@ public class GrafiskInterface extends JFrame {
         exitButtonPanel.setOpaque(false);
 
         JButton exitButton = new JButton("Exit the Game");
-        exitButton.setFont(new Font("Arial", Font.BOLD, 14));
-        exitButton.setBackground(new Color(192, 192, 192));
+        exitButton.setFont(new Font("Lato", Font.BOLD, 16));
+        exitButton.setBackground(golden);
         exitButton.setForeground(Color.BLACK);
         exitButton.setFocusPainted(false);
 
@@ -533,12 +561,15 @@ public class GrafiskInterface extends JFrame {
     public void displayWaitingForPlayers() {
 
 
-        JLabel waitingForPlayersLabel = new JLabel("väntar på motståndare");
-        waitingForPlayersLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        JLabel waitingForPlayersLabel = new JLabel("VÄNTAR PÅ SPELARE", SwingConstants.CENTER);
+        waitingForPlayersLabel.setFont(new Font("Lato", Font.BOLD, 20));
+        waitingForPlayersLabel.setForeground(getHSBColor(0.6f, 0.5f, 0.5f));
+        waitingForPlayersLabel.setBackground(WHITE);
+        waitingForPlayersLabel.setBorder(BorderGUI.THIN_BORDER);
+        waitingForPlayersLabel.setOpaque(true);
         waitingForPlayersLabel.setHorizontalAlignment(SwingConstants.CENTER);
         waitingForPlayersLabel.setMaximumSize(new Dimension(350, 25));
         waitingForPlayersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        waitingForPlayersLabel.setBackground(button_default);
 
         startPanel.add(waitingForPlayersLabel, BorderLayout.SOUTH);
         revalidate();
