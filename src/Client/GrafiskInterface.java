@@ -263,7 +263,7 @@ public class GrafiskInterface extends JFrame {
             headerPanel.add(new JLabel());
         }
         JLabel player1Label = new JLabel("PLAYER 1");
-        player1Label.setFont(new Font("Lato", Font.BOLD, 11));
+        player1Label.setFont(new Font("Lato", Font.BOLD, 10));
         player1Label.setHorizontalAlignment(SwingConstants.CENTER);
         player1Label.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 
@@ -273,7 +273,7 @@ public class GrafiskInterface extends JFrame {
         headerPanel.add(spaceLabel);
 
         JLabel roundLabel = new JLabel("Round");
-        roundLabel.setFont(new Font("Lato", Font.BOLD, 11));
+        roundLabel.setFont(new Font("Lato", Font.BOLD, 10));
         roundLabel.setHorizontalAlignment(SwingConstants.CENTER);
         roundLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         headerPanel.add(roundLabel);
@@ -282,7 +282,7 @@ public class GrafiskInterface extends JFrame {
             headerPanel.add(new JLabel());
         }
         JLabel player2Label = new JLabel("PLAYER 2");
-        player2Label.setFont(new Font("Arial", Font.BOLD, 11
+        player2Label.setFont(new Font("Arial", Font.BOLD, 10
 
         ));
         player2Label.setHorizontalAlignment(SwingConstants.CENTER);
