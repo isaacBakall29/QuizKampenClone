@@ -421,7 +421,7 @@ public class GrafiskInterface extends JFrame {
                 SwingConstants.CENTER
         );
 
-        scoresLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        scoresLabel.setFont(new Font("Arial", Font.PLAIN, 15));
         scoresLabel.setOpaque(true);
         scoresLabel.setBorder(BorderGUI.THICK_BORDER);
         scoresLabel.setBackground(golden);
