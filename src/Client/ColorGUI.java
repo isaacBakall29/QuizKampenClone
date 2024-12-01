@@ -17,5 +17,8 @@ public class ColorGUI {
     public static Color header = new Color(68, 123, 241, 255);
     public static Color transparent =new Color(188, 193, 189, 1);
     public static Color golden = new Color(203, 161, 53);
-
+    public static Color saddlebrown = new Color(139, 69, 19);
+    public static Color olive = new Color(128, 128, 0);
+    public static Color darkKhaki = new Color(189, 183, 107);
+    public static Color sandyBrown = new Color(244, 164, 96);
 }
