@@ -7,8 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +22,7 @@ public class GrafiskInterface extends JFrame {
     private JPanel scoreBetweenRoundPanel;
     TimerQuestionPanel timerQuestionPanel;
     private Font NMFDisplay;
+    private Font MarioKart;
     private Font MaruMonica;
 
     ObjectInputStream objectInputStream = null;
@@ -38,11 +37,11 @@ public class GrafiskInterface extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         try {
-            InputStream inputStream = getClass().getResourceAsStream("/Fonts/MaruMonica.ttf");
+            InputStream inputStream = getClass().getResourceAsStream("/Fonts/MarioKart.ttf");
             if (inputStream == null) System.out.println("null");
-            NMFDisplay = Font.createFont(Font.TRUETYPE_FONT, inputStream);
-
-            inputStream= getClass().getResourceAsStream("/Fonts/NMFDisplay.ttf");
+            MarioKart = Font.createFont(Font.TRUETYPE_FONT, inputStream);
+            if (inputStream == null) System.out.println("null");
+            inputStream= getClass().getResourceAsStream("/Fonts/MaruMonica.ttf");
             MaruMonica = Font.createFont(Font.TRUETYPE_FONT, inputStream);
             inputStream.close();
         } catch (FontFormatException | IOException e) {
@@ -62,8 +61,8 @@ public class GrafiskInterface extends JFrame {
 
         JButton startButton = new JButton("START");
         startButton.setPreferredSize(new Dimension(200, 50));
-        startButton.setFont(MaruMonica.deriveFont(Font.BOLD, 20));
-        startButton.setForeground(BLUE);
+        startButton.setFont(MarioKart.deriveFont(Font.BOLD, 20));
+        startButton.setForeground(saddlebrown);
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.setBackground(golden);
         startButton.setBorder(BorderGUI.THIN_BORDER);
@@ -95,9 +94,9 @@ public class GrafiskInterface extends JFrame {
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Category"));
 
-        JLabel label = new JLabel("Please choose a category");
+        JLabel label = new JLabel("PLEASE CHOOSE A CATEGORY");
         label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setFont(MaruMonica.deriveFont(Font.BOLD, 18));
+        label.setFont(MarioKart.deriveFont(Font.BOLD, 18));
         label.setOpaque(true);
         label.setBackground(WHITE);
         label.setBorder(BorderGUI.THICK_BORDER);
@@ -108,13 +107,13 @@ public class GrafiskInterface extends JFrame {
         Collections.shuffle(categoryList);
 
         JButton button1 = new JButton(categoryList.get(0));
-        button1.setFont(MaruMonica.deriveFont(Font.BOLD, 16));
+        button1.setFont(MarioKart.deriveFont(Font.BOLD, 16));
         button1.setBackground(golden);
         JButton button2 = new JButton(categoryList.get(1));
-        button2.setFont(MaruMonica.deriveFont(Font.BOLD, 16));
+        button2.setFont(MarioKart.deriveFont(Font.BOLD, 16));
         button2.setBackground(golden);
         JButton button3 = new JButton(categoryList.get(2));
-        button3.setFont(MaruMonica.deriveFont(Font.BOLD, 16));
+        button3.setFont(MarioKart.deriveFont(Font.BOLD, 16));
         button3.setBackground(golden);
 
         button1.addActionListener(e -> handleCategorySelection((JButton) e.getSource()));
@@ -155,7 +154,7 @@ public class GrafiskInterface extends JFrame {
         //Category
         JPanel titlePanel = new JPanel();
         JLabel titleLabel = new JLabel(question.getCategory());
-        titleLabel.setFont(MaruMonica.deriveFont(Font.BOLD, 18));
+        titleLabel.setFont(MarioKart.deriveFont(Font.BOLD, 18));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titlePanel.add(titleLabel);
         titlePanel.setBackground(header);
@@ -174,7 +173,7 @@ public class GrafiskInterface extends JFrame {
         questionTextArea.setLineWrap(true);
         questionTextArea.setWrapStyleWord(true);
         questionTextArea.setBackground(button_default);
-        questionTextArea.setFont(MaruMonica.deriveFont(Font.BOLD, 20));
+        questionTextArea.setFont(MarioKart.deriveFont(Font.BOLD, 20));
         questionTextArea.setMargin(new Insets(30, 20, 20, 20));
         questionPanel.add(questionTextArea, BorderLayout.CENTER);
 
@@ -202,19 +201,19 @@ public class GrafiskInterface extends JFrame {
         JButton answerButton1 = new JButton(options[0]);
         answerButton1.setBackground(golden);
         answerButton1.setBorder(BorderGUI.SIMPLE_BORDER);
-        answerButton1.setFont(MaruMonica.deriveFont(Font.BOLD, 16));
+        answerButton1.setFont(MarioKart.deriveFont(Font.BOLD, 16));
         JButton answerButton2 = new JButton(options[1]);
         answerButton2.setBackground(golden);
         answerButton2.setBorder(BorderGUI.SIMPLE_BORDER);
-        answerButton2.setFont(MaruMonica.deriveFont(Font.BOLD, 16));
+        answerButton2.setFont(MarioKart.deriveFont(Font.BOLD, 16));
         JButton answerButton3 = new JButton(options[2]);
         answerButton3.setBackground(golden);
         answerButton3.setBorder(BorderGUI.SIMPLE_BORDER);
-        answerButton3.setFont(MaruMonica.deriveFont(Font.BOLD, 16));
+        answerButton3.setFont(MarioKart.deriveFont(Font.BOLD, 16));
         JButton answerButton4 = new JButton(options[3]);
         answerButton4.setBackground(golden);
         answerButton4.setBorder(BorderGUI.SIMPLE_BORDER);
-        answerButton4.setFont(MaruMonica.deriveFont(Font.BOLD, 16));
+        answerButton4.setFont(MarioKart.deriveFont(Font.BOLD, 16));
 
         String correctAnswer = options[question.getCorrectOption()];
 
@@ -230,7 +229,7 @@ public class GrafiskInterface extends JFrame {
                 answerButton3.setEnabled(false);
                 answerButton4.setEnabled(false);
             } else {
-                JOptionPane.showMessageDialog(quizPanel, "Tiden är ute, gå vidare till nästa fråga.");
+                JOptionPane.showMessageDialog(quizPanel, "UH OH! TIME'S UP! GO TO THE NEXT QUESTION!");
             }
         };
 
@@ -279,7 +278,7 @@ public class GrafiskInterface extends JFrame {
             headerPanel.add(new JLabel());
         }
         JLabel player1Label = new JLabel("PLAYER 1");
-        player1Label.setFont(MaruMonica.deriveFont(Font.BOLD, 10));
+        player1Label.setFont(MarioKart.deriveFont(Font.BOLD, 10));
         player1Label.setHorizontalAlignment(SwingConstants.CENTER);
         player1Label.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 
@@ -289,7 +288,7 @@ public class GrafiskInterface extends JFrame {
         headerPanel.add(spaceLabel);
 
         JLabel roundLabel = new JLabel("Round");
-        roundLabel.setFont(MaruMonica.deriveFont(Font.BOLD, 10));
+        roundLabel.setFont(MarioKart.deriveFont(Font.BOLD, 10));
         roundLabel.setHorizontalAlignment(SwingConstants.CENTER);
         roundLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         headerPanel.add(roundLabel);
@@ -298,7 +297,7 @@ public class GrafiskInterface extends JFrame {
             headerPanel.add(new JLabel());
         }
         JLabel player2Label = new JLabel("PLAYER 2");
-        player2Label.setFont(MaruMonica.deriveFont(Font.BOLD, 10));
+        player2Label.setFont(MarioKart.deriveFont(Font.BOLD, 10));
         player2Label.setHorizontalAlignment(SwingConstants.CENTER);
         player2Label.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 
@@ -331,13 +330,13 @@ public class GrafiskInterface extends JFrame {
                 int answered = yourScore[j];
                 JLabel label = new JLabel();
                 if (answered == RIGHT) {
-                    label.setText("RÄTT");
-                    label.setFont(MaruMonica.deriveFont(Font.BOLD, 18));
+                    label.setText("RIGHT");
+                    label.setFont(MarioKart.deriveFont(Font.BOLD, 18));
                     label.setBackground(button_correct);
                     label.setBorder(BorderGUI.THIN_BORDER); //TODO change to nice picture
                 } else if (answered == WRONG) {
-                    label.setText("FEL");
-                    label.setFont(MaruMonica.deriveFont(Font.BOLD, 18));
+                    label.setText("WRONG");
+                    label.setFont(MarioKart.deriveFont(Font.BOLD, 18));
                     label.setBackground(button_wrong);
                     label.setBorder(BorderGUI.THIN_BORDER);
                 } else {
@@ -354,7 +353,7 @@ public class GrafiskInterface extends JFrame {
             JLabel roundNrPanel = new JLabel(String.valueOf((i) + 1));
             rowPanel.add(roundNrPanel);
             roundNrPanel.setHorizontalAlignment(SwingConstants.CENTER);
-            roundNrPanel.setFont(MaruMonica.deriveFont(Font.BOLD, 58));
+            roundNrPanel.setFont(MarioKart.deriveFont(Font.BOLD, 58));
             roundNrPanel.setForeground(golden);
 //            roundNrPanel.setBorder(BorderGUI.THIN_BORDER);
 
@@ -365,12 +364,12 @@ public class GrafiskInterface extends JFrame {
                 JLabel label = new JLabel();
                 if (answered == RIGHT) {
                     label.setText("RÄTT");
-                    label.setFont(MaruMonica.deriveFont(Font.BOLD, 18));
+                    label.setFont(MarioKart.deriveFont(Font.BOLD, 18));
                     label.setBackground(button_correct);
                     label.setBorder(BorderGUI.THIN_BORDER);//TODO change to nice picture
                 } else if (answered == WRONG) {
                     label.setText("FEL");
-                    label.setFont(MaruMonica.deriveFont(Font.BOLD, 18));
+                    label.setFont(MarioKart.deriveFont(Font.BOLD, 18));
                     label.setBackground(button_wrong);
                     label.setBorder(BorderGUI.THIN_BORDER);
                 } else {
@@ -400,6 +399,7 @@ public class GrafiskInterface extends JFrame {
         panel.setOpaque(false);
         panel.setLayout(new BorderLayout());
 
+
         // räkna poängställning
         int yourTotalScore = 0;
         int opponentTotalScore = 0;
@@ -421,8 +421,8 @@ public class GrafiskInterface extends JFrame {
         }
 
         // final score högst upp
-        JLabel finalScoreLabel = new JLabel("RESULTAT", SwingConstants.CENTER);
-        finalScoreLabel.setFont(MaruMonica.deriveFont(Font.BOLD, 24));
+        JLabel finalScoreLabel = new JLabel("RESLUT", SwingConstants.CENTER);
+        finalScoreLabel.setFont(MarioKart.deriveFont(Font.BOLD, 24));
         finalScoreLabel.setOpaque(true);
         finalScoreLabel.setBackground(new Color(144, 238, 144));
         finalScoreLabel.setForeground(WHITE);
@@ -435,11 +435,11 @@ public class GrafiskInterface extends JFrame {
 
         // Player 1 och Player 2 poäng
         JLabel scoresLabel = new JLabel(
-                "Dina poäng: " + yourTotalScore + "  -  Motståndarens poäng: " + opponentTotalScore,
+                "YOUR POINTS: " + yourTotalScore + "  -  OPPOSITIONS POINTS: " + opponentTotalScore,
                 SwingConstants.CENTER
         );
 
-        scoresLabel.setFont(MaruMonica.deriveFont(Font.BOLD, 20));
+        scoresLabel.setFont(MarioKart.deriveFont(Font.BOLD, 20));
         scoresLabel.setOpaque(true);
         scoresLabel.setBorder(BorderGUI.THICK_BORDER);
         scoresLabel.setBackground(golden);
@@ -447,19 +447,19 @@ public class GrafiskInterface extends JFrame {
 
         // visa om spelar vinner förlorar eller om det blev samma poäng
         JLabel resultLabel = new JLabel("", SwingConstants.CENTER);
-        resultLabel.setFont(MaruMonica.deriveFont(Font.BOLD, 20));
+        resultLabel.setFont(MarioKart.deriveFont(Font.BOLD, 20));
         resultLabel.setBorder(BorderGUI.THICK_BORDER);
         resultLabel.setOpaque(true);
 
         // kolla om client vann förlorade eller samma poäng
         if (yourTotalScore > opponentTotalScore) {
-            resultLabel.setText("DU VANN!");
+            resultLabel.setText("YOU WON!");
             resultLabel.setBackground(button_correct);
         } else if (yourTotalScore < opponentTotalScore) {
-            resultLabel.setText("DU FÖRLORADE!");
+            resultLabel.setText("YOU LOST!");
             resultLabel.setBackground(button_wrong);
         } else {
-            resultLabel.setText("DET BLEV LIKA!");
+            resultLabel.setText("IT'S A TIE!");
             resultLabel.setBackground(button_hover);
         }
         scoresPanel.add(resultLabel);
@@ -496,7 +496,7 @@ public class GrafiskInterface extends JFrame {
 
             // Rond number
             JLabel roundNrLabel = new JLabel("R" + (i + 1), SwingConstants.CENTER);
-            roundNrLabel.setFont(MaruMonica.deriveFont(Font.BOLD, 14));
+            roundNrLabel.setFont(MarioKart.deriveFont(Font.BOLD, 14));
             roundNrLabel.setBackground(Color.WHITE);
             roundNrLabel.setForeground(Color.BLACK);
             roundNrLabel.setOpaque(true);
@@ -520,7 +520,7 @@ public class GrafiskInterface extends JFrame {
         exitButtonPanel.setOpaque(false);
 
         JButton exitButton = new JButton("Exit the Game");
-        exitButton.setFont(MaruMonica.deriveFont(Font.BOLD, 16));
+        exitButton.setFont(MarioKart.deriveFont(Font.BOLD, 16));
         exitButton.setBackground(golden);
         exitButton.setForeground(Color.BLACK);
         exitButton.setFocusPainted(false);
@@ -542,17 +542,17 @@ public class GrafiskInterface extends JFrame {
         Color backgroundColor;
 
         if (score == RIGHT) {
-            displayText = "Rätt";
+            displayText = "RIGHT";
             backgroundColor = button_correct;
         } else if (score == WRONG) {
-            displayText = "Fel";
+            displayText = "WRONG";
             backgroundColor = button_wrong;
         } else {
             backgroundColor = text_subtitle;
         }
 
         JLabel label = new JLabel(displayText, SwingConstants.CENTER);
-        label.setFont(MaruMonica.deriveFont(Font.BOLD, 12));
+        label.setFont(MarioKart.deriveFont(Font.BOLD, 12));
         label.setBorder(BorderGUI.THIN_BORDER);
         label.setOpaque(true);
         label.setBackground(backgroundColor);
@@ -582,8 +582,8 @@ public class GrafiskInterface extends JFrame {
     public void displayWaitingForPlayers() {
 
 
-        JLabel waitingForPlayersLabel = new JLabel("VÄNTAR PÅ SPELARE", SwingConstants.CENTER);
-        waitingForPlayersLabel.setFont(MaruMonica.deriveFont(Font.BOLD, 20));
+        JLabel waitingForPlayersLabel = new JLabel("WAITING FOR PLAYERS", SwingConstants.CENTER);
+        waitingForPlayersLabel.setFont(MarioKart.deriveFont(Font.BOLD, 20));
         waitingForPlayersLabel.setForeground(getHSBColor(0.6f, 0.5f, 0.5f));
         waitingForPlayersLabel.setBackground(WHITE);
         waitingForPlayersLabel.setBorder(BorderGUI.THIN_BORDER);
